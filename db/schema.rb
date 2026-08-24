@@ -10,9 +10,59 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_24_133315) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_24_140818) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "genre"
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "event_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_chats_on_event_id"
+  end
+
+  create_table "event_memberships", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "event_id", null: false
+    t.boolean "is_admin"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["event_id"], name: "index_event_memberships_on_event_id"
+    t.index ["user_id"], name: "index_event_memberships_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.time "end_date"
+    t.string "location"
+    t.integer "max_participant"
+    t.time "start_date"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["activity_id"], name: "index_events_on_activity_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
 
   create_table "solid_cable_messages", force: :cascade do |t|
     t.binary "channel", null: false
@@ -185,18 +235,43 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_24_133315) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "user_activities", force: :cascade do |t|
+    t.bigint "activity_id", null: false
     t.datetime "created_at", null: false
+    t.string "level"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["activity_id"], name: "index_user_activities_on_activity_id"
+    t.index ["user_id"], name: "index_user_activities_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.integer "age"
+    t.datetime "created_at", null: false
+    t.text "description"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "first_name"
+    t.string "gender"
+    t.string "language"
+    t.string "last_name"
+    t.string "location"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
+    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "chats", "events"
+  add_foreign_key "event_memberships", "events"
+  add_foreign_key "event_memberships", "users"
+  add_foreign_key "events", "activities"
+  add_foreign_key "events", "users"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
@@ -205,4 +280,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_24_133315) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "user_activities", "activities"
+  add_foreign_key "user_activities", "users"
 end
