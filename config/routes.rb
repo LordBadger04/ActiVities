@@ -23,7 +23,5 @@ Rails.application.routes.draw do
     resources :messages, only: [ :create ]
   end
 
-  resources :users, only: [ :show ] do
-    resources :user_activities, only: [:create, :update, :destroy]
-  end
+  resources :profiles, only: [ :show, :new, :create, :edit, :update ]
 end
