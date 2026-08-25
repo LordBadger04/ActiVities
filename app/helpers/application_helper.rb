@@ -43,13 +43,13 @@ module ApplicationHelper
     Event.includes(:activity).order(created_at: :desc).limit(limit)
   end
 
-  # `UserActivity` declares `belongs_to :user` but the table is keyed on `profile_id`
-  # (FRONT_BLOCKERS.md §1.7), so neither `profile.user_activities` nor
-  # `user.activities` resolves. Query the real column until the model is fixed.
+  # `Profile has_many :user_activities` exists since commit 0c6f0b3, so reading works.
+  # Writing still does not: `UserActivity belongs_to :user` points at a column the
+  # table does not have (FRONT_BLOCKERS.md §1.7).
   def profile_activities(profile)
     return UserActivity.none if profile.blank?
 
-    UserActivity.includes(:activity).where(profile_id: profile.id)
+    profile.user_activities.includes(:activity)
   end
 
   # Sports / Hobbies columns on the User page. `Activity::GENRES` is

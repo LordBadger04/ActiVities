@@ -96,14 +96,39 @@ Impact maquette, direct et large :
 - les colonnes **Sports / Hobbies** de la `User page`
 - le badge de niveau **« Intermediate »** sur chaque ligne buddy et sur `activity page`
 
-Deux issues : soit renommer la colonne en `user_id`, soit passer le modèle sur
-`belongs_to :profile` (et ajouter `has_many :user_activities` sur `Profile`).
+**Moitié corrigé depuis.** Le commit `0c6f0b3` a ajouté sur `Profile` :
 
-En attendant, `ApplicationHelper#profile_activities` interroge `profile_id` directement.
+```ruby
+has_many :user_activities, dependent: :destroy
+has_many :activities, through: :user_activities
+```
+
+La **lecture** fonctionne donc maintenant : `profile.user_activities` résout, et
+`ApplicationHelper#profile_activities` a été simplifié pour l'utiliser.
+
+**L'écriture reste cassée** : `UserActivity` déclare toujours `belongs_to :user` alors
+qu'aucune colonne `user_id` n'existe. Conséquence directe — les champs imbriqués
+`simple_fields_for @user_activity` du formulaire `profiles/new` échoueront à la
+sauvegarde dès que le `raise` du §2.0 sera retiré.
+
+Il reste à passer `UserActivity` sur `belongs_to :profile`, ou à renommer la colonne.
 
 ---
 
 ## 2. Bugs — cassent le fonctionnement, indépendamment du front
+
+### 2.0 🔴 URGENT — un `raise` est mergé sur `master`
+
+`app/controllers/profiles_controller.rb`, commit `0c6f0b3` :
+
+```ruby
+def create
+  raise                                   # <- laissé en place
+  @profile = Profile.new(profile_params)
+```
+
+Toute création de profil lève immédiatement. Le formulaire `profiles/new` du même
+commit ne peut donc rien enregistrer. À retirer en priorité.
 
 ### 2.1 `save!` dans un `if` : les erreurs de formulaire ne s'affichent jamais
 
@@ -208,6 +233,28 @@ affiche « ACTIVITIES NEAR YOU » suivi de cartes activité.
 
 `ApplicationHelper#home_feed_events` fait la requête depuis la vue pour que l'écran s'affiche.
 C'est un dépannage, pas une cible : déplacer en `@events` dans le controller.
+
+### 4.3 Le Stimulus `add_form_input` ne réindexe pas les champs
+
+`add_form_input_controller.js` duplique le bloc par `innerHTML` :
+
+```js
+this.formTarget.insertAdjacentHTML("afterend", this.formTarget.innerHTML)
+```
+
+Les champs copiés gardent des attributs `name` identiques. Rails ne retiendra donc que
+la **dernière** ligne d'activité saisie, quel que soit le nombre de lignes ajoutées.
+
+Il faut réindexer les `name` (`profile[user_activities_attributes][N][...]`) et déclarer
+`accepts_nested_attributes_for :user_activities` sur `Profile`.
+
+### 4.4 `f.submit` ne porte aucune classe
+
+Dans `profiles/new`, `<%= f.submit %>` rend `<input type="submit">` sans classe :
+`config.button_class = 'btn'` ne s'applique qu'à `f.button`, pas à `f.submit`.
+
+Contourné côté CSS par `.form_container input[type="submit"]`. Utiliser
+`f.button :submit` rendrait l'override inutile.
 
 | Élément maquette | Ce qu'il faudrait |
 |---|---|
