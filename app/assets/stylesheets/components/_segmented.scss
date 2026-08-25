@@ -1,0 +1,49 @@
+// Buddies | Activities toggle — Figma 1:237.
+// White track, 44px tall, with a 36px deep-green pill behind the active option.
+// Designer note on the component: "Reprend le 'Public or Private' du board."
+// The drawn labels are Buddies|Activities, and no public/private column exists,
+// so the labels as drawn are what ship.
+.segmented {
+  display: flex;
+  gap: 4px;
+  height: 44px;
+  padding: 4px;
+  background: $surface;
+  border-radius: 999px;
+}
+
+.segmented__option {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $ink-muted;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: $ink;
+    outline: none;
+  }
+}
+
+.segmented__option--active {
+  background: $primary-green;
+  font-weight: 600;
+  color: $lime;
+
+  &:hover,
+  &:focus-visible {
+    color: $lime;
+  }
+}
+
+// The "Compatible buddies" screen has no route (FRONT_BLOCKERS.md §1.6).
+.segmented__option--disabled {
+  opacity: .45;
+  pointer-events: none;
+}

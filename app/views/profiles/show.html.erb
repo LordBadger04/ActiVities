@@ -1,1 +1,69 @@
-<h1>profile view</h1>
+<%# User page — Figma 1:207 / component 1:209 "Usercard". %>
+<% content_for :title, profile_display_name(@profile) %>
+<% by_genre = profile_activities_by_genre(@profile) %>
+<% sports = by_genre["Sport"].to_a %>
+<% hobbies = (by_genre["Culture"].to_a + by_genre["Relaxing"].to_a) %>
+
+<article class="detail-sheet detail-sheet--profile">
+  <header class="profile-head">
+    <div class="profile-head__identity">
+      <h1 class="detail-sheet__title"><%= profile_display_name(@profile) %></h1>
+      <%# The maquette shows a "2.3 km" chip. No geodata exists (FRONT_BLOCKERS.md §1.5), %>
+      <%# so the stored location string takes that slot. %>
+      <% if @profile.location.present? %>
+        <span class="chip"><%= @profile.location %></span>
+      <% end %>
+    </div>
+    <span class="profile-head__avatar" aria-hidden="true"></span>
+  </header>
+
+  <hr class="detail-sheet__divider">
+
+  <section class="detail-block">
+    <h2 class="section-label">About</h2>
+    <p class="detail-block__body"><%= @profile.description.presence || "This buddy hasn't written anything yet." %></p>
+  </section>
+
+  <hr class="detail-sheet__divider">
+
+  <%# Sports / Hobbies — Activity::GENRES is ["Sport", "Culture", "Relaxing"] and the %>
+  <%# maquette has two columns, so Culture and Relaxing share the Hobbies side. %>
+  <div class="interests">
+    <section class="interests__col">
+      <h2 class="chip">Sports</h2>
+      <% if sports.any? %>
+        <ul class="interests__list">
+          <% sports.each do |ua| %>
+            <li><%= ua.activity&.name %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="interests__empty">Nothing yet</p>
+      <% end %>
+    </section>
+
+    <section class="interests__col">
+      <h2 class="chip">Hobbies</h2>
+      <% if hobbies.any? %>
+        <ul class="interests__list">
+          <% hobbies.each do |ua| %>
+            <li><%= ua.activity&.name %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="interests__empty">Nothing yet</p>
+      <% end %>
+    </section>
+  </div>
+
+  <div class="cta-bar">
+    <% if current_profile == @profile %>
+      <%= link_to "Edit my profile", edit_profile_path(@profile), class: "btn-cta" %>
+    <% else %>
+      <%# The maquette's "Send a request" has no destination: buddy requests are not routed. %>
+      <%# EventMembership is per-event and chats#create is nested under events %>
+      <%# (FRONT_BLOCKERS.md §4.2), so this stays inert until a route exists. %>
+      <button type="button" class="btn-cta" disabled aria-disabled="true">Send a request</button>
+    <% end %>
+  </div>
+</article>

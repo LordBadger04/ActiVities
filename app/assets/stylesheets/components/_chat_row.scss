@@ -1,0 +1,50 @@
+// Conversation row — Figma 1:241 "Buddy row · Prototype" on the Chat general screen.
+.chat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: $surface;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+  color: inherit;
+  text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .1);
+    color: inherit;
+    outline: none;
+  }
+}
+
+.chat-row__avatar {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $primary-tint;
+}
+
+.chat-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.chat-row__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $ink;
+}
+
+.chat-row__preview {
+  overflow: hidden;
+  font-size: 13px;
+  color: $ink-muted;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,229 @@
+// Activity / user detail sheet — Figma 1:214 and 1:209.
+// A white sheet with 24px top corners that rises under the header and runs to the
+// bottom of the screen. It is full-bleed, so it cancels .app-main's 16px side padding.
+.detail-sheet {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 26px;
+  margin: 53px -16px -32px;
+  padding: 32px 16px 24px;
+  background: $surface;
+  border-radius: 24px 24px 0 0;
+}
+
+.detail-sheet__head {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.detail-sheet__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: $ink;
+}
+
+.detail-sheet__chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+
+  .chip {
+    justify-content: center;
+  }
+}
+
+.detail-sheet__divider {
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: $line;
+  opacity: 1;
+}
+
+// When / Where — Figma I1:214;46:1263.
+.info-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0;
+}
+
+.info-rows__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.info-rows__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: $ink-muted;
+}
+
+.info-rows__icon {
+  width: 20px;
+  text-align: center;
+  color: $ink-muted;
+}
+
+.info-rows__value {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: $ink;
+  text-align: right;
+}
+
+// Organizer row — Figma I1:214;46:1275.
+.organizer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  form {
+    margin: 0;
+  }
+}
+
+.organizer__avatar {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $primary-tint;
+}
+
+.organizer__identity {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.organizer__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $ink;
+}
+
+.organizer__role {
+  font-size: 13px;
+  color: $ink-muted;
+}
+
+.detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.detail-block__body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: $ink;
+}
+
+.detail-block__going {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.detail-block__going-count {
+  font-size: 13px;
+  color: $ink-muted;
+}
+
+.detail-sheet__cta-form {
+  margin: 0;
+}
+
+// User page — Figma 1:209 "Usercard". Same sheet, with a pinned CTA bar.
+.detail-sheet--profile {
+  padding-bottom: 0;
+}
+
+.profile-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-head__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.profile-head__avatar {
+  flex: 0 0 47px;
+  width: 47px;
+  height: 47px;
+  border-radius: 50%;
+  background: $primary-tint;
+}
+
+// Sports / Hobbies columns — Figma I1:209;36:970 and I1:209;36:975.
+.interests {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.interests__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+
+  .chip {
+    margin: 0;
+  }
+}
+
+.interests__list {
+  margin: 0;
+  padding-left: 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #100000;
+
+  li + li {
+    margin-top: 2px;
+  }
+}
+
+.interests__empty {
+  margin: 0;
+  font-size: 13px;
+  color: $ink-muted;
+}
+
+// Pinned CTA bar — Figma I1:209;36:966. Sits at the foot of the sheet with an upward shadow.
+.cta-bar {
+  position: sticky;
+  bottom: 0;
+  margin: auto -16px 0;
+  padding: 16px;
+  background: $surface;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, .1);
+}
+
+.btn-cta:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}

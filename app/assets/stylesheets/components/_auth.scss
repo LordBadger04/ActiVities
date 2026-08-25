@@ -1,0 +1,50 @@
+// Devise screens — log in, sign up, password reset, account edit.
+// The Figma file has no auth screen. These deliberately do NOT use the white detail
+// sheet: inputs are white pills, and the design system only ever places them on the
+// grey background (the maquette's search bar does exactly this). On a white sheet the
+// pills would be white-on-white and vanish.
+// Applied from the layout via `devise_controller?` so the ten Devise templates stay untouched.
+.app-main--auth {
+  // Devise templates open with a bare <h2>.
+  h2 {
+    margin: 0 0 24px;
+    font-size: 24px;
+    font-weight: 600;
+    color: $ink;
+  }
+
+  // simple_form marks required fields with <abbr title="required">*</abbr>,
+  // which the browser underlines by default.
+  abbr[title] {
+    border: 0;
+    color: $ink-muted;
+    text-decoration: none;
+    cursor: default;
+  }
+
+  // devise/shared/_links renders one bare <p><a> per link.
+  > p {
+    margin: 0;
+    text-align: center;
+
+    a {
+      font-size: 13px;
+      color: $ink-muted;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        color: $primary-green;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .form-actions + p {
+    margin-top: 20px;
+  }
+
+  > p + p {
+    margin-top: 10px;
+  }
+}

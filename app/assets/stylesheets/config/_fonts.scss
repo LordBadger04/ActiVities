@@ -1,16 +1,11 @@
-// Import Google fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Work+Sans:400,700&display=swap');
+// Fonts — source: Figma "Activities By buddies du wagon - Ecrans" (node 1:206)
+// Two families only: Bricolage Grotesque for the wordmark, Instrument Sans for everything else.
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@14,800&family=Instrument+Sans:wght@400;500;600;700&display=swap');
 
-// Define fonts for body and headers
-$body-font: "Work Sans", "Helvetica", "sans-serif";
-$headers-font: "Nunito", "Helvetica", "sans-serif";
+// Instrument Sans carries the whole UI: titles 16px/600, meta 13px/400,
+// labels 12px/500, nav 15px/600, inputs 15px/400.
+$body-font:    "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$headers-font: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-// To use a font file (.woff) uncomment following lines
-// @font-face {
-//   font-family: "Font Name";
-//   src: font-url('FontFile.eot');
-//   src: font-url('FontFile.eot?#iefix') format('embedded-opentype'),
-//        font-url('FontFile.woff') format('woff'),
-//        font-url('FontFile.ttf') format('truetype')
-// }
-// $my-font: "Font Name";
+// Bricolage Grotesque ExtraBold, used only for the "ActiVities" wordmark (40px, -0.8px tracking).
+$display-font: "Bricolage Grotesque", "Instrument Sans", Helvetica, sans-serif;

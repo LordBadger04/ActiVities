@@ -1,0 +1,22 @@
+<%# Activity card — Figma 1:197 / 1:152. %>
+<%# The thumbnail is a flat tint block: no Active Storage yet (FRONT_BLOCKERS.md §1.3). %>
+<%= link_to event_path(event), class: "activity-card" do %>
+  <span class="activity-card__thumb" aria-hidden="true"></span>
+
+  <span class="activity-card__body">
+    <span class="activity-card__title"><%= event.title %></span>
+    <span class="activity-card__meta"><%= event_meta_line(event) %></span>
+
+    <% going = event.event_membership.size %>
+    <span class="activity-card__going">
+      <% if going.positive? %>
+        <span class="avatar-stack" aria-hidden="true">
+          <%= safe_join(Array.new([ going, 3 ].min) { tag.span(class: "avatar-stack__item") }) %>
+        </span>
+        <span class="activity-card__going-count">+<%= going %> going</span>
+      <% else %>
+        <span class="activity-card__going-count">Be the first to join</span>
+      <% end %>
+    </span>
+  </span>
+<% end %>

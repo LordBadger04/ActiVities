@@ -1,28 +1,32 @@
-// This is where you override default Bootstrap variables
-// 1. Find all Bootstrap variables that you can override at the end of each component's documentation under the `Sass variables` anchor
-// e.g. here are the ones you can override for the navbar https://getbootstrap.com/docs/5.3/components/navbar/#sass-variables
-// 2. These variables are defined with default value (see https://robots.thoughtbot.com/sass-default)
-// 3. You can override them below!
+// Bootstrap overrides driven by the Figma tokens in config/_colors.scss.
+// Anything the maquette does not define is left at Bootstrap's default.
 
-// General style
+// Typography
 $font-family-sans-serif: $body-font;
 $headings-font-family:   $headers-font;
-$body-bg:                $light-gray;
 $font-size-base:         1rem;
 
-// Colors
-$body-color: $gray;
-$primary:    $blue;
-$success:    $green;
-$info:       $yellow;
-$danger:     $red;
-$warning:    $orange;
+// Surfaces
+$body-bg:    $app-bg;
+$body-color: $ink;
 
-// Buttons & inputs' radius
-$border-radius-sm:            .0625rem;
-$border-radius:               .125rem;
-$border-radius-lg:            .25rem;
-$border-radius-xl:            .5rem;
-$border-radius-xxl:           1rem;
+// Semantic colors
+$primary:   $primary-green;
+$secondary: $ink-muted;
+$success:   $primary-green;
+$info:      $primary-tint;
+$warning:   $orange;
+$danger:    $red;
+$light:     $primary-tint;
+$dark:      $ink;
 
-// Override other variables below!
+// Radii read off the maquette: 8px thumbnails, 12px cards, 999px pills.
+$border-radius-sm:   .5rem;
+$border-radius:      .75rem;
+$border-radius-lg:   1rem;
+$border-radius-xl:   1.5rem;
+$border-radius-xxl:  2rem;
+$border-radius-pill: 999px;
+
+// The maquette has no borders on cards; depth comes from a single soft shadow.
+$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, .06);
