@@ -1,1 +1,32 @@
-<h1>Event show</h1>
+<h1 class="text-center m-2"><%= @event.title %></h1>
+
+<div class="container p-3 m-3">
+  <h2><%= @event.activity.genre %></h2>
+  <p>Max participants : <%= @event.max_participant %></p>
+  <div class="time d-flex gap-4">
+    <p>When : <%= @event.event_date %></p>
+    <p>Where : <%= @event.location %></p>
+  </div>
+  <div class="d-flex justify-content-between">
+    <p>Creator : <%= @event.user.email %></p>
+    <p><%= link_to "Message", "#" %></p>
+  </div>
+  <% if @event.user == current_user %>
+    <span>Organizer</span>
+  <% elsif @event_membership && is_admin %>
+    <span>Admin</span>
+  <% elsif @event_membership && status == "Accepted" %>
+    <span>Participant</span>
+  <% end %>
+  <p><%= @event.activity.user_activities %></p>
+
+
+  <p>About :</p>
+  <p><%= @event.description %></p>
+
+  <h4>Going</h4>
+  <% @event.event_memberships.each do |participant| %>
+    <div class="participant-icon">
+    <%= participant.user.profile %>
+  <% end %>
+</div>

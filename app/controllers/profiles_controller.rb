@@ -8,7 +8,6 @@ class ProfilesController < ApplicationController
   end
 
   def create
-    raise
     @profile = Profile.new(profile_params)
     @profile.user = current_user
     if @profile.save!
