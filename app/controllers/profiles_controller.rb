@@ -4,7 +4,6 @@ class ProfilesController < ApplicationController
   end
 
   def new
-    @user_activity = UserActivity.new
     @profile = Profile.new
   end
 
@@ -13,7 +12,7 @@ class ProfilesController < ApplicationController
     @profile = Profile.new(profile_params)
     @profile.user = current_user
     if @profile.save!
-      redirect_to profile_path(@chat)
+      redirect_to profile_path(@profile)
     else
       render :new, status: :unprocessable_entity
     end

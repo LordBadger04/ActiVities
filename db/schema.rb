@@ -44,6 +44,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_130237) do
     t.datetime "created_at", null: false
     t.text "description"
     t.time "end_date"
+    t.date "event_date"
     t.string "location"
     t.integer "max_participant"
     t.time "start_date"

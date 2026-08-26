@@ -1,1 +1,15 @@
-<h1>New event</h1>
+<h1 class="text-center py-2">New event</h1>
+
+<div class="container">
+  <%= simple_form_for @event do |f| %>
+  <%= f.input :title %>
+  <%= f.association :activity, as: :select, required: true %>
+  <%= f.input :location %>
+  <%= f.input :event_date %>
+  <%= f.input :start_date %>
+  <%= f.input :end_date %>
+  <%= f.input :max_participant %>
+  <%= f.input :description %>
+  <%= f.submit %>
+  <% end %>
+</div>
