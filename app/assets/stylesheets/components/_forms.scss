@@ -207,3 +207,66 @@ legend {
     padding-left: 18px;
   }
 }
+
+// A note carried inside the label itself rather than as a hint below the field, so the
+// constraint reads on the same line ("TITLE            20 characters max") and screen
+// readers announce it with the field name.
+// Floated rather than flexed: simple_form appends the required marker *after* the label
+// content, so space-between would strand the asterisk at the far right of every field,
+// detached from the word it qualifies.
+.form-label {
+  display: block;
+}
+
+.field-note {
+  float: right;
+  margin-left: 12px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: $ink-muted;
+}
+
+// Two fields sharing a line — start/end time. Collapses below the narrowest phone width,
+// where a 52px pill plus its label cannot hold a time input side by side.
+.field-row {
+  display: flex;
+  gap: 12px;
+
+  > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  @media (max-width: 359px) {
+    flex-direction: column;
+  }
+}
+
+// Native time inputs size their own text and add a picker glyph; without this they sit
+// off-centre in the pill and overflow it on iOS.
+input[type="time"].form-control {
+  padding-right: 14px;
+
+  &::-webkit-calendar-picker-indicator {
+    margin-left: 0;
+    opacity: .5;
+  }
+}
+
+// The quiet way out of a form. Not a button — it never competes with the lime CTA.
+.form-cancel {
+  display: block;
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: $ink-muted;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: $ink;
+    text-decoration: underline;
+  }
+}

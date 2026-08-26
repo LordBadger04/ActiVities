@@ -1,1 +1,58 @@
-<h1>New event</h1>
+<%# Create an activity.
+    No such screen exists in the Figma file — the maquette stops at the seven browse/detail
+    frames. This follows the Stitch fill-in generated from the same design system, which is
+    why it reuses the conventions of _forms.scss rather than introducing new ones.
+
+    The form is written against the real schema (`activity_id`, `max_participant`).
+    It cannot submit successfully yet — see FRONT_BLOCKERS.md §1.1 and §1.2. %>
+<% content_for :title, "Create an activity" %>
+
+<h1 class="page-title">Create an activity</h1>
+
+<%= simple_form_for @event, html: { class: "event-form" } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%# The maquette's own copy: the 20-character ceiling is a model validation, and
+        simple_form's :maxlength component already derives the attribute from it. %>
+    <%= f.input :title,
+                label: raw("Title <span class=\"field-note\">20 characters max</span>"),
+                maxlength: true,
+                placeholder: "Morning tennis" %>
+
+    <%# `activity_id` is not in `event_params` (FRONT_BLOCKERS.md §1.2), so this select is
+        stripped by strong params today. The field is here because the column is
+        `null: false` and nothing can be created without it. %>
+    <%# `required: true` is explicit: `belongs_to :activity` registers no presence validator
+        that simple_form can introspect, so it would otherwise render as optional. %>
+    <%= f.association :activity,
+                      collection: Activity.order(:name),
+                      label_method: :name,
+                      required: true,
+                      prompt: "Pick an activity" %>
+
+    <%= f.input :location, placeholder: "Tennis Club Batignolles" %>
+
+    <%# `start_date` / `end_date` are `t.time` columns (§1.4). simple_form maps :time to a
+        three-dropdown multi-select; html5 + the vertical wrapper give a single time input. %>
+    <div class="field-row">
+      <%= f.input :start_date, as: :time, html5: true,
+                  wrapper: :vertical_form, label: "Start time" %>
+      <%= f.input :end_date, as: :time, html5: true,
+                  wrapper: :vertical_form, label: "End time" %>
+    </div>
+
+    <%# The column is `max_participant`; the model validates `max_nb_participant`, which does
+        not exist and makes every save raise (§1.1). Bound to the column that is real. %>
+    <%= f.input :max_participant, label: "Max buddies", placeholder: "4" %>
+
+    <%= f.input :description,
+                as: :text,
+                placeholder: "Looking for one more player for a relaxed Saturday morning set." %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Create activity" %>
+    <%= link_to "Cancel", events_path, class: "form-cancel" %>
+  </div>
+<% end %>
