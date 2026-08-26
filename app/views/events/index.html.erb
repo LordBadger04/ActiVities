@@ -1,1 +1,29 @@
-<h1>Hello from Event index</h1>
+<h1>Events</h1>
+
+<% @events.each do |event| %>
+  <div class="event-card">
+    <h2><%= event.title %></h2>
+
+    <p>
+      <strong>Activity:</strong>
+      <%= event.activity.name %>
+    </p>
+
+    <p>
+      <strong>Location:</strong>
+      <%= event.location %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= event.description %>
+    </p>
+
+    <p>
+      <strong>Max participants:</strong>
+      <%= event.max_participant %>
+    </p>
+
+    <%= link_to "See event", event_path(event) %>
+  </div>
+<% end %>
