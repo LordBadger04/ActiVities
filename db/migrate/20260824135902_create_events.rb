@@ -5,6 +5,7 @@ class CreateEvents < ActiveRecord::Migration[8.1]
       t.text :description
       t.integer :max_participant
       t.string :location
+      t.date :event_date
       t.time :start_date
       t.time :end_date
       t.references :activity, null: false, foreign_key: true
