@@ -3,6 +3,7 @@ class MessagesController < ApplicationController
     @chat = Chat.find(params[:chat_id])
     @message = Message.new(message_params)
     @message.chat = @chat
+    @message.user = current_user
     if @chat.save!
       redirect_to chat_path(@chat)
     else
