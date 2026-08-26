@@ -1,0 +1,97 @@
+// Styling for Florian's profiles/new form (commit 0c6f0b3).
+// His ERB and his components/_container.scss are deliberately left untouched;
+// everything here is an override layered on top, loaded after "container" in _index.scss.
+// If the form is ever rewritten against the maquette, this whole file can go.
+
+// His _container.scss pins .form_container to a fixed 500px, which overflows the
+// 393px maquette and the 480px shell. Let it fill the padded column instead.
+.form_container {
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+}
+
+// The template opens with a bare <h1>. Scoped to unclassed headings so the
+// maquette's own titles (.page-title, .detail-sheet__title) are not affected.
+.app-main > h1:not([class]),
+.app-main > h2:not([class]) {
+  margin: 0 0 24px;
+  font-size: 24px;
+  font-weight: 600;
+  color: $ink;
+}
+
+// The repeatable activity block: a select pair plus an "add" button.
+.activities_form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.activities_form .target {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Two selects on one row. Bootstrap's .d-flex provides the display; this gives it
+// a gap and lets both halves share the width evenly.
+.form_line.d-flex {
+  gap: 12px;
+
+  > * {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-bottom: 0 !important;
+  }
+}
+
+// "Add activities" is a link carrying .btn.btn-success. Bootstrap's green clashes
+// with the palette, so it takes the tinted soft-button treatment instead.
+.activities_form .btn-success {
+  align-self: flex-start;
+  height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: $primary-tint;
+  font-size: 13px;
+  font-weight: 600;
+  color: $primary-green;
+  line-height: 40px;
+
+  &:hover,
+  &:focus-visible {
+    background: darken($primary-tint, 5%);
+    color: $primary-green;
+  }
+}
+
+// `f.submit` emits a bare <input type="submit"> with no class at all, so the
+// .form-actions .btn rule in _forms.scss never reaches it. Match it directly.
+.form_container input[type="submit"] {
+  display: block;
+  width: 100%;
+  height: 52px;
+  margin-top: 28px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: $lime;
+  font-size: 16px;
+  font-weight: 600;
+  color: $ink;
+  cursor: pointer;
+  transition: filter .15s ease, transform .15s ease;
+
+  &:hover,
+  &:focus-visible {
+    filter: brightness(.95);
+    outline: none;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}

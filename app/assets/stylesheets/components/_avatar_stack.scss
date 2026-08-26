@@ -1,0 +1,26 @@
+// Overlapping buddy avatars — Figma 1:202..1:204. 28px circles on a 20px pitch,
+// so each one laps the previous by 8px, with a 2px white ring.
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-stack__item {
+  width: 28px;
+  height: 28px;
+  border: 2px solid $surface;
+  border-radius: 50%;
+  background: $primary-tint;
+  object-fit: cover;
+
+  & + & {
+    margin-left: -8px;
+  }
+}
+
+// Larger stack used on the detail sheet — Figma I1:214;46:1288.
+// The -8px overlap is inherited from the base rule above.
+.avatar-stack--lg .avatar-stack__item {
+  width: 40px;
+  height: 40px;
+}

@@ -1,0 +1,50 @@
+// Bottom nav — Figma I1:269. Sticky so it stays put without leaving the shell column.
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 102px;
+  padding: 11px 19px;
+  background: $primary-green;
+}
+
+.bottom-nav__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 70px;
+  color: $on-primary;
+  text-decoration: none;
+  transition: color .15s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: $lime;
+  }
+}
+
+.bottom-nav__tab--active {
+  color: $lime;
+}
+
+// The Figma icon slot is 40px; the exported SVGs are empty placeholder circles,
+// so a Font Awesome glyph is centred in that slot instead.
+.bottom-nav__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+}
+
+.bottom-nav__label {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+}

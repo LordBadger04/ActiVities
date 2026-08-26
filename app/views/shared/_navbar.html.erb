@@ -1,39 +1,36 @@
-<nav class="navbar navbar-expand-sm navbar-light navbar-lewagon">
-  <div class="container-fluid">
-    <%= link_to "#", class: "navbar-brand" do %>
-      <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png" %>
-    <% end %>
+<%# App header — Figma node I1:271;130:864. Deep green bar, lime wordmark, 44px avatar. %>
+<%# The maquette's header also contains an iOS status bar (9:41 AM, wifi, battery). %>
+<%# That is a mockup artifact, not UI, so it is deliberately not reproduced. %>
+<header class="app-header">
+  <%= link_to "ActiVities", root_path, class: "app-header__wordmark" %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <% if user_signed_in? %>
+    <div class="dropdown">
+      <button type="button"
+              class="app-header__avatar"
+              id="accountMenu"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              aria-label="Account menu">
+      </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "Home", "#", class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Messages", "#", class: "nav-link" %>
-          </li>
-          <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
-          </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              
-              <%= link_to "Create Profile", new_profile_path, class: "dropdown-item" %>
-              <%= link_to "Another action", "#", class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-            </div>
-          </li>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
+        <% if current_profile %>
+          <li><%= link_to "My profile", profile_path(current_profile), class: "dropdown-item" %></li>
+          <li><%= link_to "Create Profile", new_profile_path, class: "dropdown-item" %></li>
+          <li><%= link_to "Edit profile", edit_profile_path(current_profile), class: "dropdown-item" %></li>
         <% else %>
-          <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-          </li>
+          <li><%= link_to "Create my profile", new_profile_path, class: "dropdown-item" %></li>
         <% end %>
+        <li><%= link_to "New activity", new_event_path, class: "dropdown-item" %></li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <%= link_to "Log out", destroy_user_session_path,
+                      data: { turbo_method: :delete }, class: "dropdown-item" %>
+        </li>
       </ul>
     </div>
-  </div>
-</nav>
+  <% else %>
+    <%= link_to "Log in", new_user_session_path, class: "app-header__signin" %>
+  <% end %>
+</header>

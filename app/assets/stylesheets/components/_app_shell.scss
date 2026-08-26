@@ -1,0 +1,25 @@
+// Mobile app shell. The maquette is drawn at 393x852 and defines no desktop layout,
+// so the shell stays a centred phone-width column on larger screens.
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin-inline: auto;
+  background: $app-bg;
+}
+
+@media (min-width: 480px) {
+  .app-shell {
+    box-shadow: 0 0 40px rgba(0, 0, 0, .07);
+  }
+}
+
+// 29px is the gap between the header and the first element on every screen
+// (search bar on Home at y=139, toggle on Activities at y=139, header is 110 tall).
+.app-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 29px 16px 32px;
+}

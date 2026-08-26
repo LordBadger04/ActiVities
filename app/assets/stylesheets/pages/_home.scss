@@ -1,1 +1,12 @@
-// Specific CSS for your home-page
+// Homepage — Figma 1:262. Vertical rhythm read off the frame:
+// search bar y=139, section label y=259, first card y=289, 30px between cards.
+.home__label {
+  margin-top: 74px;
+}
+
+.home__feed {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 15px;
+}

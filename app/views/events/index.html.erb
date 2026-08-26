@@ -1,29 +1,22 @@
-<h1>Events</h1>
+<%# Activities — Figma 1:227. Activities face of the Buddies|Activities toggle. %>
+<% content_for :title, "Open Activities" %>
 
-<% @events.each do |event| %>
-  <div class="event-card">
-    <h2><%= event.title %></h2>
+<%# The Buddies face has no route (FRONT_BLOCKERS.md §1.6), so it renders inert. %>
+<nav class="segmented" aria-label="Explore">
+  <span class="segmented__option segmented__option--disabled" aria-disabled="true">Buddies</span>
+  <%= link_to "Activities", events_path,
+              class: "segmented__option segmented__option--active",
+              aria: { current: "page" } %>
+</nav>
 
-    <p>
-      <strong>Activity:</strong>
-      <%= event.activity.name %>
-    </p>
+<h1 class="page-title events__title">Open Activities</h1>
 
-    <p>
-      <strong>Location:</strong>
-      <%= event.location %>
-    </p>
-
-    <p>
-      <strong>Description:</strong>
-      <%= event.description %>
-    </p>
-
-    <p>
-      <strong>Max participants:</strong>
-      <%= event.max_participant %>
-    </p>
-
-    <%= link_to "See event", event_path(event) %>
-  </div>
-<% end %>
+<div class="events__list">
+  <% if @events.any? %>
+    <% @events.each do |event| %>
+      <%= render "events/activity_card", event: event %>
+    <% end %>
+  <% else %>
+    <p class="empty-state">No open activity right now.</p>
+  <% end %>
+</div>

@@ -1,0 +1,11 @@
+// Chat general — Figma 1:239. Title then a stack of conversation rows.
+.chats__title {
+  margin-top: 0;
+}
+
+.chats__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}

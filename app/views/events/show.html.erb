@@ -1,1 +1,99 @@
-<h1>Event show</h1>
+<%# Activity detail — Figma 1:212 / component 1:214 "Activity detail sheet". %>
+<% content_for :title, @event.title %>
+<% organizer = profile_for(@event.user) %>
+<% attendees = event_attendees(@event) %>
+
+<article class="detail-sheet">
+  <header class="detail-sheet__head">
+    <h1 class="detail-sheet__title"><%= @event.title %></h1>
+
+    <%# The maquette's two chips are "2.3 km" and a level. Distance needs geodata that %>
+    <%# does not exist (FRONT_BLOCKERS.md §1.5), so the activity name takes that slot. %>
+    <div class="detail-sheet__chips">
+      <% if @event.activity %>
+        <span class="chip"><%= @event.activity.name %></span>
+      <% end %>
+      <% if (level = level_for(organizer, @event.activity)) %>
+        <span class="chip"><%= level %></span>
+      <% elsif @event.activity %>
+        <span class="chip"><%= @event.activity.genre %></span>
+      <% end %>
+    </div>
+  </header>
+
+  <hr class="detail-sheet__divider">
+
+  <dl class="info-rows">
+    <div class="info-rows__row">
+      <dt class="info-rows__label">
+        <i class="fa-regular fa-clock info-rows__icon" aria-hidden="true"></i>
+        <span>When</span>
+      </dt>
+      <dd class="info-rows__value"><%= event_when(@event).presence || "To be confirmed" %></dd>
+    </div>
+
+    <div class="info-rows__row">
+      <dt class="info-rows__label">
+        <i class="fa-solid fa-location-dot info-rows__icon" aria-hidden="true"></i>
+        <span>Where</span>
+      </dt>
+      <dd class="info-rows__value"><%= @event.location.presence || "To be confirmed" %></dd>
+    </div>
+  </dl>
+
+  <hr class="detail-sheet__divider">
+
+  <div class="organizer">
+    <span class="organizer__avatar" aria-hidden="true"></span>
+
+    <% if organizer %>
+      <%= link_to profile_path(organizer), class: "organizer__identity" do %>
+        <span class="organizer__name"><%= profile_display_name(organizer) %></span>
+        <span class="organizer__role">
+          <%= [ "Organizer", level_for(organizer, @event.activity) ].compact_blank.join(" · ") %>
+        </span>
+      <% end %>
+    <% else %>
+      <span class="organizer__identity">
+        <span class="organizer__name">Organizer</span>
+        <span class="organizer__role">No profile yet</span>
+      </span>
+    <% end %>
+
+    <%# Chats are created per event, nested under the event (routes.rb). %>
+    <% if user_signed_in? %>
+      <%= button_to "Message", event_chats_path(@event), class: "btn-soft" %>
+    <% end %>
+  </div>
+
+  <section class="detail-block">
+    <h2 class="section-label">About</h2>
+    <p class="detail-block__body"><%= @event.description %></p>
+  </section>
+
+  <section class="detail-block">
+    <h2 class="section-label">Going</h2>
+    <div class="detail-block__going">
+      <% if attendees.any? %>
+        <span class="avatar-stack avatar-stack--lg" aria-hidden="true">
+          <%= safe_join(Array.new([ attendees.size, 4 ].min) { tag.span(class: "avatar-stack__item") }) %>
+        </span>
+        <span class="detail-block__going-count"><%= pluralize(attendees.size, "buddy") %></span>
+      <% else %>
+        <span class="detail-block__going-count">Nobody yet — be the first.</span>
+      <% end %>
+    </div>
+  </section>
+
+  <% if user_signed_in? %>
+    <%# event_memberships#create does not assign `user` (FRONT_BLOCKERS.md §2.8), so this %>
+    <%# submit will fail validation until the controller sets it from current_user. %>
+    <%= form_with url: event_event_memberships_path(@event), class: "detail-sheet__cta-form" do %>
+      <%= hidden_field_tag "event_membership[status]", "Pending" %>
+      <%= hidden_field_tag "event_membership[is_admin]", false %>
+      <%= submit_tag "Send a request", class: "btn-cta" %>
+    <% end %>
+  <% else %>
+    <%= link_to "Log in to join", new_user_session_path, class: "btn-cta" %>
+  <% end %>
+</article>
