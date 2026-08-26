@@ -3,8 +3,8 @@
     frames. This follows the Stitch fill-in generated from the same design system, which is
     why it reuses the conventions of _forms.scss rather than introducing new ones.
 
-    The form is written against the real schema (`activity_id`, `max_participant`).
-    It cannot submit successfully yet — see FRONT_BLOCKERS.md §1.1 and §1.2. %>
+    The blockers that used to stop this form from submitting (§1.1, §1.2) were fixed on
+    master on 2026-08-26, along with the addition of the `event_date` column. %>
 <% content_for :title, "Create an activity" %>
 
 <h1 class="page-title">Create an activity</h1>
@@ -20,9 +20,6 @@
                 maxlength: true,
                 placeholder: "Morning tennis" %>
 
-    <%# `activity_id` is not in `event_params` (FRONT_BLOCKERS.md §1.2), so this select is
-        stripped by strong params today. The field is here because the column is
-        `null: false` and nothing can be created without it. %>
     <%# `required: true` is explicit: `belongs_to :activity` registers no presence validator
         that simple_form can introspect, so it would otherwise render as optional. %>
     <%= f.association :activity,
@@ -33,7 +30,10 @@
 
     <%= f.input :location, placeholder: "Tennis Club Batignolles" %>
 
-    <%# `start_date` / `end_date` are `t.time` columns (§1.4). simple_form maps :time to a
+    <%= f.input :event_date, as: :date, html5: true,
+                wrapper: :vertical_form, label: "Date" %>
+
+    <%# `start_date` / `end_date` are `t.time` columns. simple_form maps :time to a
         three-dropdown multi-select; html5 + the vertical wrapper give a single time input. %>
     <div class="field-row">
       <%= f.input :start_date, as: :time, html5: true,
@@ -42,8 +42,6 @@
                   wrapper: :vertical_form, label: "End time" %>
     </div>
 
-    <%# The column is `max_participant`; the model validates `max_nb_participant`, which does
-        not exist and makes every save raise (§1.1). Bound to the column that is real. %>
     <%= f.input :max_participant, label: "Max buddies", placeholder: "4" %>
 
     <%= f.input :description,

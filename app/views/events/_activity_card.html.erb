@@ -7,7 +7,7 @@
     <span class="activity-card__title"><%= event.title %></span>
     <span class="activity-card__meta"><%= event_meta_line(event) %></span>
 
-    <% going = event.event_membership.size %>
+    <% going = event.event_memberships.size %>
     <span class="activity-card__going">
       <% if going.positive? %>
         <span class="avatar-stack" aria-hidden="true">

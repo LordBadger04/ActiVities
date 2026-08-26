@@ -29,8 +29,7 @@
         <i class="fa-regular fa-clock info-rows__icon" aria-hidden="true"></i>
         <span>When</span>
       </dt>
-      <%# Only a time of day is stored, never a weekday (FRONT_BLOCKERS.md §1.4). %>
-      <dd class="info-rows__value"><%= event_time_range(@event) || "To be confirmed" %></dd>
+      <dd class="info-rows__value"><%= event_when(@event).presence || "To be confirmed" %></dd>
     </div>
 
     <div class="info-rows__row">

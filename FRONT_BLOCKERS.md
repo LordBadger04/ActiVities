@@ -10,38 +10,42 @@ sont restés intacts.
 
 Les vues sont écrites comme si ces points étaient résolus, sauf mention contraire.
 
-**État au 26/08, `origin/master` = `0ddf0fc`.** Corrigés depuis le premier relevé :
-`Profile has_many :user_activities` (§1.7, Florian, `0c6f0b3`) et l'auteur sur
-`events#create` / `messages#create` (§1.2 et §2.4, Clément, `a4fce67`) — les deux
-partiellement, voir le détail dans chaque section. Tout le reste est inchangé.
+**État au 26/08, `origin/master` = `e52273b`.**
+
+Corrigés : `Profile has_many :user_activities` (§1.7), `max_nb_participant` (§1.1),
+`activity_id` dans les strong params (§1.2), `has_many :event_memberships` au pluriel (§3.2).
+Une colonne `event_date` a été ajoutée, ce qui règle l'essentiel de §1.4.
+
+⚠️ **§3.4 est nouveau et concerne toute l'équipe** : la colonne `event_date` a été ajoutée en
+modifiant une migration déjà jouée. `rails db:migrate` ne fera rien, et l'app plantera en
+local chez tous ceux qui avaient déjà migré.
+
+Toujours ouverts, par ordre de gravité : §2.0 (un `raise` bloque `profiles#create`),
+§2.4 (les messages sont perdus en silence), §2.5, §2.3, §2.2, §2.6, §2.8.
 
 ---
 
 ## 1. Bloquants — la maquette ne peut pas s'afficher correctement
 
-### 1.1 `Event` valide une colonne qui n'existe pas
+### 1.1 `Event` valide une colonne qui n'existe pas — ✅ corrigé
 
-`app/models/event.rb` valide `max_nb_participant`, or la colonne du schema est `max_participant`.
-`events_controller.rb` permet lui aussi `:max_nb_participant`.
+> **Corrigé** par `834e578`. Le modèle et `event_params` utilisent désormais `max_participant`.
+> Vérifié : `Event.new(...).valid?` renvoie `true` au lieu de lever `NoMethodError`.
 
-Tout submit du formulaire event lève `NoMethodError`. Le champ « participants max » de la
-maquette est donc câblé sur `max_participant` (le vrai nom) et restera cassé tant que le
-modèle validera l'autre.
+Pour mémoire : `app/models/event.rb` validait `max_nb_participant`, alors que la colonne
+s'appelle `max_participant`. Aucun `Event` ne pouvait être enregistré.
 
-### 1.2 `events#create` ne renseigne pas `activity`
+⚠️ Le même motif est réapparu aussitôt sous une autre forme : `validates :event_date,
+presence: true` a été ajouté sans que la colonne existe dans les bases déjà migrées. Voir §3.4.
 
-> **Partiellement corrigé** par `a4fce67` (Clément, PR #13) : `@event.user = current_user`
-> est maintenant présent. Le reste tient toujours.
+### 1.2 `events#create` ne renseigne pas `activity` — ✅ corrigé
 
-`Event belongs_to :activity`, mais `create` ne set pas l'activité et `event_params` ne permet
-pas `:activity_id`. `activity_id` étant `null: false` au schema, la création échoue toujours
-systématiquement — le `save!` lève `ActiveRecord::NotNullViolation`.
+> **Corrigé** en deux temps : `a4fce67` a ajouté `@event.user = current_user`, `834e578` a
+> ajouté `:activity_id` à `event_params`. Le formulaire `events/new` expose le select
+> d'activités depuis le début côté front.
 
-Le formulaire `events/new` doit exposer un select d'activités, et `event_params` permettre
-`:activity_id`.
-
-Impact maquette : l'écran `activity page` affiche l'organisateur et le nom de l'activité
-(« Tennis »). Les deux viennent de ces associations.
+Pour mémoire : `activity_id` est `null: false` au schema, donc chaque création levait
+`ActiveRecord::NotNullViolation`.
 
 ### 1.3 Pas d'Active Storage
 
@@ -55,13 +59,18 @@ En attendant, ces zones utilisent la pastille `#e3f2ea` de la maquette (c'est li
 ce que contiennent les SVG exportés). Le markup est prêt à recevoir un `image_tag` sans
 changer la structure.
 
-### 1.4 `start_date` / `end_date` sont des `t.time`
+### 1.4 `start_date` / `end_date` sont des `t.time` — 🟡 en grande partie réglé
 
-La maquette affiche « Sat 10:00 » sur les cartes et « Saturday, 10:00 — 11:30 » sur le détail.
-Une colonne `time` ne porte aucune date : impossible d'en tirer un jour de la semaine, de
-trier par date ou de filtrer les événements passés.
+> Une colonne `t.date :event_date` a été ajoutée par `834e578`. Les deux libellés de la
+> maquette sont donc rendus tels quels : `event_meta_line` donne « Tennis · Batignolles ·
+> Sat 10:00 » et `event_when` donne « Saturday, 10:00 — 11:30 ». Les helpers tolèrent une
+> date nulle et retombent sur l'heure seule, pour les events créés avant la colonne.
+>
+> ⚠️ La colonne n'apparaît pas avec un simple `rails db:migrate` — voir §3.4.
 
-Les vues n'affichent donc que l'heure. Migration en `datetime` nécessaire pour la maquette réelle.
+Ce qui reste : la date et l'heure vivent dans trois colonnes séparées (`event_date`,
+`start_date`, `end_date`). Deux `datetime` seraient plus simples à trier, à comparer et à
+filtrer sur les événements passés. Rien de bloquant pour la maquette.
 
 ### 1.5 Aucune donnée de géolocalisation
 
@@ -242,15 +251,50 @@ Il faut `@event_membership.user = current_user`.
 laisse les deux se désynchroniser. `Profile belongs_to :user` suggère de supprimer
 `users.profile_id`.
 
-### 3.2 `Event has_many :event_membership` au singulier
+### 3.2 `Event has_many :event_membership` au singulier — ✅ corrigé
 
-Fonctionne, mais casse la convention et rend `event.event_membership.count` trompeur à la
-lecture. Les vues utilisent cette association telle quelle pour le compteur « +N going ».
+> **Corrigé** par `834e578` : l'association est au pluriel. Les vues et le helper
+> `event_attendees` ont été mis à jour côté front.
+
+⚠️ `app/models/user.rb` n'a **pas** suivi : il déclare toujours
+`has_many :events_as_participant, through: :event_membership`, qui pointe maintenant vers une
+association inexistante. Voir §2.5.
 
 ### 3.3 `profiles` n'a pas de champ avatar
 
 Même sans Active Storage, la maquette met un avatar sur chaque ligne buddy, chaque message
 et chaque profil.
+
+### 3.4 🔴 Une migration déjà jouée a été modifiée — à lire par toute l'équipe
+
+`834e578` ajoute `t.date :event_date` à l'intérieur de
+`db/migrate/20260824135902_create_events.rb`, une migration déjà poussée et déjà jouée.
+
+Rails identifie une migration par sa version, pas par son contenu. `20260824135902` est déjà
+inscrite dans `schema_migrations`, donc :
+
+- `rails db:migrate` répond « nothing to migrate » et **n'ajoute jamais la colonne** ;
+- `app/models/event.rb` valide pourtant `event_date` ;
+- résultat : `NoMethodError` sur chaque `Event.new(...).valid?`, exactement le bug de §1.1
+  que le même commit venait de corriger.
+
+Seuls les collaborateurs qui n'avaient encore jamais migré sont épargnés. **Tous les autres
+ont une app qui plante en local sans raison visible.**
+
+Deux façons de s'en sortir, au choix :
+
+```bash
+bin/rails db:migrate:reset && bin/rails db:seed   # remet tout à plat, perd les données locales
+```
+
+```bash
+# ou, sans rien perdre :
+bin/rails runner 'ActiveRecord::Migration.new.add_column(:events, :event_date, :date)'
+```
+
+La règle pour la suite : **une migration poussée ne se modifie plus.** On en ajoute une
+nouvelle (`rails g migration AddEventDateToEvents event_date:date`), qui porte une version
+inédite et se joue donc chez tout le monde.
 
 ---
 

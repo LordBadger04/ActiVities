@@ -1,0 +1,10 @@
+<div class="form_line d-flex">
+  <%=  f.simple_fields_for :user_activities, UserActivity.new, child_index: "INDEX" do |t|%>
+    <%= t.input :activity,
+    as: :select,
+    collection: Activity.all %>
+    <%= t.input :level,
+                as: :select,
+                collection: UserActivity::LEVELS%>
+  <% end %>
+</div>

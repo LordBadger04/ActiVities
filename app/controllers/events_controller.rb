@@ -16,6 +16,9 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.user = current_user
     if @event.save!
+      @event_membership = @event.event_memberships.create(user: current_user, is_admin: true, status: "Accepted")
+      # @event_membership.event = @event
+      # @event_membership.user = current_user
       redirect_to event_path(@event)
     else
       render :new, status: :unprocessable_entity
@@ -39,6 +42,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title, :description, :max_nb_participant, :location, :start_date, :end_date)
+    params.require(:event).permit(:title, :description, :max_participant,
+                                  :location, :start_date, :end_date, :event_date, :activity_id)
   end
 end
