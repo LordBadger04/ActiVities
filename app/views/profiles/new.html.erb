@@ -28,16 +28,20 @@
     <%= f.input :description,
                 label: 'Describe yourself (15 letters min)',
                 required: true %>
-    <div class="activities_form" data-controller="add-form-input">
-      <div class="target" data-add-form-input-target="form">
-        <div class="form_line d-flex">
-          <%=  f.simple_fields_for @user_activity do |t|%>
-              <%= t.association :activity, as: :select %>
-              <%= t.input :level,
-                          as: :select,
-                          collection: UserActivity::LEVELS%>
-          <% end %>
-        </div>
+
+
+
+
+    <div class="activities_form" data-controller="add-form-input"  data-add-form-input-pattern-value="INDEX">
+
+      <template class="target" data-add-form-input-target="formTemplate">
+
+        <%= render "activity_form", user_activities: :user_activities, f: f%>
+
+      </template>
+
+      <div class="form_list" data-add-form-input-target="formList">
+
       </div>
 
        <%= link_to "Add activities", "#",

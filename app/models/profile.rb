@@ -2,6 +2,11 @@ class Profile < ApplicationRecord
   belongs_to :user
   has_many :user_activities, dependent: :destroy
   has_many :activities, through: :user_activities
+
+  accepts_nested_attributes_for :user_activities,
+                                reject_if: ->(attributes) { attributes[:level].blank? },
+                                allow_destroy: true
+
   validates :username, presence: true, uniqueness: true
   validates :first_name, presence: true
   validates :last_name, presence: true
