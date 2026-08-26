@@ -1,10 +1,22 @@
-// Define variables for your color scheme
+// Design tokens — source: Figma "Activities By buddies du wagon - Ecrans" (node 1:206)
+// Names mirror the Figma variable collection so the mapping stays auditable.
 
-// For example:
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
-$gray: #0E0000;
-$light-gray: #F4F4F4;
+// Brand
+$primary-green: #0f6e4e; // color/primary      — header, bottom nav, sent bubbles
+$lime:          #d9f24a; // color/secondary    — wordmark, CTA, active nav, badges
+$primary-tint:  #e3f2ea; // color/primary-tint — card thumbnails, avatars, chips
+$on-primary:    #ffffff; // color/on-primary
+
+// Ink
+$ink:           #14231c; // card titles — raw hex in Figma, no variable bound
+$ink-muted:     #5a6b62; // color/ink-muted    — meta lines, section labels, placeholders
+$label-primary: #000000; // Labels/Primary
+
+// Surfaces
+$surface:       #ffffff; // color/surface      — cards, search bar, received bubbles
+$line:          #dde4df; // color/line         — dividers, inactive nav
+$app-bg:        #f1f1f1; // page background — raw hex in Figma, no variable bound
+
+// Kept for Bootstrap's semantic colors, which the maquette does not define.
+$red:    #fd1015;
+$orange: #e67e22;

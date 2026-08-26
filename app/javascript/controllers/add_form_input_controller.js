@@ -2,13 +2,19 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="add-form-input"
 export default class extends Controller {
-  static targets = ["formTemplate", "formList"]
+  static targets = ["formTemplate", "formList", "formLine"]
   static values = { pattern: String }
 
   add(event) {
     event.preventDefault();
     event.stopPropagation();
     this.formListTarget.insertAdjacentHTML("beforeend", this.generateFormHTML());
+  }
+
+  destroy(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.formLineTarget.remove()
   }
 
   generateFormHTML() {

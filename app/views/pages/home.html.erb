@@ -1,2 +1,25 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<%# Homepage — Figma 1:262. %>
+<% content_for :title, "ActiVities" %>
+
+<%# Inert: no search action exists yet (FRONT_BLOCKERS.md §4). %>
+<div class="search-bar">
+  <i class="fa-solid fa-magnifying-glass search-bar__icon" aria-hidden="true"></i>
+  <label class="visually-hidden" for="activity-search">Search an activity</label>
+  <input id="activity-search" class="search-bar__input" type="search"
+         placeholder="Search an activity" disabled
+         aria-describedby="activity-search-hint">
+  <span id="activity-search-hint" class="visually-hidden">Search is not available yet.</span>
+</div>
+
+<h2 class="section-label home__label">Activities near you</h2>
+
+<div class="home__feed">
+  <% events = home_feed_events %>
+  <% if events.any? %>
+    <% events.each do |event| %>
+      <%= render "events/activity_card", event: event %>
+    <% end %>
+  <% else %>
+    <p class="empty-state">No activity yet. Be the first to create one.</p>
+  <% end %>
+</div>

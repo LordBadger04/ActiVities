@@ -1,0 +1,27 @@
+<%# Chat general — Figma 1:239. A list of conversations, one row per chat. %>
+<% content_for :title, "Chats" %>
+
+<h1 class="page-title chats__title">Chats</h1>
+
+<div class="chats__list">
+  <% if @chats.any? %>
+    <% @chats.each do |chat| %>
+      <% last = chat_last_message(chat) %>
+      <%= link_to chat_path(chat), class: "chat-row" do %>
+        <span class="chat-row__avatar" aria-hidden="true"></span>
+        <span class="chat-row__body">
+          <span class="chat-row__name"><%= chat_title(chat) %></span>
+          <span class="chat-row__preview">
+            <% if last %>
+              <%= truncate(last.content, length: 48) %>
+            <% else %>
+              No message yet
+            <% end %>
+          </span>
+        </span>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p class="empty-state">No conversation yet.</p>
+  <% end %>
+</div>

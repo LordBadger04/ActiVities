@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= content_for(:title) || "Acti Vities" %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= content_for(:title) || "ActiVities" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Acti Vities">
+    <meta name="application-name" content="ActiVities">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f6e4e">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -23,9 +24,17 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body><%= render "shared/navbar" %>
-<%= render "shared/flashes" %>
+  <body>
+    <div class="app-shell">
+      <%= render "shared/navbar" %>
 
-    <%= yield %>
+      <%# Devise templates are left untouched; they get the detail-sheet treatment here. %>
+      <main class="app-main <%= "app-main--auth" if devise_controller? %>">
+        <%= render "shared/flashes" %>
+        <%= yield %>
+      </main>
+
+      <%= render "shared/bottom_nav" %>
+    </div>
   </body>
 </html>

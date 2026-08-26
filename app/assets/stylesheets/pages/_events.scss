@@ -1,0 +1,11 @@
+// Activities — Figma 1:227. Toggle y=139, title y=218, first card y=282, 29px between cards.
+.events__title {
+  margin-top: 35px;
+}
+
+.events__list {
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
+  margin-top: 35px;
+}
