@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :messages
   has_many :events
   has_many :event_memberships
+  belongs_to :profile
   has_many :events_as_participant, through: :event_membership, source: :event
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
