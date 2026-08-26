@@ -9,7 +9,8 @@
                 required: true,
                 input_html: { autocomplete: "last-name" }%>
     <%= f.input :age,
-                min: 0,
+                collection: 18..60,
+                as: :select,
                 required: true,
                 autofocus: true,
                 input_html: { autocomplete: "age" }%>
@@ -30,19 +31,20 @@
     <div class="activities_form" data-controller="add-form-input"  data-add-form-input-pattern-value="INDEX">
 
       <template class="target" data-add-form-input-target="formTemplate">
-        <%= render "activity_form", user_activities: :user_activities, f: f%>
+
+        <div class="form_line" data-controller="delete-form" >
+          <%=  f.simple_fields_for :user_activities, UserActivity.new, child_index: "INDEX" do |t|%>
+            <%= render "activity_form", user_activities: :user_activities, t: t %>
+          <% end %>
+        </div>
+
       </template>
 
       <div class="form_list" data-add-form-input-target="formList">
         <%=  f.simple_fields_for :user_activities do |t|%>
-          <%= t.association :activity,
-                      as: :select %>
-          <%= t.input :level,
-                      as: :select,
-                      collection: UserActivity::LEVELS%>
-        <%= t.button :button, "X",
-                      class:"btn btn-danger",
-                      data: { action: 'click->add-form-input#destroy' } %>
+        <div class="form_line">
+          <%= render "activity_form", user_activities: :user_activities, t: t %>
+        </div>
         <% end %>
       </div>
 

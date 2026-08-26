@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="add-form-input"
 export default class extends Controller {
-  static targets = ["formTemplate", "formList", "formLine"]
+  static targets = ["formTemplate", "formList"]
   static values = { pattern: String }
 
   add(event) {
@@ -14,7 +14,11 @@ export default class extends Controller {
   destroy(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.formLineTarget.remove()
+    event.currentTarget.parentNode.remove();
+  }
+
+  toggle_red(event) {
+    event.currentTarget.classList.toggle("red")
   }
 
   generateFormHTML() {
