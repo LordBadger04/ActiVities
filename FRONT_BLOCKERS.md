@@ -10,6 +10,11 @@ sont restés intacts.
 
 Les vues sont écrites comme si ces points étaient résolus, sauf mention contraire.
 
+**État au 26/08, `origin/master` = `0ddf0fc`.** Corrigés depuis le premier relevé :
+`Profile has_many :user_activities` (§1.7, Florian, `0c6f0b3`) et l'auteur sur
+`events#create` / `messages#create` (§1.2 et §2.4, Clément, `a4fce67`) — les deux
+partiellement, voir le détail dans chaque section. Tout le reste est inchangé.
+
 ---
 
 ## 1. Bloquants — la maquette ne peut pas s'afficher correctement
@@ -23,10 +28,17 @@ Tout submit du formulaire event lève `NoMethodError`. Le champ « participants 
 maquette est donc câblé sur `max_participant` (le vrai nom) et restera cassé tant que le
 modèle validera l'autre.
 
-### 1.2 `events#create` ne renseigne ni `user` ni `activity`
+### 1.2 `events#create` ne renseigne pas `activity`
 
-`Event belongs_to :activity` et `belongs_to :user`, mais `create` ne set aucun des deux et
-`event_params` ne permet pas `:activity_id`. La création échoue systématiquement.
+> **Partiellement corrigé** par `a4fce67` (Clément, PR #13) : `@event.user = current_user`
+> est maintenant présent. Le reste tient toujours.
+
+`Event belongs_to :activity`, mais `create` ne set pas l'activité et `event_params` ne permet
+pas `:activity_id`. `activity_id` étant `null: false` au schema, la création échoue toujours
+systématiquement — le `save!` lève `ActiveRecord::NotNullViolation`.
+
+Le formulaire `events/new` doit exposer un select d'activités, et `event_params` permettre
+`:activity_id`.
 
 Impact maquette : l'écran `activity page` affiche l'organisateur et le nom de l'activité
 (« Tennis »). Les deux viennent de ces associations.
@@ -154,15 +166,33 @@ C'est très probablement `profile_path(@profile)`.
 Devrait être `@profile = Profile.find(params[:id])` puis `@profile.update(profile_params)`.
 Même schéma dans `event_memberships#update` (`EventMembership.update(...)`).
 
-### 2.4 `messages#create` sauvegarde le mauvais objet
+### 2.4 🔴 `messages#create` sauvegarde le mauvais objet
+
+> **Partiellement corrigé** par `a4fce67` (Clément, PR #13) : `@message.user = current_user`
+> est maintenant présent. Le bug principal tient toujours — et il est désormais silencieux.
 
 ```ruby
 @message = Message.new(message_params)
 @message.chat = @chat
+@message.user = current_user
 if @chat.save!        # sauve le chat, jamais le message
 ```
-Le message n'est jamais persisté, et `@message.user` n'est pas renseigné alors que
-`Message belongs_to :user`. L'écran `Chat page` ne pourra rien afficher.
+
+Assigner `@message.chat` renseigne le `belongs_to` côté message ; ça n'ajoute rien à
+`@chat.messages`. `@chat.save!` sauve donc un chat inchangé, renvoie `true`, et le message
+part à la poubelle. Il faut `@message.save`.
+
+Reproduit sur la base de dev, transaction annulée :
+
+```
+chat.save! returned       : true
+message.persisted?        : false
+Message.count before/after : 20 / 20
+```
+
+C'est le pire profil de bug : l'action redirige vers le chat comme si tout allait bien.
+Aucune exception, aucun log, le message disparaît. Le `current_user` ajouté est posé sur un
+objet qui n'est jamais écrit.
 
 ### 2.5 Association `events_as_participant` invalide
 
