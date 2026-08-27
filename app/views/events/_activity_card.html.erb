@@ -2,9 +2,6 @@
 <%# The thumbnail is a flat tint block: no Active Storage yet (FRONT_BLOCKERS.md §1.3). %>
 <%= link_to event_path(event),
   class: "activity-card" do %>
-
-  <span class="activity-card__thumb" aria-hidden="true"></span>
-
   <span class="activity-card__body">
 
     <span class="activity-card__title"><%= event.title %></span>
@@ -38,15 +35,13 @@
     </span>
 
     <% going = event.event_memberships.size %>
-    <span class="activity-card__going">
+    <div class="activity-card__going">
       <% if going.positive? %>
-        <span class="avatar-stack" aria-hidden="true">
-          <%= safe_join(Array.new([ going, 3 ].min) { tag.span(class: "avatar-stack__item") }) %>
-        </span>
-        <span class="activity-card__going-count">+<%= going %> going</span>
+        <% avatars = event.event_memberships.map { |member| member.user.profile.photo.key } %>
+        <%= render "shared/avatars_display", avatars: avatars %>
       <% else %>
-        <span class="activity-card__going-count">Be the first to join</span>
+        <div class="activity-card__going-count">Be the first to join</div>
       <% end %>
-    </span>
-  </span>
+    </div>
+  </div>
 <% end %>

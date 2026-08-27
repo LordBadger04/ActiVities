@@ -14,7 +14,7 @@
       <span class="event-pin__main">
         <span class="event-pin__thumb" aria-hidden="true"></span>
         <span class="event-pin__text">
-          <span class="event-pin__title"><%= event.activity&.name || event.title %></span>
+          <span class="event-pin__title"><%= event.activity.name %></span>
           <span class="event-pin__meta">
             <%= [ event_time_range(event), event.location ].compact_blank.join(" · ") %>
           </span>
