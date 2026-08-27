@@ -1,6 +1,7 @@
 <%# Bottom nav — Figma node I1:269. Three tabs, lime for the active one, white otherwise. %>
 <%# The exported icon SVGs are empty placeholder circles, so Font Awesome glyphs %>
 <%# (already vendored via font-awesome-sass) stand in for them. %>
+
 <nav class="bottom-nav" aria-label="Main navigation">
   <%= link_to root_path,
               class: "bottom-nav__tab #{'bottom-nav__tab--active' if nav_tab_active?(:home)}",
@@ -10,10 +11,10 @@
   <% end %>
 
   <%= link_to events_path,
-              class: "bottom-nav__tab #{'bottom-nav__tab--active' if nav_tab_active?(:buddies)}",
-              aria: { current: ("page" if nav_tab_active?(:buddies)) } do %>
-    <i class="fa-solid fa-user-group bottom-nav__icon" aria-hidden="true"></i>
-    <span class="bottom-nav__label">Buddies</span>
+              class: "bottom-nav__tab #{'bottom-nav__tab--active' if nav_tab_active?(:activities)}",
+              aria: { current: ("page" if nav_tab_active?(:activities)) } do %>
+    <i class="fa-solid fa-person-running bottom-nav__icon" aria-hidden="true"></i>
+    <span class="bottom-nav__label">Activities</span>
   <% end %>
 
   <%= link_to chats_path,

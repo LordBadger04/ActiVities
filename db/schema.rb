@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_130237) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_26_145917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,7 +45,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_130237) do
     t.text "description"
     t.time "end_date"
     t.date "event_date"
+    t.float "latitude"
     t.string "location"
+    t.float "longitude"
     t.integer "max_participant"
     t.time "start_date"
     t.string "title"

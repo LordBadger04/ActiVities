@@ -1,15 +1,61 @@
 <%# Activities — Figma 1:227. Activities face of the Buddies|Activities toggle. %>
 <% content_for :title, "Open Activities" %>
 
-<%# The Buddies face has no route (FRONT_BLOCKERS.md §1.6), so it renders inert. %>
 <nav class="segmented" aria-label="Explore">
   <span class="segmented__option segmented__option--disabled" aria-disabled="true">Buddies</span>
+
   <%= link_to "Activities", events_path,
               class: "segmented__option segmented__option--active",
               aria: { current: "page" } %>
 </nav>
 
 <h1 class="page-title events__title">Open Activities</h1>
+
+<div class="events-filter">
+  <%= form_with url: events_path,
+                method: :get,
+                class: "events-filter__form",
+                data: { controller: "geolocation" } do %>
+
+    <%= hidden_field_tag :latitude,
+        params[:latitude],
+        data: { geolocation_target: "latitude" } %>
+
+    <%= hidden_field_tag :longitude,
+        params[:longitude],
+        data: { geolocation_target: "longitude" } %>
+
+    <div class="events-filter__field">
+      <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+
+      <%= select_tag :radius,
+          options_for_select(
+            [
+              ["5 km", 5],
+              ["10 km", 10],
+              ["15 km", 15],
+              ["20 km", 20],
+              ["25 km", 25]
+            ],
+            params[:radius]
+          ),
+          prompt: "Distance",
+          class: "events-filter__select" %>
+    </div>
+
+    <div class="events-filter__field">
+      <i class="fa-solid fa-tag" aria-hidden="true"></i>
+
+      <%= select_tag :genre,
+          options_for_select(Activity::GENRES, params[:genre]),
+          prompt: "All activities",
+          class: "events-filter__select" %>
+    </div>
+
+    <%= submit_tag "Apply filters",
+      class: "events-filter__submit" %>
+  <% end %>
+</div>
 
 <div class="events__list">
   <% if @events.any? %>
