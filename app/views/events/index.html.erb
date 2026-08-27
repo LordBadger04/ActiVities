@@ -29,18 +29,19 @@
       <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
 
       <%= select_tag :radius,
-          options_for_select(
-            [
-              ["5 km", 5],
-              ["10 km", 10],
-              ["15 km", 15],
-              ["20 km", 20],
-              ["25 km", 25]
-            ],
-            params[:radius]
-          ),
-          prompt: "Distance",
-          class: "events-filter__select" %>
+        options_for_select(
+          [
+            ["5 km", 5],
+            ["10 km", 10],
+            ["25 km", 25],
+            ["50 km", 50],
+            ["100 km", 100],
+            ["150 km", 150]
+          ],
+          params[:radius]
+        ),
+        prompt: "Any distance",
+        class: "events-filter__select" %>
     </div>
 
     <div class="events-filter__field">

@@ -10,9 +10,7 @@
     <%# The maquette's two chips are "2.3 km" and a level. Distance needs geodata that %>
     <%# does not exist (FRONT_BLOCKERS.md §1.5), so the activity name takes that slot. %>
     <div class="detail-sheet__chips">
-      <% if @distance %>
-        <span class="chip"><%= @distance.round(1) %> km</span>
-      <% elsif @event.activity %>
+      <% if @event.activity %>
         <span class="chip"><%= @event.activity.name %></span>
       <% end %>
 
@@ -40,7 +38,16 @@
         <i class="fa-solid fa-location-dot info-rows__icon" aria-hidden="true"></i>
         <span>Where</span>
       </dt>
-      <dd class="info-rows__value"><%= @event.location.presence || "To be confirmed" %></dd>
+
+      <dd class="info-rows__value">
+        <span><%= @event.location.presence || "To be confirmed" %></span>
+
+        <% if @distance %>
+          <span class="info-rows__distance">
+            <%= @distance.round(1) %> km away
+          </span>
+        <% end %>
+      </dd>
     </div>
   </dl>
 

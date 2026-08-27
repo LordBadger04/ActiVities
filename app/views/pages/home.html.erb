@@ -11,15 +11,24 @@
   <span id="activity-search-hint" class="visually-hidden">Search is not available yet.</span>
 </div>
 
+<div data-controller="geolocation">
+  <%= hidden_field_tag :latitude,
+      params[:latitude],
+      data: { geolocation_target: "latitude" } %>
+
+  <%= hidden_field_tag :longitude,
+      params[:longitude],
+      data: { geolocation_target: "longitude" } %>
+</div>
+
 <h2 class="section-label home__label">Activities near you</h2>
 
 <div class="home__feed">
-  <% events = home_feed_events %>
-  <% if events.any? %>
-    <% events.each do |event| %>
+  <% if @events.any? %>
+    <% @events.each do |event| %>
       <%= render "events/activity_card", event: event %>
     <% end %>
   <% else %>
-    <p class="empty-state">No activity yet. Be the first to create one.</p>
+    <p class="empty-state">No activity nearby.</p>
   <% end %>
 </div>
