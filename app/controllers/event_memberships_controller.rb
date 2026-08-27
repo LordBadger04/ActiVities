@@ -5,9 +5,10 @@ class EventMembershipsController < ApplicationController
 
   def create
     @event = Event.find(params[:event_id])
-    @event_membership = EventMembership.new(user: current_user, is_admin: false, status: "Pending")
-    @event_membership.event = @event
+    @event_membership = @event.event_memberships.new(user: current_user, is_admin: false, status: "Pending")
     if @event_membership.save!
+      @chat = @event.chats
+      @message = Message.create(content: "#{current_user.profile.username} sent you a request to join your activity")
       redirect_to event_path(@event)
     else
       render "events/show", status: :unprocessable_entity
