@@ -6,13 +6,31 @@ class EventsController < ApplicationController
     if params[:latitude].present? &&
       params[:longitude].present?
 
-      radius = params[:radius].presence || 25
+      user_coordinates = [
+        params[:latitude].to_f,
+        params[:longitude].to_f
+      ]
 
-      @events = Event.near(
-        [params[:latitude], params[:longitude]],
-        radius.to_i,
-        units: :km
-      )
+      if params[:radius].present?
+        @events = Event.near(
+          user_coordinates,
+          params[:radius].to_i,
+          units: :km
+        )
+      end
+
+      @distances = {}
+
+      @events.each do |event|
+        next if event.latitude.blank? || event.longitude.blank?
+
+        @distances[event.id] =
+          Geocoder::Calculations.distance_between(
+            user_coordinates,
+            [event.latitude, event.longitude],
+            units: :km
+          )
+      end
     end
 
     if params[:genre].present?
@@ -34,7 +52,21 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @current_user_event_membership = EventMembership.find_by(user: current_user)
+
+    @current_user_event_membership =
+      EventMembership.find_by(user: current_user)
+
+    if params[:latitude].present? &&
+      params[:longitude].present? &&
+      @event.latitude.present? &&
+      @event.longitude.present?
+
+      @distance = Geocoder::Calculations.distance_between(
+        [params[:latitude].to_f, params[:longitude].to_f],
+        [@event.latitude, @event.longitude],
+        units: :km
+      )
+    end
   end
 
   def new

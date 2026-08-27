@@ -1,8 +1,10 @@
 class Event < ApplicationRecord
   belongs_to :activity
   belongs_to :user
+
   has_many :event_memberships, dependent: :destroy
   has_many :chats
+
   validates :title, presence: true, length: { maximum: 20 }
   validates :location, presence: true
   validates :description, presence: true, length: { minimum: 15 }
@@ -11,6 +13,8 @@ class Event < ApplicationRecord
   validates :end_date, presence: true
   validates :event_date, presence: true
 
-  geocoded_by :location
+  geocoded_by :location,
+              params: { country: "fr" }
+
   after_validation :geocode, if: :will_save_change_to_location?
 end

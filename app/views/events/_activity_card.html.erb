@@ -1,6 +1,10 @@
 <%# Activity card — Figma 1:197 / 1:152. %>
 <%# The thumbnail is a flat tint block: no Active Storage yet (FRONT_BLOCKERS.md §1.3). %>
-<%= link_to event_path(event),
+<%= link_to event_path(
+    event,
+      latitude: params[:latitude],
+      longitude: params[:longitude]
+    ),
   class: "activity-card" do %>
 
   <span class="activity-card__thumb" aria-hidden="true"></span>
@@ -29,10 +33,10 @@
         </span>
       <% end %>
 
-      <% if event.attributes["distance"].present? %>
+      <% if @distances&.dig(event.id) %>
         <span class="activity-card__meta-item activity-card__meta-item--distance">
           <i class="fa-solid fa-route"></i>
-          <%= event.attributes["distance"].round(1) %> km
+          <%= @distances[event.id].round(1) %> km
         </span>
       <% end %>
     </span>

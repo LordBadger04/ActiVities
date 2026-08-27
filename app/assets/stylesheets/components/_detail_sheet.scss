@@ -75,11 +75,24 @@
 }
 
 .info-rows__value {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+
   margin: 0;
+
   font-size: 13px;
   font-weight: 500;
+
   color: $ink;
   text-align: right;
+}
+
+.info-rows__distance {
+  color: $ink-muted;
+  white-space: nowrap;
 }
 
 // Organizer row — Figma I1:214;46:1275.
