@@ -18,7 +18,7 @@
         <span class="chip"><%= @profile.location %></span>
       <% end %>
     </div>
-    <% unless current_profile == @profile %>
+    <% if @profile.photo.attached? && current_profile != @profile %>
     <span class="profile-head__avatar"
           aria-hidden="true"
           style="background-image: url('<%= cl_image_path @profile.photo.key, crop: :fill %>')"></span>

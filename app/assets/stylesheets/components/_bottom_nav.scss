@@ -7,14 +7,21 @@ $bottom-nav-inset:    16px;
 $bottom-nav-height:   64px;
 $bottom-nav-duration: .15s;
 
-.bottom-nav {
+// Le socle porte le collage en bas et le fond opaque ; la pilule n'est plus qu'un
+// bloc ordinaire à l'intérieur. Sans ce socle, le contenu de la page défile dans les
+// 16px qui entourent la pilule et dépasse autour de ses angles arrondis.
+.bottom-nav-dock {
   position: sticky;
-  bottom: $bottom-nav-inset;
+  bottom: 0;
   z-index: 10;
+  padding: 0 $bottom-nav-inset $bottom-nav-inset;
+  background: $surface;
+}
+
+.bottom-nav {
   display: flex;
   align-items: center;
   height: $bottom-nav-height;
-  margin: 0 $bottom-nav-inset $bottom-nav-inset;
   border-radius: $bottom-nav-height / 2;
   background: $primary-green;
   box-shadow: 0 6px 20px rgba(0, 0, 0, .2);

@@ -7,7 +7,7 @@
     <% @chats.each do |chat| %>
       <% last = chat_last_message(chat) %>
       <%= link_to chat_path(chat), class: "chat-row" do %>
-        <% avatars = chat.event.event_memberships.map { |member| member.user.profile.photo.key } %>
+        <% avatars = chat.event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
           <div class="chat-row__infos">
             <h3 class="chat-row__name"><%= chat_title(chat) %></h3>
             <p class="chat-row__preview">
