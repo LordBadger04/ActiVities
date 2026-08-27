@@ -6,17 +6,16 @@
 
   <% if user_signed_in? %>
     <div class="dropdown">
+      <%# The `>` that closes this tag must stay outside the conditional — when it sat
+          inside, a user with no avatar got an unterminated <button> and the browser
+          reparented the dropdown <ul> *inside* it, so Bootstrap never found the menu. %>
       <button type="button"
               class="app-header__avatar"
               id="accountMenu"
               data-bs-toggle="dropdown"
               aria-expanded="false"
               aria-label="Account menu"
-              <% unless current_profile.nil? %>
-                                                style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')">
-                                              <% end %>
-
-      </button>
+              <% if current_profile&.photo&.attached? %>style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')"<% end %>></button>
 
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
         <% if current_profile %>
