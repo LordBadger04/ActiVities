@@ -1,46 +1,61 @@
-// Bottom nav — Figma I1:269. Sticky so it stays put without leaving the shell column.
+// Bottom nav — Figma component set "Bottom nav" (node 38:438).
+// Pilule flottante 361x64, rayon 32, posée à 16px des bords dans une frame 393 large.
+// Sticky plutôt que fixed : elle reste dans la colonne du shell, centrée et plafonnée
+// à 480px, que `fixed` décrocherait sur écran large.
+
+$bottom-nav-inset:    16px;
+$bottom-nav-height:   64px;
+$bottom-nav-duration: .15s;
+
 .bottom-nav {
   position: sticky;
-  bottom: 0;
+  bottom: $bottom-nav-inset;
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 102px;
-  padding: 11px 19px;
+  height: $bottom-nav-height;
+  margin: 0 $bottom-nav-inset $bottom-nav-inset;
+  border-radius: $bottom-nav-height / 2;
   background: $primary-green;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
 }
 
+// Les quatre onglets se partagent la largeur à parts égales (flex: 1 0 0 dans la maquette).
 .bottom-nav__tab {
   display: flex;
+  flex: 1 0 0;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 70px;
-  color: $on-primary;
+  gap: 5px;
+  height: 100%;
+  // #e3f2ea à 88 % : 0.72 ne passait pas le seuil AA de 4.5:1 sur le vert à 11px.
+  color: rgba($primary-tint, .88);
   text-decoration: none;
-  transition: color .15s ease;
 
-  &:hover,
   &:focus-visible {
-    color: $lime;
+    outline: 2px solid $lime;
+    outline-offset: -4px;
+    border-radius: $bottom-nav-height / 2;
   }
 }
 
-.bottom-nav__tab--active {
-  color: $lime;
-}
-
-// The Figma icon slot is 40px; the exported SVGs are empty placeholder circles,
-// so a Font Awesome glyph is centred in that slot instead.
-.bottom-nav__icon {
+// Pastille d'icône : 56x32 arrondie, remplie de lime sur le seul onglet actif.
+.bottom-nav__slot {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-size: 22px;
+  width: 56px;
+  height: 32px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color $bottom-nav-duration ease;
+}
+
+.bottom-nav__icon {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .bottom-nav__tab:nth-child(2) .bottom-nav__icon {
@@ -48,7 +63,43 @@
 }
 
 .bottom-nav__label {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 400;
   line-height: 1;
+}
+
+// Survol / focus d'un onglet inactif : la pastille s'amorce sans atteindre le plein lime,
+// ce qui garde l'onglet actif lisible d'un coup d'œil.
+.bottom-nav__tab:not(.bottom-nav__tab--active) {
+  &:hover,
+  &:focus-visible {
+    color: $lime;
+
+    .bottom-nav__slot {
+      background: rgba($lime, .16);
+    }
+  }
+}
+
+.bottom-nav__tab--active {
+  color: $lime;
+
+  .bottom-nav__slot {
+    background: $lime;
+  }
+
+  // Icône sombre sur pastille lime — le couple #14231c / #d9f24a donne 11.8:1.
+  .bottom-nav__icon {
+    color: $ink;
+  }
+
+  .bottom-nav__label {
+    font-weight: 600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav__slot {
+    transition: none;
+  }
 }
