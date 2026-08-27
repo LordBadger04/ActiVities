@@ -13,9 +13,8 @@
               aria-expanded="false"
               aria-label="Account menu"
               <% unless current_profile.nil? %>
-                                                style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')">
-                                              <% end %>
-
+                                                style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')"
+                                              <% end %>>
       </button>
 
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">

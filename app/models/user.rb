@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   has_many :messages
+  has_many :chats, through: :messages
   has_many :events
   has_many :event_memberships
   has_one :profile, dependent: :destroy

@@ -2,7 +2,7 @@ class Event < ApplicationRecord
   belongs_to :activity
   belongs_to :user
   has_many :event_memberships, dependent: :destroy
-  has_many :chats
+  has_one :chat
   validates :title, presence: true, length: { maximum: 20 }
   validates :location, presence: true
   validates :description, presence: true, length: { minimum: 15 }
