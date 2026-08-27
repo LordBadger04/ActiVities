@@ -3,36 +3,38 @@
 <%= link_to event_path(event),
   class: "activity-card" do %>
   <span class="activity-card__body">
+    <div class="activity-card-infos">
+      <span class="activity-card__title"><%= event.title %></span>
 
-    <span class="activity-card__title"><%= event.title %></span>
+      <span class="activity-card__meta">
+        <% if event.activity %>
+          <span class="activity-card__meta-item">
+            <i class="fa-solid fa-tag"></i>
+            <%= event.activity.name %>
+          </span>
+        <% end %>
 
-    <span class="activity-card__meta">
-      <% if event.activity %>
         <span class="activity-card__meta-item">
-          <i class="fa-solid fa-tag"></i>
-          <%= event.activity.name %>
+          <i class="fa-solid fa-location-dot"></i>
+          <%= event.location %>
         </span>
-      <% end %>
-
-      <span class="activity-card__meta-item">
-        <i class="fa-solid fa-location-dot"></i>
-        <%= event.location %>
       </span>
+      <span class="activity-card__meta">
+        <% if event.event_date %>
+          <span class="activity-card__meta-item activity-card__meta-item--date">
+            <i class="fa-regular fa-calendar"></i>
+            <%= event.event_date.strftime("%d/%m/%Y") %>
+          </span>
+        <% end %>
 
-      <% if event.event_date %>
-        <span class="activity-card__meta-item activity-card__meta-item--date">
-          <i class="fa-regular fa-calendar"></i>
-          <%= event.event_date.strftime("%d/%m/%Y") %>
-        </span>
-      <% end %>
-
-      <% if event.attributes["distance"].present? %>
-        <span class="activity-card__meta-item activity-card__meta-item--distance">
-          <i class="fa-solid fa-route"></i>
-          <%= event.attributes["distance"].round(1) %> km
-        </span>
-      <% end %>
-    </span>
+        <% if event.attributes["distance"].present? %>
+          <span class="activity-card__meta-item activity-card__meta-item--distance">
+            <i class="fa-solid fa-route"></i>
+            <%= event.attributes["distance"].round(1) %> km
+          </span>
+        <% end %>
+      </span>
+    </div>
 
     <% going = event.event_memberships.size %>
     <div class="activity-card__going">
@@ -43,5 +45,7 @@
         <div class="activity-card__going-count">Be the first to join</div>
       <% end %>
     </div>
-  </div>
+  </span>
+
+
 <% end %>
