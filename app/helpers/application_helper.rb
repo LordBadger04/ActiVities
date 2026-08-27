@@ -11,9 +11,9 @@ module ApplicationHelper
   # both faces of the Buddies|Activities toggle, plus event and profile detail.
   def nav_tab_active?(tab)
     case tab
-    when :home    then controller_name == "pages"
-    when :buddies then %w[events profiles event_memberships].include?(controller_name)
-    when :chats   then %w[chats messages].include?(controller_name)
+    when :home then controller_name == "pages"
+    when :activities then %w[events profiles event_memberships].include?(controller_name)
+    when :chats then %w[chats messages].include?(controller_name)
     else false
     end
   end
