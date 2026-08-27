@@ -21,7 +21,8 @@
        path: current_profile ? profile_path(current_profile) : new_profile_path }
    ] %>
 
-<nav class="bottom-nav" aria-label="Main navigation">
+<div class="bottom-nav-dock">
+  <nav class="bottom-nav" aria-label="Main navigation">
   <% tabs.each do |tab| %>
     <% active = (tab[:key] == current_tab) %>
     <%= link_to tab[:path],
@@ -34,3 +35,4 @@
     <% end %>
   <% end %>
 </nav>
+</div>

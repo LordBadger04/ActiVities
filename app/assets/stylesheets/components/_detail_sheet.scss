@@ -213,14 +213,16 @@
   color: $ink-muted;
 }
 
-// Pinned CTA bar — Figma I1:209;36:966. Sits at the foot of the sheet with an upward shadow.
+// Pinned CTA bar — Figma I1:209;36:966. Sits at the foot of the sheet.
+// L'ombre portée vers le haut de la maquette est volontairement omise : elle datait
+// d'un écran où cette barre était l'élément le plus bas. Depuis que la nav flottante
+// se pose en dessous, elle ne lisait plus que comme un trait entre les deux.
 .cta-bar {
   position: sticky;
   bottom: 0;
   margin: auto -16px 0;
   padding: 16px;
   background: $surface;
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, .1);
 }
 
 .btn-cta:disabled {
