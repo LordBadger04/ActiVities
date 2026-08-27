@@ -34,7 +34,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @current_user_event_membership = EventMembership.find_by(user: current_user)
+    @current_user_event_membership = @event.event_memberships.find_by(user: current_user)
   end
 
   def new
