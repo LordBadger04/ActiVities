@@ -1,22 +1,47 @@
 <%# Activity card — Figma 1:197 / 1:152. %>
 <%# The thumbnail is a flat tint block: no Active Storage yet (FRONT_BLOCKERS.md §1.3). %>
-<%= link_to event_path(event), class: "activity-card" do %>
-  <span class="activity-card__thumb" aria-hidden="true"></span>
-
+<%= link_to event_path(event),
+  class: "activity-card" do %>
   <span class="activity-card__body">
-    <span class="activity-card__title"><%= event.title %></span>
-    <span class="activity-card__meta"><%= event_meta_line(event) %></span>
 
-    <% going = event.event_memberships.size %>
-    <span class="activity-card__going">
-      <% if going.positive? %>
-        <span class="avatar-stack" aria-hidden="true">
-          <%= safe_join(Array.new([ going, 3 ].min) { tag.span(class: "avatar-stack__item") }) %>
+    <span class="activity-card__title"><%= event.title %></span>
+
+    <span class="activity-card__meta">
+      <% if event.activity %>
+        <span class="activity-card__meta-item">
+          <i class="fa-solid fa-tag"></i>
+          <%= event.activity.name %>
         </span>
-        <span class="activity-card__going-count">+<%= going %> going</span>
-      <% else %>
-        <span class="activity-card__going-count">Be the first to join</span>
+      <% end %>
+
+      <span class="activity-card__meta-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <%= event.location %>
+      </span>
+
+      <% if event.event_date %>
+        <span class="activity-card__meta-item activity-card__meta-item--date">
+          <i class="fa-regular fa-calendar"></i>
+          <%= event.event_date.strftime("%d/%m/%Y") %>
+        </span>
+      <% end %>
+
+      <% if event.attributes["distance"].present? %>
+        <span class="activity-card__meta-item activity-card__meta-item--distance">
+          <i class="fa-solid fa-route"></i>
+          <%= event.attributes["distance"].round(1) %> km
+        </span>
       <% end %>
     </span>
-  </span>
+
+    <% going = event.event_memberships.size %>
+    <div class="activity-card__going">
+      <% if going.positive? %>
+        <% avatars = event.event_memberships.map { |member| member.user.profile.photo.key } %>
+        <%= render "shared/avatars_display", avatars: avatars %>
+      <% else %>
+        <div class="activity-card__going-count">Be the first to join</div>
+      <% end %>
+    </div>
+  </div>
 <% end %>
