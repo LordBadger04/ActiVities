@@ -5,7 +5,7 @@ class EventMembershipsController < ApplicationController
 
   def create
     @event = Event.find(params[:event_id])
-    @event_membership = EventMembership.new(event_membership_params)
+    @event_membership = EventMembership.new(user: current_user, is_admin: false, status: "Pending")
     @event_membership.event = @event
     if @event_membership.save!
       redirect_to event_path(@event)
@@ -27,11 +27,5 @@ class EventMembershipsController < ApplicationController
     else
       render "events/show", status: :unprocessable_entity
     end
-  end
-
-  private
-
-  def event_membership_params
-    params.require(:event_membership).permit(:status, :is_admin)
   end
 end
