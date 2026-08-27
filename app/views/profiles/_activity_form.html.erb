@@ -1,13 +1,18 @@
-<div class="form_line d-flex" data-controller="delete-form" data-add-form-input-target="formLine">
-  <%=  f.simple_fields_for :user_activities, UserActivity.new, child_index: "INDEX" do |t|%>
-    <%= t.association :activity,
-                as: :select %>
-    <%= t.input :level,
-                as: :select,
-                collection: UserActivity::LEVELS%>
-  <%= t.button :button, "X",
-                class:"btn btn-danger",
-                data: { action: 'click->add-form-input#destroy' } %>
-  <% end %>
+<%= t.association :activity,
+          as: :select %>
+<%= t.input :level,
+          as: :select,
+          collection: UserActivity::LEVELS%>
+<% if t.object.persisted?%>
+  <label>
+    <%= t.check_box :_destroy,
+                    label_method: "Delete",
+                    class: "delete_box" %>
+    <i class="fa-solid fa-trash-can trash" data-action="click->add-form-input#toggle_red"></i>
+  </label>
+<% else %>
+  <button class="btn btn-delete-form" data-action="click->add-form-input#destroy">
+    <i class="fa-solid fa-trash-can"></i>
+  </button>
 
-</div>
+<% end %>

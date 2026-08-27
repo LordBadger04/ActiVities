@@ -88,7 +88,11 @@
     </div>
   </section>
 
-  <% if user_signed_in? %>
+  <%# Si le user est connecté et qu'il n'est pas admin %>
+
+  <% if user_signed_in? == false %>
+    <%= link_to "Log in to join", new_user_session_path, class: "btn-cta" %>
+  <% elsif @current_user_event_membership.nil? %>
     <%# event_memberships#create does not assign `user` (FRONT_BLOCKERS.md §2.8), so this %>
     <%# submit will fail validation until the controller sets it from current_user. %>
     <%= form_with url: event_event_memberships_path(@event), class: "detail-sheet__cta-form" do %>
@@ -96,7 +100,8 @@
       <%= hidden_field_tag "event_membership[is_admin]", false %>
       <%= submit_tag "Send a request", class: "btn-cta" %>
     <% end %>
-  <% else %>
-    <%= link_to "Log in to join", new_user_session_path, class: "btn-cta" %>
+  <% elsif @current_user_event_membership.is_admin %>
+    <%= link_to "Delete this activity", event_path(@event), data: {
+                                                            turbo_method: :delete, turbo_confirm: "Are you sure ?"}, class: "btn-cta btn-delete" %>
   <% end %>
 </article>

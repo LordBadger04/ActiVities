@@ -270,3 +270,31 @@ input[type="time"].form-control {
     text-decoration: underline;
   }
 }
+
+.form_line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2em auto;
+
+  &:hover .trash {
+    opacity: 1;
+  }
+}
+
+.delete_box{
+  display: none;
+}
+
+.trash {
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.red {
+  color: $red;
+}
+
+.visible {
+  opacity: 1;
+}

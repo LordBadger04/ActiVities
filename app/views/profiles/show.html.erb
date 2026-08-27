@@ -4,17 +4,26 @@
 <% sports = by_genre["Sport"].to_a %>
 <% hobbies = (by_genre["Culture"].to_a + by_genre["Relaxing"].to_a) %>
 
+<% if current_profile == @profile %>
+  <h1 class="profile-title">My profile</h1>
+<% end %>
+
 <article class="detail-sheet detail-sheet--profile">
   <header class="profile-head">
     <div class="profile-head__identity">
-      <h1 class="detail-sheet__title"><%= profile_display_name(@profile) %></h1>
+      <h2 class="detail-sheet__title"><%= profile_display_name(@profile) %></h2>
       <%# The maquette shows a "2.3 km" chip. No geodata exists (FRONT_BLOCKERS.md §1.5), %>
       <%# so the stored location string takes that slot. %>
       <% if @profile.location.present? %>
         <span class="chip"><%= @profile.location %></span>
       <% end %>
     </div>
-    <span class="profile-head__avatar" aria-hidden="true"></span>
+    <% unless current_profile == @profile %>
+    <span class="profile-head__avatar"
+          aria-hidden="true"
+          style="background-image: url('<%= cl_image_path @profile.photo.key, crop: :fill %>')"></span>
+    <% end %>
+
   </header>
 
   <hr class="detail-sheet__divider">
@@ -42,18 +51,6 @@
       <% end %>
     </section>
 
-    <section class="interests__col">
-      <h2 class="chip">Hobbies</h2>
-      <% if hobbies.any? %>
-        <ul class="interests__list">
-          <% hobbies.each do |ua| %>
-            <li><%= ua.activity&.name %></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="interests__empty">Nothing yet</p>
-      <% end %>
-    </section>
   </div>
 
   <div class="cta-bar">

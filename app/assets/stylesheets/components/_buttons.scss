@@ -29,6 +29,10 @@
   }
 }
 
+.btn-delete {
+  background-color: $red;
+}
+
 // Soft pill — Figma I1:214;46:1280. "Message".
 .btn-soft {
   display: inline-flex;
@@ -53,4 +57,14 @@
     color: $primary-green;
     outline: none;
   }
+}
+
+.btn-delete-form{
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    &:hover{
+      color: $red;
+    }
+
 }

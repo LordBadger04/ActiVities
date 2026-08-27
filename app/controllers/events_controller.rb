@@ -34,6 +34,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @current_user_event_membership = EventMembership.find_by(user: current_user)
   end
 
   def new
@@ -65,6 +66,12 @@ class EventsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @event = Event.find(params[:id])
+    @event.destroy
+    redirect_to events_path, status: :see_other
   end
 
   private
