@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :events
   has_many :event_memberships
   has_one :profile, dependent: :destroy
-  has_many :events_as_participant, through: :event_membership, source: :event
+  has_many :events_as_participant, through: :event_memberships, source: :event
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 end

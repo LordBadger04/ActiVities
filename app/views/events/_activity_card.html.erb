@@ -1,11 +1,38 @@
 <%# Activity card — Figma 1:197 / 1:152. %>
 <%# The thumbnail is a flat tint block: no Active Storage yet (FRONT_BLOCKERS.md §1.3). %>
-<%= link_to event_path(event), class: "activity-card" do %>
-  <div class="activity-card__body">
-    <div class="activity-card-info">
-      <h3 class="activity-card__title"><%= event.title %></h3>
-      <p class="activity-card__meta"><%= event_meta_line(event) %></p>
-    </div>
+<%= link_to event_path(event),
+  class: "activity-card" do %>
+  <span class="activity-card__body">
+
+    <span class="activity-card__title"><%= event.title %></span>
+
+    <span class="activity-card__meta">
+      <% if event.activity %>
+        <span class="activity-card__meta-item">
+          <i class="fa-solid fa-tag"></i>
+          <%= event.activity.name %>
+        </span>
+      <% end %>
+
+      <span class="activity-card__meta-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <%= event.location %>
+      </span>
+
+      <% if event.event_date %>
+        <span class="activity-card__meta-item activity-card__meta-item--date">
+          <i class="fa-regular fa-calendar"></i>
+          <%= event.event_date.strftime("%d/%m/%Y") %>
+        </span>
+      <% end %>
+
+      <% if event.attributes["distance"].present? %>
+        <span class="activity-card__meta-item activity-card__meta-item--distance">
+          <i class="fa-solid fa-route"></i>
+          <%= event.attributes["distance"].round(1) %> km
+        </span>
+      <% end %>
+    </span>
 
     <% going = event.event_memberships.size %>
     <div class="activity-card__going">

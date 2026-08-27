@@ -10,9 +10,12 @@
     <%# The maquette's two chips are "2.3 km" and a level. Distance needs geodata that %>
     <%# does not exist (FRONT_BLOCKERS.md §1.5), so the activity name takes that slot. %>
     <div class="detail-sheet__chips">
-      <% if @event.activity %>
+      <% if @distance %>
+        <span class="chip"><%= @distance.round(1) %> km</span>
+      <% elsif @event.activity %>
         <span class="chip"><%= @event.activity.name %></span>
       <% end %>
+
       <% if (level = level_for(organizer, @event.activity)) %>
         <span class="chip"><%= level %></span>
       <% elsif @event.activity %>
@@ -92,11 +95,8 @@
   <% elsif @current_user_event_membership.nil? %>
     <%# event_memberships#create does not assign `user` (FRONT_BLOCKERS.md §2.8), so this %>
     <%# submit will fail validation until the controller sets it from current_user. %>
-    <%= form_with url: event_event_memberships_path(@event), class: "detail-sheet__cta-form" do %>
-      <%= hidden_field_tag "event_membership[status]", "Pending" %>
-      <%= hidden_field_tag "event_membership[is_admin]", false %>
-      <%= submit_tag "Send a request", class: "btn-cta" %>
-    <% end %>
+    <%= link_to "Send a request", event_event_memberships_path(@event) , class: "btn-cta", data: { turbo_method: :post } %>
+
   <% elsif @current_user_event_membership.is_admin %>
     <%= link_to "Delete this activity", event_path(@event), data: {
                                                             turbo_method: :delete, turbo_confirm: "Are you sure ?"}, class: "btn-cta btn-delete" %>
