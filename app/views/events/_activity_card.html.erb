@@ -6,26 +6,24 @@
       longitude: params[:longitude]
     ),
   class: "activity-card" do %>
-
-  <span class="activity-card__thumb" aria-hidden="true"></span>
-
   <span class="activity-card__body">
+    <div class="activity-card-infos">
+      <span class="activity-card__title"><%= event.title %></span>
 
-    <span class="activity-card__title"><%= event.title %></span>
+      <span class="activity-card__meta">
+        <% if event.activity %>
+          <span class="activity-card__meta-item">
+            <i class="fa-solid fa-tag"></i>
+            <%= event.activity.name %>
+          </span>
+        <% end %>
 
-    <span class="activity-card__meta">
-      <% if event.activity %>
         <span class="activity-card__meta-item">
-          <i class="fa-solid fa-tag"></i>
-          <%= event.activity.name %>
+          <i class="fa-solid fa-location-dot"></i>
+          <%= event.location %>
         </span>
-      <% end %>
-
-      <span class="activity-card__meta-item">
-        <i class="fa-solid fa-location-dot"></i>
-        <%= event.location %>
       </span>
-
+    <span class="activity-card__meta">
       <% if event.event_date %>
         <span class="activity-card__meta-item activity-card__meta-item--date">
           <i class="fa-regular fa-calendar"></i>
@@ -40,17 +38,18 @@
         </span>
       <% end %>
     </span>
+   </div>
 
     <% going = event.event_memberships.size %>
-    <span class="activity-card__going">
+    <div class="activity-card__going">
       <% if going.positive? %>
-        <span class="avatar-stack" aria-hidden="true">
-          <%= safe_join(Array.new([ going, 3 ].min) { tag.span(class: "avatar-stack__item") }) %>
-        </span>
-        <span class="activity-card__going-count">+<%= going %> going</span>
+        <% avatars = event.event_memberships.map { |member| member.user.profile.photo.key } %>
+        <%= render "shared/avatars_display", avatars: avatars %>
       <% else %>
-        <span class="activity-card__going-count">Be the first to join</span>
+        <div class="activity-card__going-count">Be the first to join</div>
       <% end %>
-    </span>
+    </div>
   </span>
+
+
 <% end %>

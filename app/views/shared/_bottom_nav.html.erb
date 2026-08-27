@@ -1,26 +1,36 @@
-<%# Bottom nav — Figma node I1:269. Three tabs, lime for the active one, white otherwise. %>
-<%# The exported icon SVGs are empty placeholder circles, so Font Awesome glyphs %>
-<%# (already vendored via font-awesome-sass) stand in for them. %>
+<%# Bottom nav — Figma component set "Bottom nav" (node 38:438), variantes
+    Active=Home | Activities | Chat | Profile. Pilule flottante 361x64, rayon 32.
+    Glyphes repris de la maquette : house, person-running, comment, user
+    (Font Awesome 6 Free Solid, déjà fourni par font-awesome-sass). %>
+
+<%# L'onglet courant est déduit du contrôleur. Volontairement résolu ici plutôt que
+    via `nav_tab_active?`, qui range encore les profils sous « Buddies » — un onglet
+    qui n'existe plus depuis le passage à quatre. %>
+<% current_tab = case controller_name
+                 when "pages"                       then :home
+                 when "events", "event_memberships" then :activities
+                 when "chats", "messages"           then :chat
+                 when "profiles"                    then :profile
+                 end %>
+
+<% tabs = [
+     { key: :home,       label: "Home",       icon: "fa-house",          path: root_path },
+     { key: :activities, label: "Activities", icon: "fa-person-running", path: events_path },
+     { key: :chat,       label: "Chat",       icon: "fa-comment",        path: chats_path },
+     { key: :profile,    label: "Profile",    icon: "fa-user",
+       path: current_profile ? profile_path(current_profile) : new_profile_path }
+   ] %>
 
 <nav class="bottom-nav" aria-label="Main navigation">
-  <%= link_to root_path,
-              class: "bottom-nav__tab #{'bottom-nav__tab--active' if nav_tab_active?(:home)}",
-              aria: { current: ("page" if nav_tab_active?(:home)) } do %>
-    <i class="fa-solid fa-house bottom-nav__icon" aria-hidden="true"></i>
-    <span class="bottom-nav__label">Home</span>
-  <% end %>
-
-  <%= link_to events_path,
-              class: "bottom-nav__tab #{'bottom-nav__tab--active' if nav_tab_active?(:activities)}",
-              aria: { current: ("page" if nav_tab_active?(:activities)) } do %>
-    <i class="fa-solid fa-person-running bottom-nav__icon" aria-hidden="true"></i>
-    <span class="bottom-nav__label">Activities</span>
-  <% end %>
-
-  <%= link_to chats_path,
-              class: "bottom-nav__tab #{'bottom-nav__tab--active' if nav_tab_active?(:chats)}",
-              aria: { current: ("page" if nav_tab_active?(:chats)) } do %>
-    <i class="fa-solid fa-comments bottom-nav__icon" aria-hidden="true"></i>
-    <span class="bottom-nav__label">Chats</span>
+  <% tabs.each do |tab| %>
+    <% active = (tab[:key] == current_tab) %>
+    <%= link_to tab[:path],
+                class: "bottom-nav__tab #{'bottom-nav__tab--active' if active}",
+                aria: { current: ("page" if active) } do %>
+      <span class="bottom-nav__slot">
+        <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>
+      </span>
+      <span class="bottom-nav__label"><%= tab[:label] %></span>
+    <% end %>
   <% end %>
 </nav>

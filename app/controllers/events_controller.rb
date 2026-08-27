@@ -78,8 +78,9 @@ class EventsController < ApplicationController
     @event.user = current_user
     if @event.save!
       @event_membership = @event.event_memberships.create(user: current_user, is_admin: true, status: "Accepted")
-      # @event_membership.event = @event
-      # @event_membership.user = current_user
+      @chat = Chat.new
+      @chat.event = @event
+      render :new, status: :unprocessable_entity unless @chat.save!
       redirect_to event_path(@event)
     else
       render :new, status: :unprocessable_entity
