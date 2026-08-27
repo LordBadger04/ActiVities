@@ -35,13 +35,15 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: $primary-tint;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 0 0 3px rgba(217, 242, 74, .55);
   cursor: pointer;
   transition: box-shadow .15s ease;
 
   &:hover,
   &:focus-visible {
-    box-shadow: 0 0 0 3px rgba(217, 242, 74, .55);
+    box-shadow: 0 0 0 3px $yellow;
     outline: none;
   }
 }

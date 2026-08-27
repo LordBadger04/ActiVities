@@ -19,6 +19,7 @@ export default class extends Controller {
 
   toggle_red(event) {
     event.currentTarget.classList.toggle("red")
+    event.currentTarget.classList.toggle("visible")
   }
 
   generateFormHTML() {
