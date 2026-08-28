@@ -78,7 +78,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_073636) do
     t.float "longitude"
     t.integer "max_participant"
     t.time "start_date"
-    t.string "status"
+    t.string "status", default: "Coming"
     t.string "title"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
