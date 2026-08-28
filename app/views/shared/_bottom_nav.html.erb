@@ -1,38 +1,55 @@
-<%# Bottom nav — Figma component set "Bottom nav" (node 38:438), variantes
-    Active=Home | Activities | Chat | Profile. Pilule flottante 361x64, rayon 32.
-    Glyphes repris de la maquette : house, person-running, comment, user
-    (Font Awesome 6 Free Solid, déjà fourni par font-awesome-sass). %>
+<%# Bottom nav — Figma component set "Bottom nav" (node 38:438), pilule flottante
+    rayon 32. Glyphes Font Awesome 6 Free Solid (font-awesome-sass).
+    La barre se lit en deux blocs : la pilule verte porte les trois destinations,
+    le disque vert détaché porte l'action « create activity ». Séparer les deux
+    évite qu'une action se lise comme un quatrième onglet de navigation. %>
 
-<%# L'onglet courant est déduit du contrôleur. Volontairement résolu ici plutôt que
-    via `nav_tab_active?`, qui range encore les profils sous « Buddies » — un onglet
-    qui n'existe plus depuis le passage à quatre. %>
-<% current_tab = case controller_name
-                 when "pages"                       then :home
-                 when "events", "event_memberships" then :activities
-                 when "chats", "messages"           then :chat
-                 when "profiles"                    then :profile
+<%# L'onglet courant est déduit du contrôleur ET de l'action. Volontairement résolu
+    ici plutôt que via `nav_tab_active?`, qui range encore les profils sous
+    « Buddies » — un onglet qui n'existe plus depuis le passage à quatre. Les pages
+    profil n'allument plus rien : leur entrée est passée dans le menu du header. %>
+<% current_tab = if controller_name == "events" && %w[new create].include?(action_name)
+                   :create
+                 else
+                   case controller_name
+                   when "pages"                       then :home
+                   when "events", "event_memberships" then :activities
+                   when "chats", "messages"           then :chat
+                   end
                  end %>
 
 <% tabs = [
      { key: :home,       label: "Home",       icon: "fa-house",          path: root_path },
      { key: :activities, label: "Activities", icon: "fa-person-running", path: events_path },
-     { key: :chat,       label: "Chat",       icon: "fa-comment",        path: chats_path },
-     { key: :profile,    label: "Profile",    icon: "fa-user",
-       path: current_profile ? profile_path(current_profile) : new_profile_path }
+     { key: :chat,       label: "Chats",      icon: "fa-comment",        path: chats_path }
    ] %>
+<% creating = (current_tab == :create) %>
 
 <div class="bottom-nav-dock">
   <nav class="bottom-nav" aria-label="Main navigation">
-  <% tabs.each do |tab| %>
-    <% active = (tab[:key] == current_tab) %>
-    <%= link_to tab[:path],
-                class: "bottom-nav__tab #{'bottom-nav__tab--active' if active}",
-                aria: { current: ("page" if active) } do %>
-      <span class="bottom-nav__slot">
-        <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>
-      </span>
-      <span class="bottom-nav__label"><%= tab[:label] %></span>
+    <div class="bottom-nav__pill">
+      <% tabs.each do |tab| %>
+        <% active = (tab[:key] == current_tab) %>
+        <%= link_to tab[:path],
+                    class: "bottom-nav__tab #{'bottom-nav__tab--active' if active}",
+                    aria: { current: ("page" if active) } do %>
+          <span class="bottom-nav__slot">
+            <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>
+          </span>
+          <span class="bottom-nav__label"><%= tab[:label] %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Le bouton est une illustration fournie (pastille verte, anneau lime, les deux
+        buddies et le « + »), pas une composition CSS : le texte y est déjà incurvé et
+        les personnages ne se reconstruisent pas en SVG à la main. L'image est décorative
+        — le lien porte l'intitulé — d'où l'alt vide. %>
+    <%= link_to new_event_path,
+                class: "bottom-nav__create #{'bottom-nav__create--active' if creating}",
+                aria: { label: "Create an activity", current: ("page" if creating) } do %>
+      <%= image_tag "create-activity.png", alt: "",
+                    width: 86, height: 86, class: "bottom-nav__create-art" %>
     <% end %>
-  <% end %>
-</nav>
+  </nav>
 </div>

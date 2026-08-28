@@ -5,6 +5,16 @@
 // pills would be white-on-white and vanish.
 // Applied from the layout via `devise_controller?` so the ten Devise templates stay untouched.
 .app-main--auth {
+  // Logo pleine marque, écran de connexion uniquement. Largeur plafonnée en % pour
+  // que la baseline « MEET · PLAY · SHARE » reste lisible sur les petits écrans.
+  .auth-logo {
+    display: block;
+    width: 220px;
+    max-width: 62%;
+    height: auto;
+    margin: 4px auto 32px;
+  }
+
   // Devise templates open with a bare <h2>.
   h2 {
     margin: 0 0 24px;

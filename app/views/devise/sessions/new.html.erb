@@ -1,3 +1,8 @@
+<%# Logo pleine marque : l'écran de connexion est la seule page sans contexte, %>
+<%# la tuile du header n'y suffit pas à annoncer le produit. %>
+<%= image_tag "activities-logo.png", alt: "ActiVities — meet, play, share",
+              width: 220, height: 149, class: "auth-logo" %>
+
 <h2>Log in</h2>
 
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>

@@ -11,25 +11,50 @@
   background: $primary-green;
 }
 
-.app-header__wordmark {
-  font-family: $display-font;
-  font-weight: 800;
-  font-size: 40px;
-  letter-spacing: -.8px;
-  line-height: 1.1;
-  color: $lime;
+// La marque est l'icône d'app (tuile vert foncé, glyphe blanc) plutôt que le mot
+// « ActiVities » : le nom est déjà porté par le <title> et la tuile tient dans la
+// hauteur du header sans écraser l'action de droite.
+.app-header__brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  border-radius: 12px;
   text-decoration: none;
+  transition: transform .15s ease;
 
-  &:hover,
+  &:hover {
+    transform: scale(1.04);
+  }
+
   &:focus-visible {
-    color: $lime;
+    outline: 2px solid $lime;
+    outline-offset: 3px;
   }
 }
 
-// 44px avatar. No Active Storage yet (FRONT_BLOCKERS.md §1.3), so this renders the
-// flat tint circle the Figma asset actually contains.
+.app-header__logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header__brand {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// Pastille compte 44px. Porte la photo Cloudinary en background-image quand elle
+// existe ; sinon la variante --empty prend le relais avec un glyphe générique.
 .app-header__avatar {
+  display: flex;
   flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
   width: 44px;
   height: 44px;
   padding: 0;
@@ -46,6 +71,12 @@
     box-shadow: 0 0 0 3px $yellow;
     outline: none;
   }
+}
+
+.app-header__avatar--empty {
+  background-color: $primary-tint;
+  color: $primary-green;
+  font-size: 18px;
 }
 
 .app-header__signin {

@@ -6,20 +6,47 @@
 $bottom-nav-inset:    16px;
 $bottom-nav-height:   64px;
 $bottom-nav-duration: .15s;
+$bottom-nav-fade:     28px; // remontée du voile au-dessus de la pilule
+$bottom-nav-gap:      10px; // écart entre la pilule et le disque d'action
+$bottom-nav-create:   86px; // disque d'action, volontairement plus haut que la pilule
 
-// Le socle porte le collage en bas et le fond opaque ; la pilule n'est plus qu'un
-// bloc ordinaire à l'intérieur. Sans ce socle, le contenu de la page défile dans les
-// 16px qui entourent la pilule et dépasse autour de ses angles arrondis.
+// Le socle porte le collage en bas ; la pilule n'est qu'un bloc ordinaire dedans.
+// Il ne peint plus de bloc blanc opaque — ce rectangle tranchait sur le gris de la
+// page. À la place, un voile dégradé vers $app-bg : le contenu se dissout en
+// approchant de la pilule au lieu de buter sur ses angles arrondis.
 .bottom-nav-dock {
   position: sticky;
   bottom: 0;
   z-index: 10;
   padding: 0 $bottom-nav-inset $bottom-nav-inset;
-  background: $surface;
+  background: transparent;
+  pointer-events: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -$bottom-nav-fade;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to bottom, rgba($app-bg, 0), $app-bg 55%);
+  }
 }
 
+// La barre n'est plus un bloc mais deux : la pilule des destinations, puis le
+// disque de l'action. `.bottom-nav` ne fait que les aligner et ne peint plus rien.
 .bottom-nav {
+  position: relative; // au-dessus du voile
   display: flex;
+  align-items: center;
+  gap: $bottom-nav-gap;
+  pointer-events: auto; // le socle laisse passer les clics, la barre les reprend
+}
+
+.bottom-nav__pill {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   align-items: center;
   height: $bottom-nav-height;
   border-radius: $bottom-nav-height / 2;
@@ -27,7 +54,7 @@ $bottom-nav-duration: .15s;
   box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
 }
 
-// Les quatre onglets se partagent la largeur à parts égales (flex: 1 0 0 dans la maquette).
+// Les trois onglets se partagent la largeur à parts égales (flex: 1 0 0 dans la maquette).
 .bottom-nav__tab {
   display: flex;
   flex: 1 0 0;
@@ -84,6 +111,57 @@ $bottom-nav-duration: .15s;
 
     .bottom-nav__slot {
       background: rgba($lime, .16);
+    }
+  }
+}
+
+// Bouton d'action, détaché de la pilule. Plus haut qu'elle (86 contre 64) : c'est
+// ce débord qui le sort de la rangée des onglets et le donne à lire comme un
+// bouton et non comme une quatrième destination.
+// Le fond, l'anneau et le libellé viennent de l'illustration ; le lien n'apporte
+// que la forme cliquable, l'ombre portée et les états.
+.bottom-nav__create {
+  display: block;
+  flex: 0 0 $bottom-nav-create;
+  width: $bottom-nav-create;
+  height: $bottom-nav-create;
+  border-radius: 50%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+  text-decoration: none;
+  transition: transform $bottom-nav-duration ease,
+              box-shadow $bottom-nav-duration ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: scale(1.04);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $lime;
+    outline-offset: 3px;
+  }
+}
+
+.bottom-nav__create-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+// L'illustration porte déjà un anneau lime en permanence : l'état courant ne peut
+// pas se marquer dessus sans se confondre avec lui. Il se pose donc en halo, à
+// l'extérieur du disque.
+.bottom-nav__create--active {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .2), 0 0 0 4px rgba($lime, .4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav__create {
+    transition: none;
+
+    &:hover,
+    &:focus-visible {
+      transform: none;
     }
   }
 }
