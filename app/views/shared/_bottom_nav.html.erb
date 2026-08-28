@@ -1,13 +1,13 @@
 <%# Bottom nav — Figma component set "Bottom nav" (node 38:438), pilule flottante
-    361x64, rayon 32. Glyphes Font Awesome 6 Free Solid (font-awesome-sass).
-    Le quatrième onglet n'est plus « Profile » — le profil vit dans le menu compte
-    du header — mais l'action « Create », traitée comme une action et non comme une
-    destination : pastille lime pleine en permanence, à l'image des CTA de l'app. %>
+    rayon 32. Glyphes Font Awesome 6 Free Solid (font-awesome-sass).
+    La barre se lit en deux blocs : la pilule verte porte les trois destinations,
+    le disque vert détaché porte l'action « create activity ». Séparer les deux
+    évite qu'une action se lise comme un quatrième onglet de navigation. %>
 
-<%# L'onglet courant est déduit du contrôleur. Volontairement résolu ici plutôt que
-    via `nav_tab_active?`, qui range encore les profils sous « Buddies » — un onglet
-    qui n'existe plus depuis le passage à quatre. Les pages profil n'allument plus
-    aucun onglet : leur entrée est passée dans le header. %>
+<%# L'onglet courant est déduit du contrôleur ET de l'action. Volontairement résolu
+    ici plutôt que via `nav_tab_active?`, qui range encore les profils sous
+    « Buddies » — un onglet qui n'existe plus depuis le passage à quatre. Les pages
+    profil n'allument plus rien : leur entrée est passée dans le menu du header. %>
 <% current_tab = if controller_name == "events" && %w[new create].include?(action_name)
                    :create
                  else
@@ -21,22 +21,50 @@
 <% tabs = [
      { key: :home,       label: "Home",       icon: "fa-house",          path: root_path },
      { key: :activities, label: "Activities", icon: "fa-person-running", path: events_path },
-     { key: :chat,       label: "Chats",      icon: "fa-comment",        path: chats_path },
-     { key: :create,     label: "Create",     icon: "fa-plus",           path: new_event_path }
+     { key: :chat,       label: "Chats",      icon: "fa-comment",        path: chats_path }
    ] %>
+<% creating = (current_tab == :create) %>
 
 <div class="bottom-nav-dock">
   <nav class="bottom-nav" aria-label="Main navigation">
-  <% tabs.each do |tab| %>
-    <% active = (tab[:key] == current_tab) %>
-    <%= link_to tab[:path],
-                class: "bottom-nav__tab #{'bottom-nav__tab--active' if active} #{'bottom-nav__tab--create' if tab[:key] == :create}",
-                aria: { current: ("page" if active) } do %>
-      <span class="bottom-nav__slot">
-        <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>
+    <div class="bottom-nav__pill">
+      <% tabs.each do |tab| %>
+        <% active = (tab[:key] == current_tab) %>
+        <%= link_to tab[:path],
+                    class: "bottom-nav__tab #{'bottom-nav__tab--active' if active}",
+                    aria: { current: ("page" if active) } do %>
+          <span class="bottom-nav__slot">
+            <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>
+          </span>
+          <span class="bottom-nav__label"><%= tab[:label] %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Les deux mots épousent le disque, ce que le CSS ne sait pas faire : ils sont
+        posés sur deux arcs SVG. Le SVG est masqué aux lecteurs d'écran — un texte
+        découpé en deux nœuds se lirait mal — et le lien porte le libellé complet. %>
+    <%= link_to new_event_path,
+                class: "bottom-nav__create #{'bottom-nav__create--active' if creating}",
+                aria: { label: "Create an activity", current: ("page" if creating) } do %>
+      <svg class="bottom-nav__create-arcs" viewBox="0 0 72 72" aria-hidden="true" focusable="false">
+        <defs>
+          <path id="bottomNavArcTop"    fill="none" d="M 8,36 a 28,28 0 0 1 56,0">
+          </path>
+          <path id="bottomNavArcBottom" fill="none" d="M 8,36 a 28,28 0 0 0 56,0">
+          </path>
+        </defs>
+        <text class="bottom-nav__create-word" dy="9">
+          <textPath href="#bottomNavArcTop" startOffset="50%" text-anchor="middle">create</textPath>
+        </text>
+        <text class="bottom-nav__create-word" dy="-5">
+          <textPath href="#bottomNavArcBottom" startOffset="50%" text-anchor="middle">activity</textPath>
+        </text>
+      </svg>
+
+      <span class="bottom-nav__create-plus">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i>
       </span>
-      <span class="bottom-nav__label"><%= tab[:label] %></span>
     <% end %>
-  <% end %>
-</nav>
+  </nav>
 </div>
