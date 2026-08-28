@@ -1,24 +1,28 @@
-<%# Bottom nav — Figma component set "Bottom nav" (node 38:438), variantes
-    Active=Home | Activities | Chat | Profile. Pilule flottante 361x64, rayon 32.
-    Glyphes repris de la maquette : house, person-running, comment, user
-    (Font Awesome 6 Free Solid, déjà fourni par font-awesome-sass). %>
+<%# Bottom nav — Figma component set "Bottom nav" (node 38:438), pilule flottante
+    361x64, rayon 32. Glyphes Font Awesome 6 Free Solid (font-awesome-sass).
+    Le quatrième onglet n'est plus « Profile » — le profil vit dans le menu compte
+    du header — mais l'action « Create », traitée comme une action et non comme une
+    destination : pastille lime pleine en permanence, à l'image des CTA de l'app. %>
 
 <%# L'onglet courant est déduit du contrôleur. Volontairement résolu ici plutôt que
     via `nav_tab_active?`, qui range encore les profils sous « Buddies » — un onglet
-    qui n'existe plus depuis le passage à quatre. %>
-<% current_tab = case controller_name
-                 when "pages"                       then :home
-                 when "events", "event_memberships" then :activities
-                 when "chats", "messages"           then :chat
-                 when "profiles"                    then :profile
+    qui n'existe plus depuis le passage à quatre. Les pages profil n'allument plus
+    aucun onglet : leur entrée est passée dans le header. %>
+<% current_tab = if controller_name == "events" && %w[new create].include?(action_name)
+                   :create
+                 else
+                   case controller_name
+                   when "pages"                       then :home
+                   when "events", "event_memberships" then :activities
+                   when "chats", "messages"           then :chat
+                   end
                  end %>
 
 <% tabs = [
      { key: :home,       label: "Home",       icon: "fa-house",          path: root_path },
      { key: :activities, label: "Activities", icon: "fa-person-running", path: events_path },
-     { key: :chat,       label: "Chat",       icon: "fa-comment",        path: chats_path },
-     { key: :profile,    label: "Profile",    icon: "fa-user",
-       path: current_profile ? profile_path(current_profile) : new_profile_path }
+     { key: :chat,       label: "Chats",      icon: "fa-comment",        path: chats_path },
+     { key: :create,     label: "Create",     icon: "fa-plus",           path: new_event_path }
    ] %>
 
 <div class="bottom-nav-dock">
@@ -26,7 +30,7 @@
   <% tabs.each do |tab| %>
     <% active = (tab[:key] == current_tab) %>
     <%= link_to tab[:path],
-                class: "bottom-nav__tab #{'bottom-nav__tab--active' if active}",
+                class: "bottom-nav__tab #{'bottom-nav__tab--active' if active} #{'bottom-nav__tab--create' if tab[:key] == :create}",
                 aria: { current: ("page" if active) } do %>
       <span class="bottom-nav__slot">
         <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>

@@ -92,7 +92,7 @@ $bottom-nav-fade:     28px; // remontée du voile au-dessus de la pilule
 
 // Survol / focus d'un onglet inactif : la pastille s'amorce sans atteindre le plein lime,
 // ce qui garde l'onglet actif lisible d'un coup d'œil.
-.bottom-nav__tab:not(.bottom-nav__tab--active) {
+.bottom-nav__tab:not(.bottom-nav__tab--active):not(.bottom-nav__tab--create) {
   &:hover,
   &:focus-visible {
     color: $lime;
@@ -100,6 +100,33 @@ $bottom-nav-fade:     28px; // remontée du voile au-dessus de la pilule
     .bottom-nav__slot {
       background: rgba($lime, .16);
     }
+  }
+}
+
+// « Create » est une action, pas une destination. Sa pastille reste pleine en
+// permanence — même code lime que les CTA de l'app — pour ne pas se lire comme
+// un onglet qui serait actif en continu. D'où aussi le disque plutôt que la
+// pastille 56x32 des trois onglets de navigation.
+.bottom-nav__tab--create {
+  // 32px de côté, soit exactement la hauteur de la pastille des trois autres
+  // onglets : un disque plus haut décalerait le libellé et casserait la ligne
+  // de base commune des quatre.
+  .bottom-nav__slot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $lime;
+    transition: transform $bottom-nav-duration ease;
+  }
+
+  .bottom-nav__icon {
+    font-size: 18px;
+    color: $ink;
+  }
+
+  &:hover .bottom-nav__slot,
+  &:focus-visible .bottom-nav__slot {
+    transform: scale(1.08);
   }
 }
 

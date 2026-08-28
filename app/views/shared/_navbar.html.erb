@@ -1,18 +1,49 @@
-<%# App header — Figma node I1:271;130:864. Deep green bar, marque à gauche, action à droite. %>
+<%# App header — Figma node I1:271;130:864. Deep green bar, marque à gauche, compte à droite. %>
 <%# The maquette's header also contains an iOS status bar (9:41 AM, wifi, battery). %>
 <%# That is a mockup artifact, not UI, so it is deliberately not reproduced. %>
+<% photo_attached = current_profile&.photo&.attached? %>
+
 <header class="app-header">
   <%= link_to root_path, class: "app-header__brand", aria: { label: "ActiVities — accueil" } do %>
     <%= image_tag "activities-icon.png", alt: "ActiVities",
                   width: 48, height: 48, class: "app-header__logo" %>
   <% end %>
 
-  <%# L'accès au profil vit désormais dans la barre du bas, seul l'onglet Profile y mène. %>
-  <%# Ne reste ici que la sortie de session, qui n'existe nulle part ailleurs dans l'app. %>
-  <% if user_signed_in? %>
-    <%= link_to "Log out", destroy_user_session_path,
-                data: { turbo_method: :delete }, class: "app-header__signin" %>
-  <% else %>
-    <%= link_to "Log in", new_user_session_path, class: "app-header__signin" %>
-  <% end %>
+  <div class="dropdown">
+    <%# Sans photo — visiteur anonyme ou profil pas encore créé — la pastille tombe %>
+    <%# sur un glyphe générique plutôt que sur un rond vide qui ne se voit pas. %>
+    <button type="button"
+            class="app-header__avatar <%= "app-header__avatar--empty" unless photo_attached %>"
+            id="accountMenu"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            aria-label="Account menu"
+            <% if photo_attached %>
+              style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')"
+            <% end %>>
+      <% unless photo_attached %>
+        <i class="fa-solid fa-user" aria-hidden="true"></i>
+      <% end %>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
+      <% if user_signed_in? %>
+        <% if current_profile %>
+          <li><%= link_to "My profile", profile_path(current_profile), class: "dropdown-item" %></li>
+        <% else %>
+          <li><%= link_to "Create my profile", new_profile_path, class: "dropdown-item" %></li>
+        <% end %>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <%= link_to "Log out", destroy_user_session_path,
+                      data: { turbo_method: :delete }, class: "dropdown-item" %>
+        </li>
+      <% else %>
+        <%# Pas de session à fermer pour un visiteur anonyme : « Log out » n'aurait %>
+        <%# rien à faire ici, le menu propose les deux entrées de session à la place. %>
+        <li><%= link_to "Log in", new_user_session_path, class: "dropdown-item" %></li>
+        <li><%= link_to "Sign up", new_user_registration_path, class: "dropdown-item" %></li>
+      <% end %>
+    </ul>
+  </div>
 </header>

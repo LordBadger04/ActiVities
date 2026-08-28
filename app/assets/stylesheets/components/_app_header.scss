@@ -48,6 +48,37 @@
   }
 }
 
+// Pastille compte 44px. Porte la photo Cloudinary en background-image quand elle
+// existe ; sinon la variante --empty prend le relais avec un glyphe générique.
+.app-header__avatar {
+  display: flex;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 0 0 3px rgba(217, 242, 74, .55);
+  cursor: pointer;
+  transition: box-shadow .15s ease;
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 0 0 3px $yellow;
+    outline: none;
+  }
+}
+
+.app-header__avatar--empty {
+  background-color: $primary-tint;
+  color: $primary-green;
+  font-size: 18px;
+}
+
 .app-header__signin {
   font-size: 15px;
   font-weight: 600;
