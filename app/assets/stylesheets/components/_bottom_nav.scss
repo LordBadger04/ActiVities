@@ -6,25 +6,40 @@
 $bottom-nav-inset:    16px;
 $bottom-nav-height:   64px;
 $bottom-nav-duration: .15s;
+$bottom-nav-fade:     28px; // remontée du voile au-dessus de la pilule
 
-// Le socle porte le collage en bas et le fond opaque ; la pilule n'est plus qu'un
-// bloc ordinaire à l'intérieur. Sans ce socle, le contenu de la page défile dans les
-// 16px qui entourent la pilule et dépasse autour de ses angles arrondis.
+// Le socle porte le collage en bas ; la pilule n'est qu'un bloc ordinaire dedans.
+// Il ne peint plus de bloc blanc opaque — ce rectangle tranchait sur le gris de la
+// page. À la place, un voile dégradé vers $app-bg : le contenu se dissout en
+// approchant de la pilule au lieu de buter sur ses angles arrondis.
 .bottom-nav-dock {
   position: sticky;
   bottom: 0;
   z-index: 10;
   padding: 0 $bottom-nav-inset $bottom-nav-inset;
-  background: $surface;
+  background: transparent;
+  pointer-events: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -$bottom-nav-fade;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to bottom, rgba($app-bg, 0), $app-bg 55%);
+  }
 }
 
 .bottom-nav {
+  position: relative; // au-dessus du voile
   display: flex;
   align-items: center;
   height: $bottom-nav-height;
   border-radius: $bottom-nav-height / 2;
   background: $primary-green;
   box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+  pointer-events: auto; // le socle laisse passer les clics, la pilule les reprend
 }
 
 // Les quatre onglets se partagent la largeur à parts égales (flex: 1 0 0 dans la maquette).

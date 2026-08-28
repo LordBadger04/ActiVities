@@ -1,35 +1,17 @@
-<%# App header — Figma node I1:271;130:864. Deep green bar, lime wordmark, 44px avatar. %>
+<%# App header — Figma node I1:271;130:864. Deep green bar, marque à gauche, action à droite. %>
 <%# The maquette's header also contains an iOS status bar (9:41 AM, wifi, battery). %>
 <%# That is a mockup artifact, not UI, so it is deliberately not reproduced. %>
 <header class="app-header">
-  <%= link_to "ActiVities", root_path, class: "app-header__wordmark" %>
+  <%= link_to root_path, class: "app-header__brand", aria: { label: "ActiVities — accueil" } do %>
+    <%= image_tag "activities-icon.png", alt: "ActiVities",
+                  width: 48, height: 48, class: "app-header__logo" %>
+  <% end %>
 
+  <%# L'accès au profil vit désormais dans la barre du bas, seul l'onglet Profile y mène. %>
+  <%# Ne reste ici que la sortie de session, qui n'existe nulle part ailleurs dans l'app. %>
   <% if user_signed_in? %>
-    <div class="dropdown">
-      <button type="button"
-              class="app-header__avatar"
-              id="accountMenu"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              aria-label="Account menu"
-              <% if current_profile&.photo&.attached? %>
-                                                style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')"
-                                              <% end %>>
-      </button>
-
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
-        <% if current_profile %>
-          <li><%= link_to "My profile", profile_path(current_profile), class: "dropdown-item" %></li>
-        <% else %>
-          <li><%= link_to "Create my profile", new_profile_path, class: "dropdown-item" %></li>
-        <% end %>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-          <%= link_to "Log out", destroy_user_session_path,
-                      data: { turbo_method: :delete }, class: "dropdown-item" %>
-        </li>
-      </ul>
-    </div>
+    <%= link_to "Log out", destroy_user_session_path,
+                data: { turbo_method: :delete }, class: "app-header__signin" %>
   <% else %>
     <%= link_to "Log in", new_user_session_path, class: "app-header__signin" %>
   <% end %>
