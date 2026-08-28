@@ -22,7 +22,7 @@
       </span>
 
       <span class="event-pin__side">
-        <% if status.present? %>
+        <% if status.present? && status != "Accepted" %>
           <span class="chip chip--lime event-pin__status"><%= status %></span>
         <% end %>
         <%# "Add to calendar" has no ICS route yet (FRONT_BLOCKERS.md §4). %>
@@ -33,13 +33,29 @@
 
   <ol class="chat__thread">
     <% @chat.messages.order(:created_at).each do |message| %>
-      <% sent = message.user_id == current_user&.id %>
-      <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
-        <% unless sent %>
-          <span class="bubble__author"><%= profile_display_name(profile_for(message.user)) %></span>
+    <% request = "#{message.user.profile.username} sent a request to join your activity" %>
+      <% sent = message.user_id == current_user.id %>
+      <% if message.content == request %>
+      <% unless sent %>
+        <%= link_to edit_event_event_membership_path(@current_user_event_membership) do %>
+          <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
+            <%= "#{message.content}, tap here to accept their request" %>
+          </li>
         <% end %>
-        <span class="bubble__content"><%= message.content %></span>
-      </li>
+      <% else %>
+        <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
+            <%= "You sent a request" %>
+        </li>
+      <% end %>
+      <% else %>
+
+          <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
+            <% unless sent %>
+              <span class="bubble__author"><%= profile_display_name(profile_for(message.user)) %></span>
+            <% end %>
+            <span class="bubble__content"><%= message.content %></span>
+          </li>
+      <% end %>
     <% end %>
   </ol>
 

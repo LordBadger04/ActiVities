@@ -115,6 +115,14 @@
   padding: 0 16px 16px;
   overflow-y: auto;
   list-style: none;
+  a {
+    text-decoration: none;
+  }
+
+  a:hover .bubble {
+    background-color: $yellow;
+  }
+
 }
 
 // Bubbles — Figma 1:128 (received) and 1:126 (sent).
@@ -201,5 +209,3 @@
     outline: none;
   }
 }
-
-

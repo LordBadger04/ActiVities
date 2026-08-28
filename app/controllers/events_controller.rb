@@ -54,7 +54,8 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     @current_user_event_membership =
-      EventMembership.find_by(user: current_user)
+      EventMembership.find_by(user: current_user, event: @event)
+    
 
     if params[:latitude].present? &&
       params[:longitude].present? &&
