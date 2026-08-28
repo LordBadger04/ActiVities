@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   resources :events, except: [ :destroy ] do
     member do
-      get :cancel
+      patch :cancel
     end
     resources :event_memberships, only: [ :create, :update, :edit, :index ]
     resources :chats, only: [ :create ]

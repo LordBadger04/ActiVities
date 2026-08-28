@@ -20,7 +20,6 @@
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
         <% if current_profile %>
           <li><%= link_to "My profile", profile_path(current_profile), class: "dropdown-item" %></li>
-          <li><%= link_to "New activity", new_event_path, class: "dropdown-item" %></li>
         <% else %>
           <li><%= link_to "Create my profile", new_profile_path, class: "dropdown-item" %></li>
         <% end %>

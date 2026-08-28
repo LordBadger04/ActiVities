@@ -54,7 +54,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     @current_user_event_membership =
-      EventMembership.find_by(user: current_user)
+      EventMembership.find_by(user: current_user, event: @event)
 
     if params[:latitude].present? &&
       params[:longitude].present? &&
@@ -74,7 +74,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params, status: "Comming")
+    @event = Event.new(event_params)
     @event.user = current_user
     if @event.save!
       @event_membership = @event.event_memberships.create(user: current_user, is_admin: true, status: "Accepted")
@@ -94,11 +94,8 @@ class EventsController < ApplicationController
   def cancel
     @event = Event.find(params[:id])
     @event.status = "Canceled"
-    if @event.save!
-      redirect_to event_path(@event)
-    else
-      render :edit, status: :unprocessable_entity
-    end
+    @event.save!
+    redirect_to event_path(@event)
   end
 
   def update

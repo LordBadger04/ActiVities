@@ -2,14 +2,7 @@
 <% content_for :title, "ActiVities" %>
 
 <%# Inert: no search action exists yet (FRONT_BLOCKERS.md §4). %>
-<div class="search-bar">
-  <i class="fa-solid fa-magnifying-glass search-bar__icon" aria-hidden="true"></i>
-  <label class="visually-hidden" for="activity-search">Search an activity</label>
-  <input id="activity-search" class="search-bar__input" type="search"
-         placeholder="Search an activity" disabled
-         aria-describedby="activity-search-hint">
-  <span id="activity-search-hint" class="visually-hidden">Search is not available yet.</span>
-</div>
+
 
 <div data-controller="geolocation">
   <%= hidden_field_tag :latitude,
@@ -20,6 +13,8 @@
       params[:longitude],
       data: { geolocation_target: "longitude" } %>
 </div>
+
+<%= link_to "Create a new activity", new_event_path, class: "btn-cta" %>
 
 <h2 class="section-label home__label">Activities near you</h2>
 
