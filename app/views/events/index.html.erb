@@ -1,17 +1,7 @@
 <%# Activities — Figma 1:227. Activities face of the Buddies|Activities toggle. %>
 <% content_for :title, "Open Activities" %>
-
-<nav class="segmented" aria-label="Explore">
-  <span class="segmented__option segmented__option--disabled" aria-disabled="true">Buddies</span>
-
-  <%= link_to "Activities", events_path,
-              class: "segmented__option segmented__option--active",
-              aria: { current: "page" } %>
-</nav>
-
-<h1 class="page-title events__title">Open Activities</h1>
-
-<div class="events-filter">
+<div class="index-container" data-controller="switch-btn">
+  <div class="events-filter">
   <%= form_with url: events_path,
                 method: :get,
                 class: "events-filter__form",
@@ -58,6 +48,8 @@
   <% end %>
 </div>
 
+<%= render "shared/switch_btn" %>
+
 <div class="events__list">
   <% if @events.any? %>
     <% @events.each do |event| %>
@@ -66,4 +58,6 @@
   <% else %>
     <p class="empty-state">No open activity right now.</p>
   <% end %>
+</div>
+
 </div>

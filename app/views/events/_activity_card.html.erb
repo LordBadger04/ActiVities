@@ -7,6 +7,7 @@
         latitude: params[:latitude],
         longitude: params[:longitude]
       ),
+      data: { switch_btn_target: "events#{event.status}"},
       class: "activity-card" do %>
 
     <span class="activity-card__body">
