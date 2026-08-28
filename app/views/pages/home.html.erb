@@ -1,8 +1,68 @@
 <%# Homepage — Figma 1:262. %>
 <% content_for :title, "ActiVities" %>
 
-<%# Inert: no search action exists yet (FRONT_BLOCKERS.md §4). %>
+<% if user_signed_in? && current_user.profile.present? %>
+  <div class="home-welcome">
+    <h1 class="home-welcome__title">
+      Hi <%= current_user.profile.first_name %> 👋
+    </h1>
 
+    <p class="home-welcome__subtitle">
+      What do you feel like doing today?
+    </p>
+  </div>
+<% end %>
+
+<%= form_with url: root_path,
+              method: :get,
+              class: "search-bar" do %>
+
+  <i class="fa-solid fa-magnifying-glass search-bar__icon" aria-hidden="true"></i>
+
+  <label class="visually-hidden" for="activity-search">
+    Search an activity
+  </label>
+
+  <%= search_field_tag :query,
+      params[:query],
+      id: "activity-search",
+      placeholder: "Search an activity",
+      class: "search-bar__input" %>
+
+  <% if params[:latitude].present? %>
+    <%= hidden_field_tag :latitude, params[:latitude] %>
+  <% end %>
+
+  <% if params[:longitude].present? %>
+    <%= hidden_field_tag :longitude, params[:longitude] %>
+  <% end %>
+<% end %>
+
+<% if params[:query].present? %>
+  <section class="home-section home-section--search">
+    <div class="home-section__head">
+      <h2 class="section-label">Search results</h2>
+
+      <%= link_to "Clear", root_path(
+            latitude: params[:latitude],
+            longitude: params[:longitude]
+          ),
+          class: "home-section__link" %>
+    </div>
+
+    <div class="home__feed">
+      <% if @search_results.any? %>
+        <% @search_results.each do |event| %>
+          <%= render "events/activity_card", event: event %>
+        <% end %>
+      <% else %>
+        <p class="empty-state">
+          No activity found for "<%= params[:query] %>".
+        </p>
+      <% end %>
+    </div>
+  </section>
+<% end %>
 
 <div data-controller="geolocation">
   <%= hidden_field_tag :latitude,
@@ -15,15 +75,33 @@
 </div>
 
 <%= link_to "Create a new activity", new_event_path, class: "btn-cta" %>
+<section class="home-section">
+  <div class="home-section__head">
+    <h2 class="section-label">Around you</h2>
+  </div>
 
-<h2 class="section-label home__label">Activities near you</h2>
+  <div
+    class="home-map"
+    data-controller="map"
+    data-action="activity:focus@window->map#focusActivity"
+    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-user-location-value="<%= @user_location.to_json %>">
+  </div>
+</section>
 
-<div class="home__feed">
-  <% if @events.any? %>
-    <% @events.each do |event| %>
-      <%= render "events/activity_card", event: event %>
+<section class="home-section">
+  <div class="home-section__head">
+    <h2 class="section-label">Something different</h2>
+  </div>
+
+  <div class="home__feed">
+    <% if @different_events.any? %>
+      <% @different_events.each do |event| %>
+        <%= render "events/activity_card", event: event, show_map_button: true %>
+      <% end %>
+    <% else %>
+      <p class="empty-state">Nothing new to suggest yet.</p>
     <% end %>
-  <% else %>
-    <p class="empty-state">No activity nearby.</p>
-  <% end %>
-</div>
+  </div>
+</section>

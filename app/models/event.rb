@@ -13,7 +13,7 @@ class Event < ApplicationRecord
   validates :event_date, presence: true
 
   geocoded_by :location,
-              params: { country: "fr" }
+              params: { country: "fr,be" }
 
   after_validation :geocode, if: :will_save_change_to_location?
 end
