@@ -23,7 +23,7 @@
     <%# `required: true` is explicit: `belongs_to :activity` registers no presence validator
         that simple_form can introspect, so it would otherwise render as optional. %>
     <%= f.association :activity,
-                      collection: Activity.order(:name),
+                      collection: current_user.profile.activities,
                       label_method: :name,
                       required: true,
                       prompt: "Pick an activity" %>
