@@ -95,6 +95,20 @@
     </div>
   </section>
 
+  <% if @event.latitude.present? && @event.longitude.present? %>
+  <section class="detail-block">
+    <h2 class="section-label">Location</h2>
+
+    <div
+      class="event-show-map"
+      data-controller="event-map"
+      data-event-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+      data-event-map-latitude-value="<%= @event.latitude.round(2) %>"
+      data-event-map-longitude-value="<%= @event.longitude.round(2) %>">
+    </div>
+  </section>
+<% end %>
+
   <%# Si le user est connecté et qu'il n'est pas admin %>
 
   <% if user_signed_in? == false %>

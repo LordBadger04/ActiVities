@@ -85,3 +85,63 @@
   font-weight: 500;
   color: $ink-muted;
 }
+
+.activity-card-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background: $surface;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+}
+
+.activity-card {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  text-decoration: none;
+}
+
+.activity-card__body {
+  gap: 16px;
+}
+
+.activity-card-infos {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.activity-card__going {
+  flex: 0 0 auto;
+}
+
+.activity-card__map-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  width: 100%;
+  min-height: 44px;
+
+  border: 0;
+  border-top: 1px solid $line;
+
+  background: $primary-tint;
+  color: $primary;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background .15s ease;
+
+  &:hover {
+    background: darken($primary-tint, 3%);
+  }
+}
