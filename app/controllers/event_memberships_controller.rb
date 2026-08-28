@@ -8,7 +8,7 @@ class EventMembershipsController < ApplicationController
     @event_membership = @event.event_memberships.new(user: current_user, is_admin: false, status: "Pending")
     if @event_membership.save!
       @chat = @event.chat
-      @message = @chat.messages.create(content: "#{current_user.profile.username} sent a request to join your activity",
+      @message = @chat.messages.create(content: current_user.profile.username,
                                        user: current_user)
       redirect_to event_path(@event)
     else
@@ -17,7 +17,7 @@ class EventMembershipsController < ApplicationController
   end
 
   def edit
-    @event = Event.find(params[:id])
+    @event = Event.find(params[:event_id])
     @event_membership = EventMembership.find(params[:id])
   end
 

@@ -33,13 +33,14 @@
 
   <ol class="chat__thread">
     <% @chat.messages.order(:created_at).each do |message| %>
-    <% request = "#{message.user.profile.username} sent a request to join your activity" %>
+    <% request = message.user.profile.username %>
       <% sent = message.user_id == current_user.id %>
       <% if message.content == request %>
+
       <% unless sent %>
         <%= link_to edit_event_event_membership_path(@current_user_event_membership) do %>
           <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
-            <%= "#{message.content}, tap here to accept their request" %>
+            <p><strong><%= message.content %></strong>  sent a request to join your activity, tap here to accept their request</p>
           </li>
         <% end %>
       <% else %>

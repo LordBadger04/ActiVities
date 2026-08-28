@@ -1,10 +1,9 @@
 class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index show]
   def index
-    @events = Event.all
-
-    if params[:latitude].present? &&
-      params[:longitude].present?
+    filtered_activities = current_user.profile.user_activities.map(&:activity)
+    @events = Event.where(activity: filtered_activities)
+    if params[:latitude].present? && params[:longitude].present?
 
       user_coordinates = [
         params[:latitude].to_f,
@@ -35,7 +34,7 @@ class EventsController < ApplicationController
 
     if params[:genre].present?
       @events = @events.joins(:activity)
-                      .where(activities: { genre: params[:genre] })
+                       .where(activities: { genre: params[:genre] })
     end
 
     if user_signed_in? && current_user.profile.present?
@@ -55,7 +54,7 @@ class EventsController < ApplicationController
 
     @current_user_event_membership =
       EventMembership.find_by(user: current_user, event: @event)
-    
+
 
     if params[:latitude].present? &&
       params[:longitude].present? &&
@@ -83,6 +82,7 @@ class EventsController < ApplicationController
       @chat = Chat.new
       @chat.event = @event
       render :new, status: :unprocessable_entity unless @chat.save!
+      @launch_message = @chat.messages.create(user: current_user, content: "You've created the event", chat: @chat)
       redirect_to event_path(@event)
     else
       render :new, status: :unprocessable_entity
