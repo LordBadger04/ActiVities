@@ -5,7 +5,8 @@
       latitude: params[:latitude],
       longitude: params[:longitude]
     ),
-  class: "activity-card" do %>
+  data: { switch_btn_target: "events#{event.status}"},
+  class: "activity-card #{"event-hidden" if event.status == "Canceled"}" do %>
   <span class="activity-card__body">
     <div class="activity-card-infos">
       <span class="activity-card__title"><%= event.title %></span>

@@ -75,6 +75,7 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
+    @event.status = "Coming"
     @event.user = current_user
     if @event.save!
       @event_membership = @event.event_memberships.create(user: current_user, is_admin: true, status: "Accepted")
