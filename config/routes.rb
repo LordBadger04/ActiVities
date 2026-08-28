@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :events, except: [ :delete ] do
+  resources :events, except: [ :destroy ] do
     member do
       get :cancel
     end
