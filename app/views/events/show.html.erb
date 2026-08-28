@@ -106,6 +106,6 @@
     <%# submit will fail validation until the controller sets it from current_user. %>
     <%= link_to "Send a request", event_event_memberships_path(@event) , class: "btn-cta", data: { turbo_method: :post } %>
   <% elsif @current_user_event_membership.is_admin %>
-    <%= link_to "Cancel this activity", cancel_event_path(@event), class: "btn-cta btn-delete" %>
+    <%= link_to "Cancel this activity", cancel_event_path(@event), class: "btn-cta btn-delete", data: { turbo_method: :patch } %>
   <% end %>
 </article>

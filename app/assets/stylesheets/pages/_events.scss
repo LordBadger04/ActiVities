@@ -7,11 +7,11 @@
   display: flex;
   flex-direction: column;
   gap: 29px;
-  margin-top: 35px;
+  margin-top: 1em;
 }
 
 .events-filter {
-  margin-top: 24px;
+
   width: 100%;
 }
 
@@ -93,3 +93,6 @@
   }
 }
 
+.event-hidden {
+  display: none;
+}
