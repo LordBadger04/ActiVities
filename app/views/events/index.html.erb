@@ -1,7 +1,7 @@
 <%# Activities — Figma 1:227. Activities face of the Buddies|Activities toggle. %>
 <% content_for :title, "Open Activities" %>
-
-<div class="events-filter">
+<div class="index-container" data-controller="switch-btn">
+  <div class="events-filter">
   <%= form_with url: events_path,
                 method: :get,
                 class: "events-filter__form",
@@ -58,4 +58,6 @@
   <% else %>
     <p class="empty-state">No open activity right now.</p>
   <% end %>
+</div>
+
 </div>

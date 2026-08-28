@@ -6,7 +6,7 @@
 .switch-container{
   margin: 0 auto;
   width: 90%;
-  margin-top: 1em;
+  margin-top: 2em;
   background-color: #F1F1F1;
 }
  #switch-out-shape{
@@ -34,14 +34,14 @@
  }
 
 #switch-moving-shape{
-  width: 46%;
-  height: calc(var(--out-height) * 0.8);
+  width: 50%;
+  height: var(--out-height);
   position: absolute;
-  top: calc((var(--out-height) * 0.2)/2);
-  right: 52%;
+  top: 0;
+  right: 50%;
   z-index: 1;
   background-color: #0F6E4E;
-  border-radius: calc(var(--out-radius)*0.8);
+  border-radius: var(--out-radius);
   transition: all 0.4s ease;
 }
 
