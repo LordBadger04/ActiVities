@@ -74,7 +74,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
+    @event = Event.new(event_params, status: "Comming")
     @event.user = current_user
     if @event.save!
       @event_membership = @event.event_memberships.create(user: current_user, is_admin: true, status: "Accepted")
@@ -91,6 +91,16 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  def cancel
+    @event = Event.find(params[:id])
+    @event.status = "Canceled"
+    if @event.save!
+      redirect_to event_path(@event)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def update
     @event = Event.find(params[:id])
     @event.update(event_params)
@@ -99,12 +109,6 @@ class EventsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def destroy
-    @event = Event.find(params[:id])
-    @event.destroy
-    redirect_to events_path, status: :see_other
   end
 
   private

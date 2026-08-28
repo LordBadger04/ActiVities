@@ -2,6 +2,7 @@
 // A white sheet with 24px top corners that rises under the header and runs to the
 // bottom of the screen. It is full-bleed, so it cancels .app-main's 16px side padding.
 .detail-sheet {
+  position: relative;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -241,4 +242,20 @@
 .btn-cta:disabled {
   cursor: not-allowed;
   opacity: .5;
+}
+
+
+.canceled-banner {
+  position: absolute;
+  width: 80%;
+  top: 10%;
+  left: 10%;
+  rotate: -20deg;
+
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+  color: $red;
+  border: 5px solid $red;
+  background-color: white;
 }
