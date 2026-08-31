@@ -79,12 +79,7 @@
       </span>
     <% end %>
 
-    <%# <% if user_signed_in? %>
-      <%# <%= link_to "Go to chat", chat_path(@event.chat), class: "btn-soft" %>
-    <%# <% end %>
-
-<%# Temporary guard: some seeded events do not have a chat yet %>
-    <% if user_signed_in? && @event.chat.present? %>
+    <% if user_signed_in? %>
       <%= link_to "Go to chat", chat_path(@event.chat), class: "btn-soft" %>
     <% end %>
   </div>
