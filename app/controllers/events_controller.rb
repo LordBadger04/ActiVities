@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index show]
   def index
     filtered_activities = current_user.profile.user_activities.map(&:activity)
-    @events = Event.where(activity: filtered_activities)
+    @events = Event.where(activity: filtered_activities).where(status: "Coming")
     if params[:latitude].present? && params[:longitude].present?
 
       user_coordinates = [
@@ -115,6 +115,10 @@ class EventsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def history
+    @events = current_user.events.where(status: "Canceled")
   end
 
   private

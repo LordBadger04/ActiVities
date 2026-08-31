@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :events, except: [ :destroy ] do
+    collection do
+      get :history
+    end
     member do
       patch :cancel
     end

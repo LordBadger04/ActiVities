@@ -1,0 +1,17 @@
+<% last = chat_last_message(chat) %>
+<%= link_to chat_path(chat),
+  data: { switch_btn_target: chat.event.status == "Coming" ? "left" : "right"},
+  class: "chat-row #{ "event-hidden" unless chat.event.status == "Coming"}" do %>
+  <% avatars = chat.event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
+    <div class="chat-row__infos">
+      <h3 class="chat-row__name"><%= chat_title(chat) %></h3>
+      <p class="chat-row__preview">
+        <% if last %>
+          <%= truncate(last.content, length: 48) %>
+        <% else %>
+          No message yet
+        <% end %>
+      </p>
+    </div>
+    <%= render "shared/avatars_display", avatars: avatars %>
+<% end %>

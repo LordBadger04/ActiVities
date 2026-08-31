@@ -1,14 +1,18 @@
 // Bottom nav — Figma component set "Bottom nav" (node 38:438).
 // Pilule flottante 361x64, rayon 32, posée à 16px des bords dans une frame 393 large.
+// Écart assumé avec la maquette : la pilule est montée à 70 et le disque redescendu
+// à 80. Le couple 64/86 laissait l'action dominer la barre ; resserrer l'écart rend
+// la rangée d'onglets plus confortable au pouce sans effacer le débord du bouton.
 // Sticky plutôt que fixed : elle reste dans la colonne du shell, centrée et plafonnée
 // à 480px, que `fixed` décrocherait sur écran large.
 
 $bottom-nav-inset:    16px;
-$bottom-nav-height:   64px;
+$bottom-nav-height:   70px;
 $bottom-nav-duration: .15s;
 $bottom-nav-fade:     28px; // remontée du voile au-dessus de la pilule
 $bottom-nav-gap:      10px; // écart entre la pilule et le disque d'action
-$bottom-nav-create:   86px; // disque d'action, volontairement plus haut que la pilule
+$bottom-nav-create:   80px; // disque d'action, volontairement plus haut que la pilule
+$bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~1.8px à 80
 
 // Le socle porte le collage en bas ; la pilule n'est qu'un bloc ordinaire dedans.
 // Il ne peint plus de bloc blanc opaque — ce rectangle tranchait sur le gris de la
@@ -88,12 +92,14 @@ $bottom-nav-create:   86px; // disque d'action, volontairement plus haut que la 
 }
 
 .bottom-nav__icon {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
 }
 
+// L'icône « person-running » lit optiquement plus petit que les autres à taille
+// égale : elle garde donc son supplément, conservé au même rapport qu'avant.
 .bottom-nav__tab:nth-child(2) .bottom-nav__icon {
-  font-size: 30px;
+  font-size: 32px;
 }
 
 .bottom-nav__label {
@@ -115,21 +121,50 @@ $bottom-nav-create:   86px; // disque d'action, volontairement plus haut que la 
   }
 }
 
-// Bouton d'action, détaché de la pilule. Plus haut qu'elle (86 contre 64) : c'est
+// Bouton d'action, détaché de la pilule. Plus haut qu'elle (80 contre 70) : c'est
 // ce débord qui le sort de la rangée des onglets et le donne à lire comme un
-// bouton et non comme une quatrième destination.
-// Le fond, l'anneau et le libellé viennent de l'illustration ; le lien n'apporte
-// que la forme cliquable, l'ombre portée et les états.
+// bouton et non comme une quatrième destination. Le débord s'est réduit, mais
+// l'écart de 10px avec la pilule continue de porter la distinction.
+//
+// Le disque et l'anneau sont peints ici et non dans le fichier : au repos, anneau
+// et glyphe prennent tous deux le gris des onglets, ce qui range le bouton dans la
+// même famille visuelle que Home / Activities / Chats. Le jaune ne revient qu'au
+// survol, au focus, à l'appui, ou sur la page de création.
 .bottom-nav__create {
-  display: block;
+  display: flex;
   flex: 0 0 $bottom-nav-create;
+  align-items: center;
+  justify-content: center;
   width: $bottom-nav-create;
   height: $bottom-nav-create;
   border-radius: 50%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+  background: $primary-green;
+  // Liseré intérieur plutôt que bordure : il ne consomme pas de place, donc le
+  // masque du glyphe reste calé sur les 80px pleins du disque.
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .2),
+              inset 0 0 0 $bottom-nav-ring rgba($primary-tint, .88);
   text-decoration: none;
   transition: transform $bottom-nav-duration ease,
               box-shadow $bottom-nav-duration ease;
+
+  // `:active` est là pour le tactile, qui n'a pas de survol : sans lui, l'appui
+  // ne renverrait rien sur mobile.
+  //
+  // Le `:not()` est nécessaire, pas décoratif : `:hover` pèse (0,2,0) contre
+  // (0,1,0) pour `--active`, donc sans lui, survoler le bouton depuis la page de
+  // création repeindrait le glyphe en lime sur un disque lime — invisible.
+  &:not(.bottom-nav__create--active) {
+    &:hover,
+    &:focus-visible,
+    &:active {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .2),
+                  inset 0 0 0 $bottom-nav-ring $lime;
+
+      .bottom-nav__create-art {
+        background-color: $lime;
+      }
+    }
+  }
 
   &:hover,
   &:focus-visible {
@@ -142,17 +177,40 @@ $bottom-nav-create:   86px; // disque d'action, volontairement plus haut que la 
   }
 }
 
+// Le fichier ne porte que la forme du « + » et du libellé incurvé, en alpha ; il
+// sert de masque et la couleur vient d'ici, ce qui la rend fonction de l'état.
 .bottom-nav__create-art {
   display: block;
   width: 100%;
   height: 100%;
+  background-color: rgba($primary-tint, .88);
+  -webkit-mask-image: image-url("create-activity-glyph.png");
+          mask-image: image-url("create-activity-glyph.png");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  transition: background-color $bottom-nav-duration ease;
 }
 
-// L'illustration porte déjà un anneau lime en permanence : l'état courant ne peut
-// pas se marquer dessus sans se confondre avec lui. Il se pose donc en halo, à
-// l'extérieur du disque.
+// Page de création ouverte : le bouton reprend exactement le traitement des onglets
+// actifs — la surface passe au lime, le glyphe à l'encre. C'est ce couplage qui rend
+// l'encre lisible : sur le disque vert du repos elle ne donnerait que 2.6:1, contre
+// 13:1 sur le lime.
+//
+// Le halo extérieur a disparu avec cette bascule. Il datait du temps où le disque
+// restait vert en toutes circonstances ; un halo lime autour d'un disque lime ne
+// marque plus rien.
 .bottom-nav__create--active {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .2), 0 0 0 4px rgba($lime, .4);
+  background: $lime;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .2),
+              inset 0 0 0 $bottom-nav-ring $lime;
+
+  .bottom-nav__create-art {
+    background-color: $ink;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
