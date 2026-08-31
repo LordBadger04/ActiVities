@@ -1,6 +1,7 @@
 class EventMembershipsController < ApplicationController
   def index
-    @event_memberships = EventMembership.all
+    @event = Event.find(params[:event_id])
+    @event_memberships = @event.event_memberships
   end
 
   def create
@@ -18,16 +19,19 @@ class EventMembershipsController < ApplicationController
 
   def edit
     @event = Event.find(params[:event_id])
-    @event_membership = EventMembership.find(params[:id])
+    @event_membership = @event.event_memberships.find(params[:id])
   end
 
   def update
     @event = Event.find(params[:event_id])
-    @event_membership = EventMembership.update(event_membership_params)
-    if @event_membership.save!
-      redirect_to event_path(@event)
-    else
-      render "events/show", status: :unprocessable_entity
-    end
+    @event_membership = @event.event_memberships.find(params[:id])
+    @event_membership.update(event_membership_params)
+    redirect_to event_path(@event)
+  end
+
+  private
+
+  def event_membership_params
+    params.require(:event_membership).permit(:is_admin, :status)
   end
 end

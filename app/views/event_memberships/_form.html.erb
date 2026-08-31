@@ -1,0 +1,6 @@
+
+<%= simple_form_for [event, event_membership] do |f| %>
+  <%= f.input :status, collection: ["Accepted", "Denied"] %>
+  <%= f.input :is_admin, label: "Make them an admin" %>
+  <%= f.submit %>
+<% end %>
