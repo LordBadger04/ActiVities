@@ -1,0 +1,10 @@
+<% going = event.event_memberships.size %>
+
+      <div class="activity-card__going">
+        <% if going.positive? %>
+        <% avatars = event.users.where.not(id: event.user_id).map { |member| member.profile&.photo&.key } %>
+        <%= render "shared/avatars_display", avatars: avatars %>
+        <% else %>
+          <div class="activity-card__going-count">Be the first to join</div>
+        <% end %>
+      </div>

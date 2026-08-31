@@ -1,8 +1,6 @@
 class ChatsController < ApplicationController
   def index
-    @chats = current_user.events.map do |event|
-      event.chat
-    end
+    @chats = current_user.chats
   end
 
   def show

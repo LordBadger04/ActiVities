@@ -1,6 +1,5 @@
 <div class="chat-row__participants">
-  <%# `photo.key` est nil tant qu'aucune image n'est attachee, et cl_image_tag
-      leve alors un TypeError — d'ou le compact. %>
+  <%# `photo.key` est nil tant qu'aucune image n'est attachee, et cl_image_tag leve alors un TypeError — d'ou le compact. %>
   <% avatars.compact.each do |avatar| %>
     <%= cl_image_tag avatar, class: "avatar-bordered " %>
   <% end %>

@@ -1,1 +1,10 @@
-<h1>Edit event</h1>
+<h1>Edit activity</h1>
+
+<%= simple_form_for @event, html: { class: "event-form" } do |f| %>
+  <%= render "event_form", f: f %>
+  <div class="form-actions">
+    <%= f.button :submit, "Update activity" %>
+    <%= link_to "Cancel this activity", cancel_event_path(@event), class: "btn-cta btn-delete", data: { turbo_method: :patch } %>
+    <%= link_to "Back", event_path(@event), class: "form-cancel" %>
+  </div>
+<% end %>

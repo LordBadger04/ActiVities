@@ -30,6 +30,7 @@
       <% if user_signed_in? %>
         <% if current_profile %>
           <li><%= link_to "My profile", profile_path(current_profile), class: "dropdown-item" %></li>
+          <li><%= link_to "Events history", history_events_path, class: "dropdown-item" %></li>
         <% else %>
           <li><%= link_to "Create my profile", new_profile_path, class: "dropdown-item" %></li>
         <% end %>

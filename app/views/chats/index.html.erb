@@ -1,27 +1,19 @@
 <%# Chat general — Figma 1:239. A list of conversations, one row per chat. %>
 <% content_for :title, "Chats" %>
 <h1 class="page-title chats__title">Chats</h1>
+<div class="index-container" data-controller="switch-btn">
+  
+  <%= render "shared/switch_btn", left: "Coming", right: "Passed" %>
 
-<div class="chats__list">
-  <% if @chats.any? %>
-    <% @chats.each do |chat| %>
-      <% last = chat_last_message(chat) %>
-      <%= link_to chat_path(chat), class: "chat-row" do %>
-        <% avatars = chat.event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
-          <div class="chat-row__infos">
-            <h3 class="chat-row__name"><%= chat_title(chat) %></h3>
-            <p class="chat-row__preview">
-              <% if last %>
-                <%= truncate(last.content, length: 48) %>
-              <% else %>
-                No message yet
-              <% end %>
-            </p>
-          </div>
-          <%= render "shared/avatars_display", avatars: avatars %>
+  <div class="chats__list">
+    <% if @chats.any? %>
+      <% @chats.each do |chat| %>
+
+        <%= render "chat_card", chat: chat %>
+
       <% end %>
+    <% else %>
+      <p class="empty-state">No conversation yet.</p>
     <% end %>
-  <% else %>
-    <p class="empty-state">No conversation yet.</p>
-  <% end %>
+  </div>
 </div>

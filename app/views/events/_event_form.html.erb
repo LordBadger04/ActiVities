@@ -1,0 +1,39 @@
+
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%# The maquette's own copy: the 20-character ceiling is a model validation, and
+        simple_form's :maxlength component already derives the attribute from it. %>
+    <%= f.input :title,
+                label: raw("Title <span class=\"field-note\">20 characters max</span>"),
+                maxlength: true,
+                placeholder: "Morning tennis" %>
+
+    <%# `required: true` is explicit: `belongs_to :activity` registers no presence validator
+        that simple_form can introspect, so it would otherwise render as optional. %>
+    <%= f.association :activity,
+                      collection: current_user.profile.activities,
+                      label_method: :name,
+                      required: true,
+                      prompt: "Pick an activity" %>
+
+    <%= f.input :location, placeholder: "Tennis Club Batignolles" %>
+
+    <%= f.input :event_date, as: :date, html5: true,
+                wrapper: :vertical_form, label: "Date" %>
+
+    <%# `start_date` / `end_date` are `t.time` columns. simple_form maps :time to a
+        three-dropdown multi-select; html5 + the vertical wrapper give a single time input. %>
+    <div class="field-row">
+      <%= f.input :start_date, as: :time, html5: true,
+                  wrapper: :vertical_form, label: "Start time" %>
+      <%= f.input :end_date, as: :time, html5: true,
+                  wrapper: :vertical_form, label: "End time" %>
+    </div>
+
+    <%= f.input :max_participant, label: "Max buddies", placeholder: "4" %>
+
+    <%= f.input :description,
+                as: :text,
+                placeholder: "Looking for one more player for a relaxed Saturday morning set." %>
+  </div>
