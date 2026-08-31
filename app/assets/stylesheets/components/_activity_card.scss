@@ -17,9 +17,14 @@
   flex: 0 0 108px;
   width: 108px;
   height: 108px;
+
   border-radius: 8px;
+  overflow: hidden;
+
   background: $primary-tint;
+
   object-fit: cover;
+  display: block;
 }
 
 .activity-card__body {
