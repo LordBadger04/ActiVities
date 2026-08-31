@@ -100,6 +100,7 @@
 .organizer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 
   form {
@@ -108,11 +109,8 @@
 }
 
 .organizer__avatar {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: $primary-tint;
+  display: flex;
+  align-items: center;
 }
 
 .organizer__identity {

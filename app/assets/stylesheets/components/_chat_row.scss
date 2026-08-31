@@ -49,3 +49,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.chat-row__participants {
+    display: flex;
+    gap: 0.5em;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    width: 120px;
+}

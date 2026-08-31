@@ -61,11 +61,10 @@
   <hr class="detail-sheet__divider">
 
   <div class="organizer">
-    <div class="organizer__avatar" aria-hidden="true">
-      <%= cl_image_tag avatar, class: "avatar-bordered " %>
-    </div>
 
-    <% if organizer %>
+    <div class="organizer__avatar" aria-hidden="true">
+      <%= cl_image_tag avatar, class: "avatar-bordered avatar-large" %>
+       <% if organizer %>
       <%= link_to profile_path(organizer), class: "organizer__identity" do %>
         <span class="organizer__name"><%= profile_display_name(organizer) %></span>
         <span class="organizer__role">
@@ -78,6 +77,7 @@
         <span class="organizer__role">No profile yet</span>
       </span>
     <% end %>
+    </div>
 
     <% if user_signed_in? %>
       <%= link_to "Go to chat", chat_path(@event.chat), class: "btn-soft" %>
@@ -92,7 +92,11 @@
   <section class="detail-block">
     <h2 class="section-label">Going</h2>
     <div class="detail-block__going">
-      <%= render "shared/avatars_display", avatars: avatars %>
+      <% attendees.each do |attendee| %>
+        <%= link_to edit_event_event_membership_path(@event, attendee.id), data: { turbo_frame: "modal" } do %>
+          <%= cl_image_tag attendee.user.profile.photo.key, class: "avatar-bordered avatar-large" %>
+        <% end %>
+      <% end %>
     </div>
   </section>
 

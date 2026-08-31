@@ -1,6 +1,6 @@
 
-<%= simple_form_for [event, event_membership] do |f| %>
+<%= simple_form_for [event, event_membership], html: { data: { turbo_frame: "_top" } } do |f| %>
   <%= f.input :status, collection: ["Accepted", "Denied"] %>
   <%= f.input :is_admin, label: "Make them an admin" %>
-  <%= f.submit %>
+  <%= f.submit class:"btn-cta" %>
 <% end %>

@@ -1,10 +1,15 @@
 <%= turbo_frame_tag "modal" do %>
-  <div class="block-display" data-controller="modals">
+  <div class="block-display" data-controller="modals" >
     <div class="modal">
-      <h3>Edit request</h3>
+      <%= link_to profile_path(@event_membership.user.profile), data: { turbo_frame: "_top" },
+       class: "profile_link" do %>
+        <%= cl_image_tag @event_membership.user.profile.photo.key, class: "avatar-bordered " %>
+        <span class="fs-3"><%= @event_membership.user.profile.username  %></span>
+      <% end %>
+
       <%= render "form", event: @event, event_membership: @event_membership %>
 
-      <%= link_to "Cancel", "#", data: {
+      <%= link_to "Back", "#", data: {
                                  action: "modals#close"} %>
 
     </div>

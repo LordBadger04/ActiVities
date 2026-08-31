@@ -54,11 +54,6 @@
   <div class="cta-bar">
     <% if current_profile == @profile %>
       <%= link_to "Edit my profile", edit_profile_path(@profile), class: "btn-cta" %>
-    <% else %>
-      <%# The maquette's "Send a request" has no destination: buddy requests are not routed. %>
-      <%# EventMembership is per-event and chats#create is nested under events %>
-      <%# (FRONT_BLOCKERS.md §4.2), so this stays inert until a route exists. %>
-      <button type="button" class="btn-cta" disabled aria-disabled="true">Send a request</button>
     <% end %>
   </div>
 </article>

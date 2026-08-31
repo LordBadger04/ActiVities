@@ -24,10 +24,9 @@ class EventMembershipsController < ApplicationController
   end
 
   def update
-    @event = Event.find(params[:event_id])
-    @event_membership = @event.event_memberships.find(params[:id])
+    @event_membership = EventMembership.find(params[:id])
     @event_membership.update(event_membership_params)
-    redirect_to event_path(@event)
+    redirect_to event_path(params[:event_id])
   end
 
   private
