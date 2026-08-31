@@ -31,6 +31,7 @@
   <body>
     <div class="app-shell">
       <%= render "shared/navbar" %>
+      <%= turbo_frame_tag "modal" %>
 
       <%# Devise templates are left untouched; they get the detail-sheet treatment here. %>
       <main class="app-main <%= "app-main--auth" if devise_controller? %>">

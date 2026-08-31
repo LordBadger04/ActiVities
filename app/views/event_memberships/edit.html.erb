@@ -1,1 +1,12 @@
-<h1>Edit Status</h1>
+<%= turbo_frame_tag "modal" do %>
+  <div class="block-display" data-controller="modals">
+    <div class="modal">
+      <h3>Edit request</h3>
+      <%= render "form", event: @event, event_membership: @event_membership %>
+
+      <%= link_to "Cancel", "#", data: {
+                                 action: "modals#close"} %>
+
+    </div>
+  </div>
+<% end %>
