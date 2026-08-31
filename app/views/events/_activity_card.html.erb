@@ -7,7 +7,7 @@
         latitude: params[:latitude],
         longitude: params[:longitude]
       ),
-      data: { switch_btn_target: "events#{event.event_memberships.where(user: current_user).size == 0 ? "New" : "Coming"}"},
+      data: { switch_btn_target: event.event_memberships.where(user: current_user).size == 0 ? "left" : "right"},
       class: "activity-card #{ "event-hidden" unless event.event_memberships.where(user: current_user).size == 0}" do %>
 
     <span class="activity-card__body">
