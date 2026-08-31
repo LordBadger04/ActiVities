@@ -19,9 +19,7 @@
       <% end %>
     </div>
     <% if @profile.photo.attached? && current_profile != @profile %>
-    <span class="profile-head__avatar"
-          aria-hidden="true"
-          style="background-image: url('<%= cl_image_path @profile.photo.key, crop: :fill %>')"></span>
+      <%= cl_image_tag @profile.photo.key, class: "avatar-bordered avatar-large" %>
     <% end %>
 
   </header>

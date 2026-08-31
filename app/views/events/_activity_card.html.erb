@@ -8,7 +8,7 @@
         longitude: params[:longitude]
       ),
       data: { switch_btn_target: "events#{event.status}"},
-      class: "activity-card" do %>
+      class: "activity-card #{ "event-hidden" unless event.status == "Coming"}" do %>
 
     <span class="activity-card__body">
 
@@ -46,16 +46,8 @@
         </span>
       </div>
 
-      <% going = event.event_memberships.size %>
-
-      <div class="activity-card__going">
-        <% if going.positive? %>
-          <% avatars = event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
-          <%= render "shared/avatars_display", avatars: avatars %>
-        <% else %>
-          <div class="activity-card__going-count">Be the first to join</div>
-        <% end %>
-      </div>
+      <% avatars = event.users.map { |member| member.profile&.photo&.key } %>
+      <%= render "shared/avatars_display", avatars: avatars %>
 
     </span>
   <% end %>

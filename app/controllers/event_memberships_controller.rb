@@ -9,6 +9,7 @@ class EventMembershipsController < ApplicationController
     if @event_membership.save!
       @chat = @event.chat
       @message = @chat.messages.create(content: current_user.profile.username,
+                                       request: true,
                                        user: current_user)
       redirect_to event_path(@event)
     else

@@ -35,19 +35,18 @@
     <% @chat.messages.order(:created_at).each do |message| %>
     <% request = message.user.profile.username %>
       <% sent = message.user_id == current_user.id %>
-      <% if message.content == request %>
-
-      <% unless sent %>
-        <%= link_to edit_event_event_membership_path(@current_user_event_membership) do %>
+      <% if message.request %>
+        <% unless sent %>
+          <%= link_to event_event_memberships_path(event) do %>
+            <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
+              <p><strong><%= message.content %></strong>  sent a request to join your activity, tap here to accept their request</p>
+            </li>
+          <% end %>
+        <% else %>
           <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
-            <p><strong><%= message.content %></strong>  sent a request to join your activity, tap here to accept their request</p>
+              <%= "You sent a request" %>
           </li>
         <% end %>
-      <% else %>
-        <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
-            <%= "You sent a request" %>
-        </li>
-      <% end %>
       <% else %>
 
           <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
