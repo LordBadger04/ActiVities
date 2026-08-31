@@ -5,7 +5,7 @@
     <%# The maquette's own copy: the 20-character ceiling is a model validation, and
         simple_form's :maxlength component already derives the attribute from it. %>
     <%= f.input :title,
-                label: raw("Title <span class=\"field-note\">20 characters max</span>"),
+                label: raw("Title <span class=\"field-note\">50 characters max</span>"),
                 maxlength: true,
                 placeholder: "Morning tennis" %>
 
@@ -17,7 +17,36 @@
                       required: true,
                       prompt: "Pick an activity" %>
 
-    <%= f.input :location, placeholder: "Tennis Club Batignolles" %>
+    <div
+      class="address-autocomplete"
+      data-controller="address-autocomplete"
+      data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+
+      <%= f.input :location,
+                  placeholder: "Enter the event address...",
+                  input_html: {
+                    autocomplete: "off",
+                    data: {
+                      address_autocomplete_target: "input",
+                      action: "input->address-autocomplete#search"
+                    }
+                  } %>
+
+      <%= f.hidden_field :latitude,
+                        data: {
+                          address_autocomplete_target: "latitude"
+                        } %>
+
+      <%= f.hidden_field :longitude,
+                        data: {
+                          address_autocomplete_target: "longitude"
+                        } %>
+
+      <div
+        class="address-autocomplete__results"
+        data-address-autocomplete-target="results">
+      </div>
+    </div>
 
     <%= f.input :event_date, as: :date, html5: true,
                 wrapper: :vertical_form, label: "Date" %>
@@ -31,9 +60,9 @@
                   wrapper: :vertical_form, label: "End time" %>
     </div>
 
-    <%= f.input :max_participant, label: "Max buddies", placeholder: "4" %>
+    <%= f.input :max_participant, label: "Max buddies", placeholder: "e.g. 4" %>
 
     <%= f.input :description,
                 as: :text,
-                placeholder: "Looking for one more player for a relaxed Saturday morning set." %>
+                placeholder: "Tell people what to expect from the activity..." %>
   </div>

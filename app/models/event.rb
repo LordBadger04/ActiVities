@@ -5,9 +5,9 @@ class Event < ApplicationRecord
   has_many :event_memberships, dependent: :destroy
   has_many :users, through: :event_memberships
   has_one :chat, dependent: :destroy
-  validates :title, presence: true, length: { maximum: 20 }
+  validates :title, presence: true, length: { maximum: 50 }
   validates :location, presence: true
-  validates :description, presence: true, length: { minimum: 15 }
+  validates :description, presence: true, length: { minimum: 10 }
   validates :max_participant, numericality: { greater_than: 0, only_integer: true }
   validates :start_date, presence: true
   validates :end_date, presence: true
