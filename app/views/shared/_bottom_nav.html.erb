@@ -41,15 +41,17 @@
       <% end %>
     </div>
 
-    <%# Le bouton est une illustration fournie (pastille verte, anneau lime, les deux
-        buddies et le « + »), pas une composition CSS : le texte y est déjà incurvé et
-        les personnages ne se reconstruisent pas en SVG à la main. L'image est décorative
-        — le lien porte l'intitulé — d'où l'alt vide. %>
+    <%# Le bouton se compose en trois couches pour que chacune reste pilotable par
+        CSS : le disque vert et l'anneau viennent du lien lui-même, seul le glyphe
+        (« + » et libellé incurvé) reste un fichier — le texte suit la circonférence
+        et ne se recompose pas proprement autrement. Ce fichier ne sert que de
+        masque : la couleur du glyphe vient de `background-color`, ce qui lui permet
+        de suivre l'état — gris au repos, lime au survol, encre sur la page de
+        création. Le span est purement décoratif, le lien porte l'intitulé. %>
     <%= link_to new_event_path,
                 class: "bottom-nav__create #{'bottom-nav__create--active' if creating}",
                 aria: { label: "Create an activity", current: ("page" if creating) } do %>
-      <%= image_tag "create-activity.png", alt: "",
-                    width: 86, height: 86, class: "bottom-nav__create-art" %>
+      <span class="bottom-nav__create-art" aria-hidden="true"></span>
     <% end %>
   </nav>
 </div>
