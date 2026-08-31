@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="switch-btn"
 export default class extends Controller {
-  static targets = ["movingShape", "leftShape", "rightShape", "eventsComing", "eventsCanceled"]
+  static targets = ["movingShape", "leftShape", "rightShape", "right", "left"]
 
   switch(event) {
     event.preventDefault();
@@ -17,11 +17,11 @@ export default class extends Controller {
     this.movingShapeTarget.style.right = "0%";
     this.leftShapeTarget.classList.remove("switch-selected");
     this.rightShapeTarget.classList.add("switch-selected");
-    this.eventsComingTargets.forEach(target => {
-      target.classList.add("event-hidden")
-    });
-    this.eventsCanceledTargets.forEach(target => {
+    this.rightTargets.forEach(target => {
       target.classList.remove("event-hidden")
+    });
+    this.leftTargets.forEach(target => {
+      target.classList.add("event-hidden")
     });
   }
 
@@ -29,11 +29,11 @@ export default class extends Controller {
     this.movingShapeTarget.style.right = "50%";
     this.leftShapeTarget.classList.add("switch-selected");
     this.rightShapeTarget.classList.remove("switch-selected");
-    this.eventsComingTargets.forEach(target => {
-      target.classList.remove("event-hidden")
-    });
-    this.eventsCanceledTargets.forEach(target => {
-      target.classList.add("event-hidden")
-    });
+    this.rightTargets.forEach(target => {
+          target.classList.add("event-hidden")
+        });
+        this.leftTargets.forEach(target => {
+          target.classList.remove("event-hidden")
+        });
   }
 }

@@ -5,7 +5,9 @@
 
 <div class="chat">
   <header class="chat__head">
-    <span class="chat__head-avatar" aria-hidden="true"></span>
+    <%= link_to chats_path, class: "chat-link-back" do %>
+      <i class="fa-regular fa-circle-left"></i>
+    <% end %>
     <span class="chat__head-name"><%= chat_title(@chat) %></span>
   </header>
 
