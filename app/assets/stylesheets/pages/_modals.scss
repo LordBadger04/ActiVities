@@ -1,7 +1,9 @@
 .modal {
-  background-color: rgb(241, 240, 240);
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+
   border-radius: 10px;
-  z-index: 2;
+  z-index: 11;
   display: inline-block;
   // margin: 0 auto;
   top: 30%;
@@ -10,10 +12,24 @@
   position: fixed;
   padding: 1em 3em;
   width: 380px;
-  border: 2px solid red;
   h3 {
     margin-bottom: 1em;
     text-decoration: underline;
+  }
+  select {
+    border: 2px solid #0f6e4e;
+  }
+  a {
+    text-decoration: none;
+  }
+  .form-check{
+    margin: 0 2em;
+  }
+  .profile_link{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin: 1em auto 2em;
   }
 }
 
@@ -29,7 +45,6 @@
   height: 100%;
   backdrop-filter: blur(2px);
   display: flex;
-  border: 2px solid green;
   flex-direction: column;
   justify-content: center;
   align-items: center;

@@ -88,7 +88,7 @@ module ApplicationHelper
   end
 
   def event_attendees(event)
-    event.event_memberships.includes(:user)
+    event.event_memberships.where.not(id: @event.user_id)
   end
 
   # Chats hang off an event (`Chat belongs_to :event`), so the conversation is named
