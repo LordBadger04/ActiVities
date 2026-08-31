@@ -8,13 +8,22 @@
 }
 .avatar-bordered {
   width: 40px;
+  height: 40px;
+  object-fit: cover;
   border-radius: 50%;
   box-shadow: 0 0 0 3px $yellow;
   border: white 1px solid;
+  margin: 2px;
 }
 .avatar-square {
   width: 40px;
   border-radius: 0px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   border: white 1px solid;
+}
+
+.avatar-large{
+  width: 60px;
+  height: 60px;
+  margin-right: 1em;
 }
