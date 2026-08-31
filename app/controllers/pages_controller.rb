@@ -80,7 +80,8 @@ class PagesController < ApplicationController
         id: event.id,
         title: event.title,
         latitude: event.latitude.round(2),
-        longitude: event.longitude.round(2)
+        longitude: event.longitude.round(2),
+        url: Rails.application.routes.url_helpers.event_path(event)
       }
     end
   end

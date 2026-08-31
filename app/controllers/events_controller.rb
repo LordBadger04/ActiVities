@@ -55,6 +55,13 @@ class EventsController < ApplicationController
     @current_user_event_membership =
       EventMembership.find_by(user: current_user, event: @event)
 
+    @can_view_exact_location =
+      user_signed_in? &&
+      (
+        @event.user == current_user ||
+        @current_user_event_membership&.is_admin ||
+        @current_user_event_membership&.status == "Accepted"
+      )
 
     if params[:latitude].present? &&
       params[:longitude].present? &&

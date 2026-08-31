@@ -79,6 +79,7 @@ export default class extends Controller {
       properties: {
         id: marker.id,
         title: marker.title,
+        url: marker.url,
       },
     }));
 
@@ -109,7 +110,15 @@ export default class extends Controller {
       new mapboxgl.Popup()
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
-          `<strong>${feature.properties.title}</strong><br>Approximate area`,
+          `
+        <div class="map-popup">
+          <strong>${feature.properties.title}</strong>
+          <span>Approximate area</span>
+          <a href="${feature.properties.url}" class="map-popup__link">
+            View activity
+          </a>
+        </div>
+      `,
         )
         .addTo(this.map);
     });
@@ -133,6 +142,24 @@ export default class extends Controller {
       ],
       zoom: 8,
       essential: true,
+    });
+  }
+
+  focusUser() {
+    if (!this.hasUserLocationValue) return;
+
+    this.map.flyTo({
+      center: [
+        this.userLocationValue.longitude,
+        this.userLocationValue.latitude,
+      ],
+      zoom: 8,
+      essential: true,
+    });
+
+    this.element.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
     });
   }
 

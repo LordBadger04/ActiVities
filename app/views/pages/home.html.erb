@@ -26,17 +26,45 @@
 <section class="home-section">
   <div class="home-section__head">
     <h2 class="section-label">Around you</h2>
+
+    <% if @user_location.present? %>
+      <button
+        type="button"
+        class="home-map__location-btn"
+        data-controller="map-focus"
+        data-action="click->map-focus#user">
+        <i class="fa-solid fa-location-crosshairs"></i>
+        My location
+      </button>
+    <% end %>
   </div>
 
   <div
     class="home-map"
     data-controller="map"
-    data-action="activity:focus@window->map#focusActivity"
+    data-action="
+      activity:focus@window->map#focusActivity
+      user:focus@window->map#focusUser
+    "
     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
     data-map-markers-value="<%= @markers.to_json %>"
     data-map-user-location-value="<%= @user_location.to_json %>">
   </div>
+
+  <div class="home-map__legend">
+    <span class="home-map__legend-item">
+      <span class="home-map__legend-dot home-map__legend-dot--user"></span>
+      Your area
+    </span>
+
+    <span class="home-map__legend-item">
+      <span class="home-map__legend-dot home-map__legend-dot--activity"></span>
+      Approximate activity area
+    </span>
+  </div>
 </section>
+
+
 
 <section class="home-section">
   <div class="home-section__head">

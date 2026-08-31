@@ -14,4 +14,8 @@ export default class extends Controller {
       }),
     );
   }
+
+  user() {
+    window.dispatchEvent(new CustomEvent("user:focus"));
+  }
 }

@@ -12,6 +12,12 @@
 
     <span class="activity-card__body">
 
+    <% if event.activity&.photo&.attached? %>
+      <%= image_tag event.activity.photo,
+                    alt: event.activity.name,
+                    class: "activity-card__thumb" %>
+    <% end %>
+
       <div class="activity-card-infos">
         <span class="activity-card__title"><%= event.title %></span>
 

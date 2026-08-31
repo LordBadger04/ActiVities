@@ -7,9 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-puts "Cleaning activities..."
-
-Activity.destroy_all
 
 puts "Creating activities..."
 
@@ -44,7 +41,6 @@ activities = [
   { name: "Brunch", genre: "Relaxing" },
   { name: "Board Games", genre: "Relaxing" },
   { name: "Meditation", genre: "Relaxing" },
-  { name: "Spa", genre: "Relaxing" },
   { name: "Walk", genre: "Relaxing" },
   { name: "Beach Day", genre: "Relaxing" },
   { name: "Cooking", genre: "Relaxing" },
@@ -52,7 +48,74 @@ activities = [
 ]
 
 activities.each do |activity|
-  Activity.create!(activity)
+  record = Activity.find_or_initialize_by(name: activity[:name])
+  record.genre = activity[:genre]
+  record.save!
 end
 
 puts "#{Activity.count} activities created!"
+
+puts "Attaching activity images..."
+
+activity_images = {
+  # Sport
+  "Football" => "sport/football.png",
+  "Basketball" => "sport/basketball.png",
+  "Tennis" => "sport/tennis.png",
+  "Running" => "sport/running.png",
+  "Cycling" => "sport/cycling.png",
+  "Swimming" => "sport/swimming.png",
+  "Hiking" => "sport/hiking.png",
+  "Climbing" => "sport/climbing.png",
+  "Padel" => "sport/padel.png",
+  "Yoga" => "sport/yoga.png",
+
+  # Culture
+  "Cinema" => "culture/cinema.png",
+  "Museum" => "culture/museum.png",
+  "Exhibition" => "culture/exhibition.png",
+  "Theater" => "culture/theater.png",
+  "Concert" => "culture/concert.png",
+  "Photography" => "culture/photography.png",
+  "Book Club" => "culture/book_club.png",
+  "Street Art" => "culture/street_art.png",
+  "History Tour" => "culture/history_tour.png",
+  "Creative Workshop" => "culture/creative_workshop.png",
+
+  # Relaxing
+  "Picnic" => "relaxing/picnic.png",
+  "Coffee" => "relaxing/coffee.png",
+  "Brunch" => "relaxing/brunch.png",
+  "Board Games" => "relaxing/board_games.png",
+  "Meditation" => "relaxing/meditation.png",
+  "Walk" => "relaxing/walk.png",
+  "Beach Day" => "relaxing/beach_day.png",
+  "Cooking" => "relaxing/cooking.png",
+  "Gaming" => "relaxing/gaming.png"
+}
+
+activity_images.each do |activity_name, image_path|
+  activity = Activity.find_by(name: activity_name)
+
+  next if activity.photo.attached?
+
+  full_path = Rails.root.join(
+    "app/assets/images/activities",
+    image_path
+  )
+
+  unless File.exist?(full_path)
+    puts "⚠️ Missing image: #{image_path}"
+    next
+  end
+
+  activity.photo.attach(
+    io: File.open(full_path),
+    filename: File.basename(full_path),
+    content_type: "image/png"
+  )
+
+  puts "✅ #{activity_name}"
+end
+
+puts "Activity images attached!"
