@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="switch-btn"
 export default class extends Controller {
-  static targets = ["movingShape", "leftShape", "rightShape", "eventsComing", "eventsCanceled"]
+  static targets = ["movingShape", "leftShape", "rightShape", "eventsComing", "eventsNew"]
 
   switch(event) {
     event.preventDefault();
@@ -18,10 +18,10 @@ export default class extends Controller {
     this.leftShapeTarget.classList.remove("switch-selected");
     this.rightShapeTarget.classList.add("switch-selected");
     this.eventsComingTargets.forEach(target => {
-      target.classList.add("event-hidden")
-    });
-    this.eventsCanceledTargets.forEach(target => {
       target.classList.remove("event-hidden")
+    });
+    this.eventsNewTargets.forEach(target => {
+      target.classList.add("event-hidden")
     });
   }
 
@@ -30,10 +30,10 @@ export default class extends Controller {
     this.leftShapeTarget.classList.add("switch-selected");
     this.rightShapeTarget.classList.remove("switch-selected");
     this.eventsComingTargets.forEach(target => {
-      target.classList.remove("event-hidden")
-    });
-    this.eventsCanceledTargets.forEach(target => {
-      target.classList.add("event-hidden")
-    });
+          target.classList.add("event-hidden")
+        });
+        this.eventsNewTargets.forEach(target => {
+          target.classList.remove("event-hidden")
+        });
   }
 }

@@ -69,5 +69,18 @@
 }
 
 .btn-request-sent {
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: $lime;
+  font-size: 16px;
+  font-weight: 600;
+  color: $ink;
+  text-align: center;
+  text-decoration: none;
 }

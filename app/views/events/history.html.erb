@@ -1,0 +1,75 @@
+<div class="index-container">
+  <div class="events__list">
+    <% if @events.any? %>
+      <% @events.each do |event| %>
+
+  <div class="activity-card-wrapper">
+
+    <%= link_to event_path(
+          event,
+          latitude: params[:latitude],
+          longitude: params[:longitude]
+        ),
+        class: "activity-card" do %>
+
+      <span class="activity-card__body">
+        <div class="activity-card-infos">
+          <span class="activity-card__title"><%= event.title %></span>
+
+          <span class="activity-card__meta">
+            <% if event.activity %>
+              <span class="activity-card__meta-item">
+                <i class="fa-solid fa-tag"></i>
+                <%= event.activity.name %>
+              </span>
+            <% end %>
+
+            <span class="activity-card__meta-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <%= event.location %>
+            </span>
+          </span>
+
+          <span class="activity-card__meta">
+            <% if event.event_date %>
+              <span class="activity-card__meta-item activity-card__meta-item--date">
+                <i class="fa-regular fa-calendar"></i>
+                <%= event.event_date.strftime("%d/%m/%Y") %>
+              </span>
+            <% end %>
+
+            <% if @distances&.dig(event.id) %>
+              <span class="activity-card__meta-item activity-card__meta-item--distance">
+                <i class="fa-solid fa-route"></i>
+                <%= @distances[event.id].round(1) %> km
+              </span>
+            <% end %>
+          </span>
+        </div>
+
+        <% avatars = event.users.map { |member| member.profile&.photo&.key } %>
+        <%= render "shared/avatars_display", avatars: avatars %>
+
+      </span>
+    <% end %>
+
+    <% if local_assigns[:show_map_button] %>
+      <button
+        type="button"
+        class="activity-card__map-btn"
+        data-controller="map-focus"
+        data-action="click->map-focus#focus"
+        data-map-focus-activity-id-value="<%= event.id %>">
+        <i class="fa-solid fa-location-dot"></i>
+        View on map
+      </button>
+    <% end %>
+
+  </div>
+
+      <% end %>
+    <% else %>
+      <p class="empty-state">No history right now.</p>
+    <% end %>
+  </div>
+</div>

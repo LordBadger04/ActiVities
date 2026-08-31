@@ -4,8 +4,8 @@ class User < ApplicationRecord
 
   has_many :messages
   has_many :chats, through: :messages
-  has_many :events
   has_many :event_memberships
+  has_many :events, through: :event_memberships
   has_many :user_activities
   has_many :activities, through: :user_activities
   has_one :profile, dependent: :destroy
