@@ -1,18 +1,20 @@
 // Bottom nav — Figma component set "Bottom nav" (node 38:438).
 // Pilule flottante 361x64, rayon 32, posée à 16px des bords dans une frame 393 large.
-// Écart assumé avec la maquette : la pilule est montée à 70 et le disque redescendu
-// à 80. Le couple 64/86 laissait l'action dominer la barre ; resserrer l'écart rend
-// la rangée d'onglets plus confortable au pouce sans effacer le débord du bouton.
+// Écart assumé avec la maquette : la pilule est montée à 82 et le disque redescendu
+// à 80. Le rapport s'est inversé — l'action ne domine plus la barre, c'est la rangée
+// d'onglets qui prime, au bénéfice du confort au pouce.
 // Sticky plutôt que fixed : elle reste dans la colonne du shell, centrée et plafonnée
 // à 480px, que `fixed` décrocherait sur écran large.
 
 $bottom-nav-inset:    16px;
-$bottom-nav-height:   70px;
+$bottom-nav-height:   82px;
 $bottom-nav-duration: .15s;
 $bottom-nav-fade:     28px; // remontée du voile au-dessus de la pilule
 $bottom-nav-gap:      10px; // écart entre la pilule et le disque d'action
-$bottom-nav-create:   80px; // disque d'action, volontairement plus haut que la pilule
+$bottom-nav-create:   80px; // disque d'action, désormais 2px plus bas que la pilule
 $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~1.8px à 80
+$bottom-nav-halo:     3px;  // rond vert ceinturant le disque d'action
+$bottom-nav-shadow:   0 6px 20px rgba(0, 0, 0, .2); // portée commune pilule + disque
 
 // Le socle porte le collage en bas ; la pilule n'est qu'un bloc ordinaire dedans.
 // Il ne peint plus de bloc blanc opaque — ce rectangle tranchait sur le gris de la
@@ -55,7 +57,7 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
   height: $bottom-nav-height;
   border-radius: $bottom-nav-height / 2;
   background: $primary-green;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+  box-shadow: $bottom-nav-shadow;
 }
 
 // Les trois onglets se partagent la largeur à parts égales (flex: 1 0 0 dans la maquette).
@@ -68,7 +70,7 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
   justify-content: center;
   gap: 5px;
   height: 100%;
-  // #e3f2ea à 88 % : 0.72 ne passait pas le seuil AA de 4.5:1 sur le vert à 11px.
+  // #e3f2ea à 88 % : 4.58:1 sur le vert, soit AA tout juste tenu à 14px.
   color: rgba($primary-tint, .88);
   text-decoration: none;
 
@@ -79,37 +81,36 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
   }
 }
 
-// Pastille d'icône : 56x32 arrondie, remplie de lime sur le seul onglet actif.
+// Pastille d'icône, remplie de lime sur le seul onglet actif. Partie de 56x32, elle
+// est à 60x42 : 3px gagnés au-dessus et en dessous pour loger des icônes de 30px
+// sans qu'elles touchent les bords, comme le faisait « person-running ».
 .bottom-nav__slot {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 32px;
+  width: 60px;
+  height: 42px;
   border-radius: 999px;
   background: transparent;
-  transition: background-color $bottom-nav-duration ease;
+  transition: background-color $bottom-nav-duration ease,
+              transform $bottom-nav-duration ease;
 }
 
 .bottom-nav__icon {
-  font-size: 20px;
+  font-size: 30px;
   line-height: 1;
 }
 
-// L'icône « person-running » lit optiquement plus petit que les autres à taille
-// égale : elle garde donc son supplément, conservé au même rapport qu'avant.
-.bottom-nav__tab:nth-child(2) .bottom-nav__icon {
-  font-size: 32px;
-}
-
 .bottom-nav__label {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1;
 }
 
 // Survol / focus d'un onglet inactif : la pastille s'amorce sans atteindre le plein lime,
-// ce qui garde l'onglet actif lisible d'un coup d'œil.
+// ce qui garde l'onglet actif lisible d'un coup d'œil, et se dilate légèrement.
+// L'agrandissement passe par `transform` et non par la hauteur : une pastille qui
+// changerait de taille en flux ferait sauter le libellé sous elle.
 .bottom-nav__tab:not(.bottom-nav__tab--active) {
   &:hover,
   &:focus-visible {
@@ -117,31 +118,35 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
 
     .bottom-nav__slot {
       background: rgba($lime, .16);
+      transform: scale(1.08);
     }
   }
 }
 
-// Bouton d'action, détaché de la pilule. Plus haut qu'elle (80 contre 70) : c'est
-// ce débord qui le sort de la rangée des onglets et le donne à lire comme un
-// bouton et non comme une quatrième destination. Le débord s'est réduit, mais
-// l'écart de 10px avec la pilule continue de porter la distinction.
+// Bouton d'action, détaché de la pilule. Il n'est plus le plus haut des deux — 80
+// contre 82 — donc son débord en flux a disparu. Ce qui le sort encore de la rangée :
+// l'écart de 10px, sa forme ronde contre une pilule, et son rond vert extérieur qui
+// le fait dépasser de 2px de part et d'autre à l'œil.
 //
 // Le disque et l'anneau sont peints ici et non dans le fichier : au repos, anneau
 // et glyphe prennent tous deux le gris des onglets, ce qui range le bouton dans la
 // même famille visuelle que Home / Activities / Chats. Le jaune ne revient qu'au
 // survol, au focus, à l'appui, ou sur la page de création.
+// Le glyphe occupe 100% du disque, donc rien n'a à être centré ici : `display: block`
+// suffit, le flex ne servait à rien.
 .bottom-nav__create {
-  display: flex;
+  display: block;
   flex: 0 0 $bottom-nav-create;
-  align-items: center;
-  justify-content: center;
   width: $bottom-nav-create;
   height: $bottom-nav-create;
   border-radius: 50%;
   background: $primary-green;
-  // Liseré intérieur plutôt que bordure : il ne consomme pas de place, donc le
-  // masque du glyphe reste calé sur les 80px pleins du disque.
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .2),
+  // Deux anneaux, tous deux hors flux : le liseré lime à l'intérieur pour que le
+  // masque reste calé sur les 80px pleins, le rond vert à l'extérieur pour donner
+  // un bord au disque — surtout sur la page de création, où il passe au lime et
+  // ne se détache plus du gris de la page (1.11:1).
+  box-shadow: $bottom-nav-shadow,
+              0 0 0 $bottom-nav-halo $primary-green,
               inset 0 0 0 $bottom-nav-ring rgba($primary-tint, .88);
   text-decoration: none;
   transition: transform $bottom-nav-duration ease,
@@ -157,7 +162,8 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
     &:hover,
     &:focus-visible,
     &:active {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, .2),
+      box-shadow: $bottom-nav-shadow,
+                  0 0 0 $bottom-nav-halo $primary-green,
                   inset 0 0 0 $bottom-nav-ring $lime;
 
       .bottom-nav__create-art {
@@ -205,22 +211,12 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
 // marque plus rien.
 .bottom-nav__create--active {
   background: $lime;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .2),
+  box-shadow: $bottom-nav-shadow,
+              0 0 0 $bottom-nav-halo $primary-green,
               inset 0 0 0 $bottom-nav-ring $lime;
 
   .bottom-nav__create-art {
     background-color: $ink;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bottom-nav__create {
-    transition: none;
-
-    &:hover,
-    &:focus-visible {
-      transform: none;
-    }
   }
 }
 
@@ -231,7 +227,7 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
     background: $lime;
   }
 
-  // Icône sombre sur pastille lime — le couple #14231c / #d9f24a donne 11.8:1.
+  // Icône sombre sur pastille lime — le couple #14231c / #d9f24a donne 13:1.
   .bottom-nav__icon {
     color: $ink;
   }
@@ -241,8 +237,28 @@ $bottom-nav-ring:     2px;  // anneau lime : 26/1150 dans l'illustration, soit ~
   }
 }
 
+// Un seul bloc pour toute la barre : il y en avait deux, séparés par une règle
+// sans rapport.
 @media (prefers-reduced-motion: reduce) {
   .bottom-nav__slot {
     transition: none;
+  }
+
+  .bottom-nav__tab:not(.bottom-nav__tab--active) {
+    &:hover,
+    &:focus-visible {
+      .bottom-nav__slot {
+        transform: none;
+      }
+    }
+  }
+
+  .bottom-nav__create {
+    transition: none;
+
+    &:hover,
+    &:focus-visible {
+      transform: none;
+    }
   }
 }
