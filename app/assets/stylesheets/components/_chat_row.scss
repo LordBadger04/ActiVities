@@ -83,14 +83,71 @@
   color: $ink-muted;
 }
 
-// Organisateur de l'event, sur la ligne d'accent de la maquette.
+// Organisateur : sa pastille puis son nom, sur la ligne d'accent de la maquette.
 .chat-row__host {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.chat-row__host-name {
   overflow: hidden;
   font-size: 12px;
   font-weight: 500;
   color: $primary-green;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+// Pastille de visage, commune à l'organisateur et aux participants : photo
+// Cloudinary quand elle existe, initiale sinon — jamais un rond vide.
+.chat-row__face {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 22px;
+  height: 22px;
+  border: 2px solid $surface;
+  border-radius: 50%;
+  background: $primary-tint;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: $primary-green;
+}
+
+.chat-row__face--host {
+  width: 20px;
+  height: 20px;
+  border-width: 0;
+  font-size: 10px;
+}
+
+.chat-row__face--more {
+  background: $line;
+  font-size: 9px;
+  color: $ink-muted;
+}
+
+.chat-row__face-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Participants acceptés, en pile chevauchante pour tenir dans la hauteur de ligne.
+.chat-row__buddies {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+
+  .chat-row__face + .chat-row__face {
+    margin-left: -8px;
+  }
 }
 
 .chat-row__preview {
@@ -101,32 +158,12 @@
   white-space: nowrap;
 }
 
-// Pile d'avatars de shared/_avatars_display, partagée avec les cartes d'activité
-// et l'historique — d'où la surcharge scopée plutôt qu'une modification du
-// composant : dans une ligne de 86px, les pastilles doivent rétrécir et se
-// chevaucher pour ne pas passer à la ligne.
+// Pile d'avatars de shared/_avatars_display : plus utilisée par la ligne de
+// conversation, mais toujours par les cartes d'activité et l'historique.
 .chat-row__participants {
     display: flex;
     gap: 0.5em;
     justify-content: flex-end;
     flex-wrap: wrap;
     width: 120px;
-}
-
-.chat-row .chat-row__participants {
-  flex: 0 0 auto;
-  flex-wrap: nowrap;
-  gap: 0;
-  width: auto;
-}
-
-.chat-row .avatar-bordered {
-  width: 28px;
-  height: 28px;
-  margin: 0 0 0 -8px;
-  border-width: 2px;
-
-  &:first-child {
-    margin-left: 0;
-  }
 }

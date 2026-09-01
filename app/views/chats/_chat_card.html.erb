@@ -1,9 +1,15 @@
 <%# Contenu d'une ligne de conversation — Figma 86:903 « chat-row V2 ».
     Le lien et le filtre d'accès sont portés par chats/_chat_cards.
     Le chat appartient à un event : c'est donc l'event qui nomme la conversation,
-    avec son organisateur en dessous et tous ses participants à droite. %>
+    avec son organisateur en dessous et ses participants à droite. %>
 <% event = chat.event %>
 <% activity = event.activity %>
+<% host = event.user %>
+
+<%# Seuls les membres acceptés sont dans la conversation : la pile ne doit pas
+    montrer les demandes en attente ni les refus. L'organisateur a sa propre
+    pastille sur la ligne du dessous, on ne le compte pas deux fois. %>
+<% buddies = event_accepted_users(event).uniq.reject { |user| user == host } %>
 
 <%# Aucune activité n'a encore de photo ActiveStorage attachée ; on retombe sur
     l'illustration livrée dans app/assets/images/activities, dont les noms suivent
@@ -51,12 +57,43 @@
     <% end %>
   </span>
 
-  <span class="chat-row__host">by <%= profile_display_name(profile_for(event.user)) %></span>
+  <span class="chat-row__host">
+    <% host_profile = profile_for(host) %>
+    <span class="chat-row__face chat-row__face--host">
+      <% if host_profile&.photo&.attached? %>
+        <%= cl_image_tag host_profile.photo.key, crop: :fill, alt: "",
+                         class: "chat-row__face-img" %>
+      <% else %>
+        <%= profile_display_name(host_profile).first.upcase %>
+      <% end %>
+    </span>
+    <span class="chat-row__host-name">by <%= profile_display_name(host_profile) %></span>
+  </span>
 
   <span class="chat-row__preview">
     <%= last ? truncate(last.content, length: 48) : "No message yet" %>
   </span>
 </span>
 
-<% avatars = event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
-<%= render "shared/avatars_display", avatars: avatars %>
+<%# Pile locale plutôt que shared/_avatars_display : ce dernier est partagé avec
+    les cartes d'activité et l'historique, et laisse un trou quand un profil n'a
+    pas de photo — ici il en faut une initiale de repli. %>
+<% if buddies.any? %>
+  <span class="chat-row__buddies">
+    <% buddies.first(3).each do |buddy| %>
+      <% buddy_profile = profile_for(buddy) %>
+      <span class="chat-row__face" title="<%= profile_display_name(buddy_profile) %>">
+        <% if buddy_profile&.photo&.attached? %>
+          <%= cl_image_tag buddy_profile.photo.key, crop: :fill, alt: "",
+                           class: "chat-row__face-img" %>
+        <% else %>
+          <%= profile_display_name(buddy_profile).first.upcase %>
+        <% end %>
+      </span>
+    <% end %>
+
+    <% if buddies.size > 3 %>
+      <span class="chat-row__face chat-row__face--more">+<%= buddies.size - 3 %></span>
+    <% end %>
+  </span>
+<% end %>
