@@ -4,10 +4,12 @@
 <% photo_attached = current_profile&.photo&.attached? %>
 
 <header class="app-header">
-  <%= link_to root_path, class: "app-header__brand", aria: { label: "ActiVities — accueil" } do %>
-    <%= image_tag "activities-icon.png", alt: "ActiVities",
+  <%# La marque n'est pas une action : le retour à l'accueil passe par la barre du %>
+  <%# bas, donc le logo reste un simple élément du header, sans lien ni focus. %>
+  <div class="app-header__brand">
+    <%= image_tag "activities-mark.png", alt: "ActiVities",
                   width: 48, height: 48, class: "app-header__logo" %>
-  <% end %>
+  </div>
 
   <div class="dropdown">
     <%# Sans photo — visiteur anonyme ou profil pas encore créé — la pastille tombe %>
