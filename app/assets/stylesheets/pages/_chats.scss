@@ -1,11 +1,41 @@
-// Chat general — Figma 1:239. Title then a stack of conversation rows.
+// Chats — Figma 86:890. Titre + accroche, bascule Coming/Passed, pile de conversations.
+.chats {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chats__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// Titre aligné à gauche et en encre plutôt que centré et vert : sur cet écran le
+// vert de marque est réservé au titre d'activité de chaque conversation.
 .chats__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  color: $ink;
+}
+
+.chats__subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: $ink-muted;
+}
+
+// La bascule est partagée avec events#index, où elle porte ses propres marges.
+// On les neutralise ici pour que le rythme vienne du gap de la colonne.
+.chats .switch-container {
+  width: 100%;
   margin-top: 0;
+  background: transparent;
 }
 
 .chats__list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 24px;
+  gap: 10px;
 }
