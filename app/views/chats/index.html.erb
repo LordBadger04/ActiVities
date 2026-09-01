@@ -1,16 +1,18 @@
-<%# Chat general — Figma 1:239. A list of conversations, one row per chat. %>
+<%# Chats — Figma 86:890 « 07 · Chats — FRONT V2 candidate ». %>
 <% content_for :title, "Chats" %>
-<h1 class="page-title chats__title">Chats</h1>
-<div class="index-container" data-controller="switch-btn">
-  
+
+<div class="chats" data-controller="switch-btn">
+  <div class="chats__heading">
+    <h1 class="chats__title">Chats</h1>
+    <p class="chats__subtitle">People you met through an activity.</p>
+  </div>
+
   <%= render "shared/switch_btn", left: "Coming", right: "Passed" %>
 
   <div class="chats__list">
     <% if @chats.any? %>
       <% @chats.each do |chat| %>
-
-        <%= render "chat_card", chat: chat %>
-
+        <%= render "chat_cards", chat: chat %>
       <% end %>
     <% else %>
       <p class="empty-state">No conversation yet.</p>

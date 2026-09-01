@@ -62,6 +62,7 @@ $bottom-nav-shadow:   0 6px 20px rgba(0, 0, 0, .2); // portée commune pilule + 
 
 // Les trois onglets se partagent la largeur à parts égales (flex: 1 0 0 dans la maquette).
 .bottom-nav__tab {
+
   display: flex;
   flex: 1 0 0;
   min-width: 0;
@@ -85,6 +86,7 @@ $bottom-nav-shadow:   0 6px 20px rgba(0, 0, 0, .2); // portée commune pilule + 
 // est à 60x42 : 3px gagnés au-dessus et en dessous pour loger des icônes de 30px
 // sans qu'elles touchent les bords, comme le faisait « person-running ».
 .bottom-nav__slot {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

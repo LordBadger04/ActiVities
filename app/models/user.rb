@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-
-  has_many :messages
+  has_many :notifications, dependent: :destroy
+  has_many :messages, dependent: :destroy
   has_many :chats, through: :messages
   has_many :event_memberships
   has_many :events, through: :event_memberships

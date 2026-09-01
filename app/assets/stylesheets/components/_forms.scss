@@ -298,3 +298,25 @@ input[type="time"].form-control {
 .visible {
   opacity: 1;
 }
+
+#new_message {
+    margin: 0 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+
+    label {
+      display: none
+    }
+    button {
+      margin-bottom: 1em;
+    }
+
+    .message_content {
+      display: flex;
+      align-items: center;
+      width: 90%;
+      align-content: center;
+    }
+  }

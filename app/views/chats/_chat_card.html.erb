@@ -1,17 +1,102 @@
-<% last = chat_last_message(chat) %>
-<%= link_to chat_path(chat),
-  data: { switch_btn_target: chat.event.status == "Coming" ? "left" : "right"},
-  class: "chat-row #{ "event-hidden" unless chat.event.status == "Coming"}" do %>
-  <% avatars = chat.event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
-    <div class="chat-row__infos">
-      <h3 class="chat-row__name"><%= chat_title(chat) %></h3>
-      <p class="chat-row__preview">
-        <% if last %>
-          <%= truncate(last.content, length: 48) %>
+<%# Contenu d'une ligne de conversation — Figma 86:903 « chat-row V2 ».
+    Le lien et le filtre d'accès sont portés par chats/_chat_cards.
+    Le chat appartient à un event : c'est donc l'event qui nomme la conversation,
+    avec son organisateur en dessous et ses participants à droite. %>
+<% event = chat.event %>
+<% activity = event.activity %>
+<% host = event.user %>
+
+<%# Seuls les membres acceptés sont dans la conversation : la pile ne doit pas
+    montrer les demandes en attente ni les refus. L'organisateur a sa propre
+    pastille sur la ligne du dessous, on ne le compte pas deux fois. %>
+<% buddies = event_accepted_users(event).uniq.reject { |user| user == host } %>
+
+<%# Aucune activité n'a encore de photo ActiveStorage attachée ; on retombe sur
+    l'illustration livrée dans app/assets/images/activities, dont les noms suivent
+    ceux de la table (« Book Club » → culture/book_club.png). Puis sur l'initiale
+    de l'event pour ce qui n'a ni l'un ni l'autre (« Spa » n'a pas d'image). %>
+<% asset =
+     if activity
+       "activities/#{activity.genre.to_s.parameterize(separator: '_')}/" \
+         "#{activity.name.to_s.parameterize(separator: '_')}.png"
+     end %>
+<% asset = nil unless asset && Rails.root.join("app/assets/images", asset).file? %>
+
+<%# `last` peut être un Message non persisté — la ligne « Request … » que
+    _chat_cards fabrique pour un membre non accepté — et n'a alors pas de
+    created_at : rien à horodater dans ce cas. %>
+<% sent_at = last&.created_at %>
+<% stamp =
+     if sent_at.blank?
+       nil
+     elsif sent_at.today?
+       sent_at.strftime("%H:%M")
+     elsif sent_at.to_date == Date.current - 1
+       "Yesterday"
+     elsif sent_at > 6.days.ago
+       sent_at.strftime("%a")
+     else
+       sent_at.strftime("%d/%m")
+     end %>
+
+<span class="chat-row__thumb">
+  <% if activity&.photo&.attached? %>
+    <%= image_tag activity.photo, alt: "", class: "chat-row__thumb-img" %>
+  <% elsif asset %>
+    <%= image_tag asset, alt: "", class: "chat-row__thumb-img" %>
+  <% else %>
+    <span class="chat-row__initial" aria-hidden="true"><%= chat_title(chat).first.upcase %></span>
+  <% end %>
+</span>
+
+<span class="chat-row__body">
+  <span class="chat-row__topline">
+    <span class="chat-row__name"><%= chat_title(chat) %></span>
+    <% if stamp %>
+      <span class="chat-row__time"><%= stamp %></span>
+    <% end %>
+  </span>
+
+  <span class="chat-row__host">
+    <% host_profile = profile_for(host) %>
+    <span class="chat-row__face chat-row__face--host">
+      <% if host_profile&.photo&.attached? %>
+        <%= cl_image_tag host_profile.photo.key, crop: :fill, alt: "",
+                         class: "chat-row__face-img" %>
+      <% else %>
+        <%= profile_display_name(host_profile).first.upcase %>
+      <% end %>
+    </span>
+    <span class="chat-row__host-name">by <%= profile_display_name(host_profile) %></span>
+  </span>
+
+  <span class="chat-row__preview">
+    <%= last ? truncate(last.content, length: 48) : "No message yet" %>
+  </span>
+</span>
+
+<%# Pile locale plutôt que shared/_avatars_display : ce dernier est partagé avec
+    les cartes d'activité et l'historique, et laisse un trou quand un profil n'a
+    pas de photo — ici il en faut une initiale de repli. %>
+<% if buddies.any? %>
+  <span class="chat-row__buddies">
+    <% buddies.first(3).each do |buddy| %>
+      <% buddy_profile = profile_for(buddy) %>
+      <span class="chat-row__face" title="<%= profile_display_name(buddy_profile) %>">
+        <% if buddy_profile&.photo&.attached? %>
+          <%= cl_image_tag buddy_profile.photo.key, crop: :fill, alt: "",
+                           class: "chat-row__face-img" %>
         <% else %>
-          No message yet
+          <%= profile_display_name(buddy_profile).first.upcase %>
         <% end %>
-      </p>
-    </div>
-    <%= render "shared/avatars_display", avatars: avatars %>
+      </span>
+    <% end %>
+
+    <% if buddies.size > 3 %>
+      <span class="chat-row__face chat-row__face--more">+<%= buddies.size - 3 %></span>
+    <% end %>
+    <% if chat_notification?(chat)%>
+      <span class="notification_stamp"></span>
+    <% end %>
+  </span>
 <% end %>

@@ -1,55 +1,166 @@
-// Conversation row — Figma 1:241 "Buddy row · Prototype" on the Chat general screen.
+// Conversation row — Figma 86:903 « chat-row V2 ».
+// Carte 86px bordée plutôt qu'ombrée : la maquette V2 pose les lignes sur un filet
+// $line, l'ombre ne sert plus qu'au survol.
 .chat-row {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  padding: 16px;
+  min-height: 86px;
+  padding: 14px;
+  border: 1px solid $line;
+  border-radius: 16px;
   background: $surface;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
   color: inherit;
   text-decoration: none;
-  transition: transform .15s ease, box-shadow .15s ease;
+  transition: border-color .15s ease, box-shadow .15s ease;
 
   &:hover,
   &:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .1);
+    border-color: $primary-green;
+    box-shadow: 0 4px 14px rgba(15, 110, 78, .12);
     color: inherit;
     outline: none;
   }
 }
 
-.chat-row__avatar {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+// Vignette de l'activité, au rayon 8px des autres miniatures du projet
+// (.activity-card__thumb, .event-pin__thumb). Sans photo attachée, elle retombe
+// sur l'initiale de l'event.
+.chat-row__thumb {
+  display: flex;
+  flex: 0 0 46px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
   background: $primary-tint;
+}
+
+.chat-row__thumb-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-row__initial {
+  font-size: 17px;
+  font-weight: 600;
+  color: $primary-green;
 }
 
 .chat-row__body {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 
+.chat-row__topline {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+// Titre de l'event : c'est lui qui nomme la conversation.
 .chat-row__name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  min-width: 0;
   font-size: 15px;
   font-weight: 600;
   color: $ink;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-row__time {
+  flex: 0 0 auto;
+  font-size: 11px;
+  color: $ink-muted;
+}
+
+// Organisateur : sa pastille puis son nom, sur la ligne d'accent de la maquette.
+.chat-row__host {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.chat-row__host-name {
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 500;
+  color: $primary-green;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Pastille de visage, commune à l'organisateur et aux participants : photo
+// Cloudinary quand elle existe, initiale sinon — jamais un rond vide.
+.chat-row__face {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 22px;
+  height: 22px;
+  border: 2px solid $surface;
+  border-radius: 50%;
+  background: $primary-tint;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: $primary-green;
+}
+
+.chat-row__face--host {
+  width: 20px;
+  height: 20px;
+  border-width: 0;
+  font-size: 10px;
+}
+
+.chat-row__face--more {
+  background: $line;
+  font-size: 9px;
+  color: $ink-muted;
+}
+
+.chat-row__face-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Participants acceptés, en pile chevauchante pour tenir dans la hauteur de ligne.
+.chat-row__buddies {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+
+  .chat-row__face + .chat-row__face {
+    margin-left: -8px;
+  }
 }
 
 .chat-row__preview {
   overflow: hidden;
-  font-size: 13px;
+  font-size: 12px;
   color: $ink-muted;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+// Pile d'avatars de shared/_avatars_display : plus utilisée par la ligne de
+// conversation, mais toujours par les cartes d'activité et l'historique.
 .chat-row__participants {
     display: flex;
     gap: 0.5em;

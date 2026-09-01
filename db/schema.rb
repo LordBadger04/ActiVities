@@ -98,6 +98,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_01_135453) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["chat_id"], name: "index_notifications_on_chat_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.integer "age"
     t.datetime "created_at", null: false
@@ -320,6 +329,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_01_135453) do
   add_foreign_key "events", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users"
+  add_foreign_key "notifications", "chats"
+  add_foreign_key "notifications", "users"
   add_foreign_key "profiles", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
