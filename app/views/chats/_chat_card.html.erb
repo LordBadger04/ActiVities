@@ -1,56 +1,62 @@
-<%# Ligne de conversation — Figma 86:903 « chat-row V2 ».
-    La pastille « non lu » de la maquette n'est pas reprise : la table messages n'a
-    aucune colonne de lecture (db/schema.rb), il n'y a donc rien à afficher ici. %>
+<%# Contenu d'une ligne de conversation — Figma 86:903 « chat-row V2 ».
+    Le lien et le filtre d'accès sont portés par chats/_chat_cards.
+    Le chat appartient à un event : c'est donc l'event qui nomme la conversation,
+    avec son organisateur en dessous et tous ses participants à droite. %>
 <% event = chat.event %>
-<% last = chat_last_message(chat) %>
+<% activity = event.activity %>
 
-<%# La conversation est nommée d'après les autres participants ; le titre de %>
-<%# l'activité passe sur la ligne verte juste en dessous. %>
-<% buddies = event.event_memberships.map(&:user).uniq.reject { |user| user == current_user } %>
-<% names = buddies.map { |user| profile_display_name(profile_for(user)) } %>
-<% headline = names.first || "Conversation" %>
-<% headline = "#{headline} +#{names.size - 1}" if names.size > 1 %>
-<% photo = buddies.first&.profile&.photo %>
+<%# Aucune activité n'a encore de photo ActiveStorage attachée ; on retombe sur
+    l'illustration livrée dans app/assets/images/activities, dont les noms suivent
+    ceux de la table (« Book Club » → culture/book_club.png). Puis sur l'initiale
+    de l'event pour ce qui n'a ni l'un ni l'autre (« Spa » n'a pas d'image). %>
+<% asset =
+     if activity
+       "activities/#{activity.genre.to_s.parameterize(separator: '_')}/" \
+         "#{activity.name.to_s.parameterize(separator: '_')}.png"
+     end %>
+<% asset = nil unless asset && Rails.root.join("app/assets/images", asset).file? %>
 
-<%# Horodatage façon messagerie : heure le jour même, jour de la semaine sur la %>
-<%# semaine écoulée, date au-delà. Écrit ici plutôt que dans un helper : %>
-<%# app/helpers appartient à la partie back de l'équipe. %>
+<%# `last` peut être un Message non persisté — la ligne « Request … » que
+    _chat_cards fabrique pour un membre non accepté — et n'a alors pas de
+    created_at : rien à horodater dans ce cas. %>
+<% sent_at = last&.created_at %>
 <% stamp =
-     if last.blank?
+     if sent_at.blank?
        nil
-     elsif last.created_at.today?
-       last.created_at.strftime("%H:%M")
-     elsif last.created_at.to_date == Date.current - 1
+     elsif sent_at.today?
+       sent_at.strftime("%H:%M")
+     elsif sent_at.to_date == Date.current - 1
        "Yesterday"
-     elsif last.created_at > 6.days.ago
-       last.created_at.strftime("%a")
+     elsif sent_at > 6.days.ago
+       sent_at.strftime("%a")
      else
-       last.created_at.strftime("%d/%m")
+       sent_at.strftime("%d/%m")
      end %>
 
-<%= link_to chat_path(chat),
-            class: "chat-row #{"event-hidden" unless event.status == "Coming"}",
-            data: { switch_btn_target: event.status == "Coming" ? "left" : "right" } do %>
-  <span class="chat-row__avatar">
-    <% if photo&.attached? %>
-      <%= cl_image_tag photo.key, crop: :fill, class: "chat-row__avatar-img", alt: "" %>
-    <% else %>
-      <span class="chat-row__initial" aria-hidden="true"><%= headline.first.upcase %></span>
+<span class="chat-row__thumb">
+  <% if activity&.photo&.attached? %>
+    <%= image_tag activity.photo, alt: "", class: "chat-row__thumb-img" %>
+  <% elsif asset %>
+    <%= image_tag asset, alt: "", class: "chat-row__thumb-img" %>
+  <% else %>
+    <span class="chat-row__initial" aria-hidden="true"><%= chat_title(chat).first.upcase %></span>
+  <% end %>
+</span>
+
+<span class="chat-row__body">
+  <span class="chat-row__topline">
+    <span class="chat-row__name"><%= chat_title(chat) %></span>
+    <% if stamp %>
+      <span class="chat-row__time"><%= stamp %></span>
     <% end %>
   </span>
 
-  <span class="chat-row__body">
-    <span class="chat-row__topline">
-      <span class="chat-row__name"><%= headline %></span>
-      <% if stamp %>
-        <span class="chat-row__time"><%= stamp %></span>
-      <% end %>
-    </span>
+  <span class="chat-row__host">by <%= profile_display_name(profile_for(event.user)) %></span>
 
-    <span class="chat-row__event"><%= chat_title(chat) %></span>
-
-    <span class="chat-row__preview">
-      <%= last ? truncate(last.content, length: 48) : "No message yet" %>
-    </span>
+  <span class="chat-row__preview">
+    <%= last ? truncate(last.content, length: 48) : "No message yet" %>
   </span>
-<% end %>
+</span>
+
+<% avatars = event.event_memberships.map { |member| member.user.profile&.photo&.key } %>
+<%= render "shared/avatars_display", avatars: avatars %>

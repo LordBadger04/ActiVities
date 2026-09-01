@@ -60,7 +60,11 @@
                   wrapper: :vertical_form, label: "End time" %>
     </div>
 
-    <%= f.input :max_participant, label: "Max buddies", placeholder: "e.g. 4" %>
+    <%= f.input :max_participant,
+                label: "Max buddies",
+                as: :select,
+                collection: (1..12),
+                placeholder: "e.g. 4" %>
 
     <%= f.input :description,
                 as: :text,

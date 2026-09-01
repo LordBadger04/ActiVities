@@ -8,8 +8,7 @@
   height: 40px;
   object-fit: cover;
   border-radius: 50%;
-  border: #0f6e4e 4px solid;
-//border: rgb(217, 242, 74) 4px solid;
+
   margin: 2px;
 }
 .avatar-square {
@@ -22,4 +21,16 @@
 .avatar-large{
   width: 60px;
   height: 60px;
+}
+
+.avatar-border-pending {
+  border: #c66300 4px solid;
+}
+
+.avatar-border-accepted {
+  border: #0f6e4e 4px solid;
+}
+
+.avatar-border-denied {
+  border: $red 4px solid;
 }

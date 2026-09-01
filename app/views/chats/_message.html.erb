@@ -4,7 +4,7 @@
   <% unless sent %>
     <%= link_to edit_event_event_membership_path(event, message.user.event_memberships.where(event: event)[0].id), data: { turbo_frame: "modal" } do %>
       <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
-        <p><strong><%= message.content %></strong>  sent a request to join your activity, tap here to accept their request</p>
+        <p><strong><%= request %></strong>  sent a request to join your activity, tap here to accept their request</p>
       </li>
     <% end %>
   <% else %>

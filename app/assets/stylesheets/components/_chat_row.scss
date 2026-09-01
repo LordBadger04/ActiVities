@@ -23,8 +23,10 @@
   }
 }
 
-// Pastille 46px : la photo du buddy quand elle existe, son initiale sinon.
-.chat-row__avatar {
+// Vignette de l'activité, au rayon 8px des autres miniatures du projet
+// (.activity-card__thumb, .event-pin__thumb). Sans photo attachée, elle retombe
+// sur l'initiale de l'event.
+.chat-row__thumb {
   display: flex;
   flex: 0 0 46px;
   align-items: center;
@@ -32,11 +34,12 @@
   overflow: hidden;
   width: 46px;
   height: 46px;
-  border-radius: 50%;
+  border-radius: 8px;
   background: $primary-tint;
 }
 
-.chat-row__avatar-img {
+.chat-row__thumb-img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -62,6 +65,7 @@
   gap: 8px;
 }
 
+// Titre de l'event : c'est lui qui nomme la conversation.
 .chat-row__name {
   flex: 1 1 auto;
   overflow: hidden;
@@ -79,12 +83,11 @@
   color: $ink-muted;
 }
 
-// Titre de l'activité : c'est lui qui rattache la conversation à quelque chose,
-// d'où le vert de marque entre les deux lignes neutres.
-.chat-row__event {
+// Organisateur de l'event, sur la ligne d'accent de la maquette.
+.chat-row__host {
   overflow: hidden;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: $primary-green;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -98,12 +101,32 @@
   white-space: nowrap;
 }
 
-// Pile d'avatars de shared/_avatars_display, encore utilisée par les cartes
-// d'activité et l'historique — la ligne de conversation, elle, n'en a plus besoin.
+// Pile d'avatars de shared/_avatars_display, partagée avec les cartes d'activité
+// et l'historique — d'où la surcharge scopée plutôt qu'une modification du
+// composant : dans une ligne de 86px, les pastilles doivent rétrécir et se
+// chevaucher pour ne pas passer à la ligne.
 .chat-row__participants {
     display: flex;
     gap: 0.5em;
     justify-content: flex-end;
     flex-wrap: wrap;
     width: 120px;
+}
+
+.chat-row .chat-row__participants {
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: auto;
+}
+
+.chat-row .avatar-bordered {
+  width: 28px;
+  height: 28px;
+  margin: 0 0 0 -8px;
+  border-width: 2px;
+
+  &:first-child {
+    margin-left: 0;
+  }
 }

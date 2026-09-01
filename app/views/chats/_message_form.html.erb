@@ -6,7 +6,10 @@
               autocomplete: "off",
               as: :string %>
 
-  <button type="submit" class="message-footer__send" aria-label="Send message">
+  <button type="submit"
+          <%= "disabled" unless accepted?(chat.event) %>
+          class="message-footer__send"
+          aria-label="Send message">
     <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
   </button>
 <% end %>
