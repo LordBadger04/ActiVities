@@ -1,3 +1,5 @@
+require 'google/apis/calendar_v3'
+
 Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
@@ -13,6 +15,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  get "/redirect", to: "chats#redirect"
+  get "/callback", to: "chats#callback"
 
   resources :events, except: [ :destroy ] do
     collection do
