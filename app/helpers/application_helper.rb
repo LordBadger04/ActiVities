@@ -133,4 +133,12 @@ module ApplicationHelper
   def request_status(event)
     EventMembership.find_by(user: current_user, event: event).status
   end
+
+  def notifications?
+    current_user.notifications.size.positive?
+  end
+
+  def chat_notification?(chat)
+    current_user.notifications.where(chat: chat).size.positive?
+  end
 end

@@ -1,5 +1,6 @@
 // Conversation row — Figma 1:241 "Buddy row · Prototype" on the Chat general screen.
 .chat-row {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
