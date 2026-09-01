@@ -95,5 +95,8 @@
     <% if buddies.size > 3 %>
       <span class="chat-row__face chat-row__face--more">+<%= buddies.size - 3 %></span>
     <% end %>
+    <% if chat_notification?(chat)%>
+      <span class="notification_stamp"></span>
+    <% end %>
   </span>
 <% end %>

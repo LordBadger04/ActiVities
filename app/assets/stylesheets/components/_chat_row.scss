@@ -2,6 +2,7 @@
 // Carte 86px bordée plutôt qu'ombrée : la maquette V2 pose les lignes sur un filet
 // $line, l'ombre ne sert plus qu'au survol.
 .chat-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;

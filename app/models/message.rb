@@ -4,6 +4,7 @@ class Message < ApplicationRecord
   validates :content, presence: true, length: { minimum: 1 }
 
   after_create_commit :broadcast_message
+  after_create :create_notifications
 
   private
 
@@ -13,6 +14,12 @@ class Message < ApplicationRecord
                           target: "messages",
                           partial: "chats/message",
                           locals: { message: self, current_user: user, event: chat.event}
+    end
+  end
+
+  def create_notifications
+    chat.users.where.not(id: user_id).distinct.each do |user|
+      Notification.create(user: user, chat: chat)
     end
   end
 end

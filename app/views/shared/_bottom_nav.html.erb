@@ -35,13 +35,15 @@
                     aria: { current: ("page" if active) } do %>
           <span class="bottom-nav__slot">
             <i class="fa-solid <%= tab[:icon] %> bottom-nav__icon" aria-hidden="true"></i>
+            <%= render "shared/notification_stamp" if tab[:key] == :chat %>
           </span>
           <span class="bottom-nav__label"><%= tab[:label] %></span>
+
         <% end %>
       <% end %>
     </div>
 
-    <%# Le bouton se compose en trois couches pour que chacune reste pilotable par
+    <%#Le bouton se compose en trois couches pour que chacune reste pilotable par
         CSS : le disque vert et l'anneau viennent du lien lui-même, seul le glyphe
         (« + » et libellé incurvé) reste un fichier — le texte suit la circonférence
         et ne se recompose pas proprement autrement. Ce fichier ne sert que de
