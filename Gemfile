@@ -49,6 +49,10 @@ gem "sassc-rails"
 
 gem "geocoder"
 gem "cloudinary"
+gem 'multi_json'
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
+gem "google-apis-calendar_v3"
 
 group :development, :test do
   gem "dotenv-rails"

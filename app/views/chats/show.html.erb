@@ -24,6 +24,7 @@
         </span>
       </span>
 
+
       <span class="event-pin__side">
         <% if status.present? && status != "Accepted" %>
           <span class="chip chip--lime event-pin__status"><%= status %></span>
@@ -34,7 +35,23 @@
     <% end %>
   <% end %>
 
-  <ol class="chat__thread" id="messages">
+  <% if current_user.google_calendar_connected? %>
+          <%= link_to "Add to Calendar",
+                add_to_google_event_path(@event, chat_id: @chat&.id),
+                class: "btn",
+                data: { turbo_method: :post } %>
+          <%= link_to "Déconnecter l'agenda",
+                google_disconnect_path(chat_id: @chat&.id),
+                data: { turbo_method: :delete, turbo_confirm: "Sûr ?" } %>
+
+        <% else %>
+          <%= button_to "Connecter mon agenda Google",
+              "/auth/google_calendar?chat_id=#{@chat&.id}",
+              class: "btn",
+              data: { turbo: false } %>
+        <% end %>
+
+  <ol class="chat__thread">
     <% @chat.messages.order(:created_at).each do |message| %>
       <%= render "chats/message", event: @event, message: message, current_user: current_user%>
     <% end %>

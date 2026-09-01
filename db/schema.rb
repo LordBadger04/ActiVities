@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_01_141417) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_01_135453) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_01_141417) do
     t.text "description"
     t.time "end_date"
     t.date "event_date"
+    t.string "google_event_id"
     t.float "latitude"
     t.string "location"
     t.float "longitude"
@@ -90,7 +91,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_01_141417) do
     t.bigint "chat_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
-    t.boolean "request", default: false
+    t.string "request"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
@@ -306,6 +307,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_01_141417) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.text "google_refresh_token"
+    t.text "google_token"
+    t.datetime "google_token_expires_at"
     t.bigint "profile_id"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"

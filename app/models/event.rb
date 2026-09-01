@@ -17,4 +17,21 @@ class Event < ApplicationRecord
               params: { country: "fr,be" }
 
   after_validation :geocode, if: :will_save_change_to_location?
+
+  def starts_at
+    combine(start_date)
+  end
+
+  def ends_at
+    finish = combine(end_date) || (starts_at + 1.hour)
+    finish <= starts_at ? finish + 1.day : finish
+  end
+
+  private
+
+  def combine(time)
+    return nil if event_date.blank? || time.blank?
+
+    Time.zone.local(event_date.year, event_date.month, event_date.day, time.hour, time.min)
+  end
 end
