@@ -123,7 +123,7 @@ module ApplicationHelper
   end
 
   def admin?(event)
-    EventMembership.find_by(user: current_user, event: event).is_admin
+    EventMembership.find_by(user: current_user, event: event)&.is_admin || false
   end
 
   def accepted?(event)

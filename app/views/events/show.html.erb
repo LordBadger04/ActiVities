@@ -93,19 +93,21 @@
     <h2 class="section-label">Going</h2>
     <div class="detail-block__going">
       <% attendees.each do |attendee| %>
-        <% avatar = attendee.user.profile.photo.key %>
-        <% unless avatar.nil? %>
+        <% if attendee.user.present? && attendee.user.profile.present? %>
+          <% avatar = attendee.user.profile.photo.key %>
+          <% unless avatar.nil? %>
 
-          <% if admin?(@event) %>
-            <%= link_to edit_event_event_membership_path(@event, attendee.id), data: { turbo_frame: "modal" } do %>
-              <%= cl_image_tag avatar, class: "avatar-bordered avatar-large avatar-border-#{attendee.status.downcase}" %>
+            <% if admin?(@event) %>
+              <%= link_to edit_event_event_membership_path(@event, attendee.id), data: { turbo_frame: "modal" } do %>
+                <%= cl_image_tag avatar, class: "avatar-bordered avatar-large avatar-border-#{attendee.status.downcase}" %>
+              <% end %>
+            <% else %>
+              <%= link_to profile_path(attendee.user.profile) do %>
+                <%= cl_image_tag avatar, class: "avatar-bordered avatar-large avatar-border-#{attendee.status.downcase}" %>
+              <% end %>
             <% end %>
-          <% else %>
-            <%= link_to profile_path(attendee.user.profile) do %>
-              <%= cl_image_tag avatar, class: "avatar-bordered avatar-large avatar-border-#{attendee.status.downcase}" %>
-            <% end %>
+
           <% end %>
-
         <% end %>
       <% end %>
     </div>
