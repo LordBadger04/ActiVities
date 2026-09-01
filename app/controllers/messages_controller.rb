@@ -4,8 +4,11 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
     @message.chat = @chat
     @message.user = current_user
-    if @message.save!
-      redirect_to chat_path(@chat)
+    if @message.save
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to chat_path(@chat) }
+      end
     else
       render "chat/show", status: :unprocessable_entity
     end
