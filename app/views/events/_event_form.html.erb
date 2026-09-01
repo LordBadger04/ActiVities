@@ -48,19 +48,41 @@
       </div>
     </div>
 
-    <%= f.input :event_date, as: :date, html5: true,
-                wrapper: :vertical_form, label: "Date" %>
+    <div data-controller="flatpickr">
+      <div class="event-date-field">
+        <%= f.input :event_date,
+                    as: :string,
+                    wrapper: :vertical_form,
+                    label: "Date",
+                    input_html: {
+                      data: { flatpickr_target: "date" }
+                  } %>
+      </div>
 
-    <%# `start_date` / `end_date` are `t.time` columns. simple_form maps :time to a
-        three-dropdown multi-select; html5 + the vertical wrapper give a single time input. %>
-    <div class="field-row">
-      <%= f.input :start_date, as: :time, html5: true,
-                  wrapper: :vertical_form, label: "Start time" %>
-      <%= f.input :end_date, as: :time, html5: true,
-                  wrapper: :vertical_form, label: "End time" %>
+      <div class="field-row">
+        <%= f.input :start_date,
+                    as: :string,
+                    wrapper: :vertical_form,
+                    label: "Start time",
+                    input_html: {
+                      data: { flatpickr_target: "startTime" }
+                    } %>
+
+        <%= f.input :end_date,
+                    as: :string,
+                    wrapper: :vertical_form,
+                    label: "End time",
+                    input_html: {
+                      data: { flatpickr_target: "endTime" }
+                    } %>
+      </div>
     </div>
 
-    <%= f.input :max_participant, label: "Max buddies", placeholder: "e.g. 4" %>
+    <%= f.input :max_participant,
+            as: :select,
+            collection: (2..15).to_a,
+            label: "Max buddies",
+            prompt: "Choose a maximum" %>
 
     <%= f.input :description,
                 as: :text,
