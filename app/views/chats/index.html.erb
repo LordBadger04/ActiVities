@@ -2,15 +2,13 @@
 <% content_for :title, "Chats" %>
 <h1 class="page-title chats__title">Chats</h1>
 <div class="index-container" data-controller="switch-btn">
-  
+
   <%= render "shared/switch_btn", left: "Coming", right: "Passed" %>
 
   <div class="chats__list">
     <% if @chats.any? %>
       <% @chats.each do |chat| %>
-
         <%= render "chat_card", chat: chat %>
-
       <% end %>
     <% else %>
       <p class="empty-state">No conversation yet.</p>

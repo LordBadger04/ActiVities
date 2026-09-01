@@ -8,9 +8,11 @@ class Message < ApplicationRecord
   private
 
   def broadcast_message
-    broadcast_append_to "chat_#{chat.id}_messages",
-                        target: "messages",
-                        partial: "chats/message",
-                        locals: { message: self, current_user: user }
+    chat.users.distinct.each do |user|
+      broadcast_append_to "chat_#{chat.id}_messages_#{user.id}",
+                          target: "messages",
+                          partial: "chats/message",
+                          locals: { message: self, current_user: user, event: chat.event}
+    end
   end
 end
