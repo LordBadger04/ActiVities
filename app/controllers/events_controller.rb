@@ -64,9 +64,9 @@ class EventsController < ApplicationController
       )
 
     if params[:latitude].present? &&
-      params[:longitude].present? &&
-      @event.latitude.present? &&
-      @event.longitude.present?
+       params[:longitude].present? &&
+       @event.latitude.present? &&
+       @event.longitude.present?
 
       @distance = Geocoder::Calculations.distance_between(
         [params[:latitude].to_f, params[:longitude].to_f],
@@ -89,7 +89,7 @@ class EventsController < ApplicationController
       @chat = Chat.new
       @chat.event = @event
       render :new, status: :unprocessable_entity unless @chat.save!
-      @launch_message = @chat.messages.create(user: current_user, content: "You've created the event", chat: @chat)
+      @launch_message = @chat.messages.create(user: current_user, content: "Event created the event", chat: @chat)
       redirect_to event_path(@event)
     else
       render :new, status: :unprocessable_entity

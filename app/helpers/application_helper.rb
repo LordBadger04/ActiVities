@@ -88,7 +88,11 @@ module ApplicationHelper
   end
 
   def event_attendees(event)
-    event.event_memberships.where.not(id: @event.user_id)
+    event.event_memberships.where.not(user_id: @event.user_id)
+  end
+
+  def event_accepted_users(event)
+    event.event_memberships.where(status: "Accepted").map(&:user)
   end
 
   # Chats hang off an event (`Chat belongs_to :event`), so the conversation is named
@@ -116,5 +120,17 @@ module ApplicationHelper
     profile.username.presence ||
       [ profile.first_name, profile.last_name ].compact_blank.join(" ").presence ||
       "Buddy"
+  end
+
+  def admin?(event)
+    EventMembership.find_by(user: current_user, event: event).is_admin
+  end
+
+  def accepted?(event)
+    EventMembership.find_by(user: current_user, event: event).status == "Accepted"
+  end
+
+  def request_status(event)
+    EventMembership.find_by(user: current_user, event: event).status
   end
 end

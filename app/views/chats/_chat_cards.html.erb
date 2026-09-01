@@ -1,0 +1,15 @@
+
+<% if accepted?(chat.event) %>
+  <% last = chat_last_message(chat) %>
+  <%= link_to chat_path(chat),
+  data: { switch_btn_target: chat.event.status == "Coming" ? "left" : "right"},
+  class: "chat-row #{ "event-hidden" unless chat.event.status == "Coming"}" do %>
+    <%= render "chats/chat_card", chat: chat, last: last %>
+  <% end %>
+<% else %>
+  <div class="chat-row <%= "event-hidden" unless chat.event.status == "Coming" %>"
+        data-switch_btn_target= <%= chat.event.status == "Coming" ? "left" : "right" %>>
+    <% last = Message.new(content: "Request #{request_status(chat.event)}") %>
+    <%= render "chats/chat_card", chat: chat, last: last %>
+  </div>
+<% end %>
