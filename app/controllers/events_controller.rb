@@ -121,6 +121,15 @@ class EventsController < ApplicationController
     @events = current_user.events.where(status: "Canceled")
   end
 
+  def add_to_google
+    event = current_user.events.find(params[:id])
+    GoogleCalendar::PushEvent.new(current_user).call(event)
+    redirect_back fallback_location: event, notice: "Ajouté à ton Google Agenda"
+  rescue GoogleCalendar::NotConnected, Google::Apis::AuthorizationError
+    current_user.update!(google_refresh_token: nil)
+    redirect_back fallback_location: event, alert: "Reconnecte ton agenda Google"
+  end
+
   private
 
   def event_params

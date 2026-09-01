@@ -12,4 +12,10 @@ class User < ApplicationRecord
   has_many :events_as_participant, through: :event_memberships, source: :event
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  encrypts :google_token, :google_refresh_token
+
+  def google_calendar_connected?
+    google_refresh_token.present?
+  end
 end

@@ -15,8 +15,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  get "/redirect", to: "chats#redirect"
-  get "/callback", to: "chats#callback"
+  # get "/redirect", to: "chats#redirect"
+  # get "/callback", to: "chats#callback"
+  get    "/auth/google_calendar/callback", to: "sessions#google_calendar"
+  get    "/auth/failure",                  to: "sessions#google_failure"
+  delete "/google_calendar",               to: "sessions#google_disconnect", as: :google_disconnect
 
   resources :events, except: [ :destroy ] do
     collection do
@@ -24,6 +27,7 @@ Rails.application.routes.draw do
     end
     member do
       patch :cancel
+      post :add_to_google
     end
     resources :event_memberships, only: [ :create, :update, :edit, :index ]
     resources :chats, only: [ :create ]
