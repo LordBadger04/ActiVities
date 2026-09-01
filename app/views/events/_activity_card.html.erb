@@ -52,7 +52,7 @@
         </span>
       </div>
 
-      <% avatars = event.users.map { |member| member.profile&.photo&.key } %>
+      <% avatars = event_accepted_users(event).map { |member| member.profile.photo.key } %>
       <%= render "shared/avatars_display", avatars: avatars %>
 
     </span>

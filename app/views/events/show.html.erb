@@ -2,7 +2,7 @@
 <% content_for :title, @event.title %>
 <% organizer = profile_for(@event.user) %>
 <% attendees = event_attendees(@event) %>
-<% avatar = organizer.photo.key %>
+<% organizer_avatar = organizer.photo.key %>
 <% avatars = @event.users.where.not(id: @event.user_id).map { |member| member.profile&.photo&.key } %>
 
 
@@ -63,7 +63,7 @@
   <div class="organizer">
 
     <div class="organizer__avatar" aria-hidden="true">
-      <%= cl_image_tag avatar, class: "avatar-bordered avatar-large" %>
+      <%= cl_image_tag organizer_avatar, class: "avatar-bordered avatar-large" %>
        <% if organizer %>
       <%= link_to profile_path(organizer), class: "organizer__identity" do %>
         <span class="organizer__name"><%= profile_display_name(organizer) %></span>
@@ -93,8 +93,19 @@
     <h2 class="section-label">Going</h2>
     <div class="detail-block__going">
       <% attendees.each do |attendee| %>
-        <%= link_to edit_event_event_membership_path(@event, attendee.id), data: { turbo_frame: "modal" } do %>
-          <%= cl_image_tag attendee.user.profile.photo.key, class: "avatar-bordered avatar-large" %>
+        <% avatar = attendee.user.profile.photo.key %>
+        <% unless avatar.nil? %>
+
+          <% if admin?(@event) %>
+            <%= link_to edit_event_event_membership_path(@event, attendee.id), data: { turbo_frame: "modal" } do %>
+              <%= cl_image_tag avatar, class: "avatar-bordered avatar-large avatar-border-#{attendee.status.downcase}" %>
+            <% end %>
+          <% else %>
+            <%= link_to profile_path(attendee.user.profile) do %>
+              <%= cl_image_tag avatar, class: "avatar-bordered avatar-large avatar-border-#{attendee.status.downcase}" %>
+            <% end %>
+          <% end %>
+
         <% end %>
       <% end %>
     </div>

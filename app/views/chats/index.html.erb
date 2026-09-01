@@ -8,7 +8,7 @@
   <div class="chats__list">
     <% if @chats.any? %>
       <% @chats.each do |chat| %>
-        <%= render "chat_card", chat: chat %>
+        <%= render "chat_cards", chat: chat %>
       <% end %>
     <% else %>
       <p class="empty-state">No conversation yet.</p>
