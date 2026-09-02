@@ -9,8 +9,11 @@ module GoogleCalendar
     def client
       raise NotConnected if @user.google_refresh_token.blank?
 
+      current_client = signet
+
       refresh! if expired?
-      signet
+
+      current_client
     end
 
     private
@@ -32,6 +35,10 @@ module GoogleCalendar
     end
 
     def refresh!
+      if signet.client_id.blank?
+        raise "Erreur de configuration : Le Google Client ID est introuvable dans les credentials Rails."
+      end
+
       signet.refresh!
       @user.update!(
         google_token: signet.access_token,
