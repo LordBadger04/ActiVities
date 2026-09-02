@@ -168,3 +168,47 @@
     flex-wrap: wrap;
     width: 120px;
 }
+
+@media (max-width: 700px) {
+  .chat-row {
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .chat-row__thumb {
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
+  }
+
+  .chat-row__body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .chat-row__name {
+    display: -webkit-box;
+    overflow: hidden;
+
+    white-space: normal;
+    text-overflow: unset;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    line-height: 1.25;
+  }
+
+  .chat-row__topline {
+    align-items: flex-start;
+  }
+
+  .chat-row__host-name {
+    max-width: 130px;
+  }
+
+  .chat-row__preview {
+    max-width: 100%;
+  }
+}

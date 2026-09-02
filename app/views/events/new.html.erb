@@ -7,7 +7,7 @@
     master on 2026-08-26, along with the addition of the `event_date` column. %>
 <% content_for :title, "Create an activity" %>
 
-<h1 class="page-title">Create an activity</h1>
+<h1 class="page-title event-form-title">Create an activity</h1>
 
 <%= simple_form_for @event, html: { class: "event-form" } do |f| %>
   <%= render "event_form", f: f %>
