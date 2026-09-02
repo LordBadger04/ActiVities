@@ -11,19 +11,30 @@
   background: $primary-green;
 }
 
-// La marque est le monogramme détouré posé à même le vert du header, plutôt que le
-// mot « ActiVities » : le nom est déjà porté par le <title>. Élément décoratif —
-// aucun état d'interaction, ce n'est ni un lien ni un bouton.
+// La marque est le lockup complet : le monogramme tient lieu de « A » et le mot
+// isolé du logo source fournit le « ctivities ». Élément décoratif — aucun état
+// d'interaction, ce n'est ni un lien ni un bouton.
 .app-header__brand {
   display: inline-flex;
   flex: 0 0 auto;
-  align-items: center;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 .app-header__logo {
   display: block;
   width: 48px;
   height: 48px;
+}
+
+// Le lockup d'origine assoit le mot sur la ligne de base du A, pas sur son centre.
+// Les deux valeurs sont relevées sur le fichier source : le mot y fait 55 % de la
+// hauteur du A et son pied remonte de 11 % au-dessus de celui du A.
+.app-header__wordmark {
+  display: block;
+  width: auto;
+  height: 24px;
+  margin-top: 17px;
 }
 
 // Pastille compte 44px. Porte la photo Cloudinary en background-image quand elle

@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   get    "/auth/failure",                  to: "sessions#google_failure"
   delete "/google_calendar",               to: "sessions#google_disconnect", as: :google_disconnect
 
+  get '/404', to: 'errors#not_found'
+  get '/500', to: 'errors#internal_server_error'
+
   resources :events, except: [ :destroy ] do
     collection do
       get :history
@@ -38,4 +41,6 @@ Rails.application.routes.draw do
   end
 
   resources :profiles, only: [ :show, :new, :create, :edit, :update ]
+
+  match '*path', to: 'errors#not_found', via: :all
 end
