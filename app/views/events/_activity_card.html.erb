@@ -1,14 +1,14 @@
 <%# Activity card — Figma 1:197 / 1:152. %>
 
-<div class="activity-card-wrapper">
+<div class="activity-card-wrapper <%= "event-hidden" unless event.event_memberships.where(user: current_user).size == 0 %>"
+          data-switch-btn-target= "<%= event.event_memberships.where(user: current_user).size == 0 ? "left" : "right" %>">
 
   <%= link_to event_path(
         event,
         latitude: params[:latitude],
         longitude: params[:longitude]
       ),
-      data: { switch_btn_target: event.event_memberships.where(user: current_user).size == 0 ? "left" : "right"},
-      class: "activity-card #{ "event-hidden" unless event.event_memberships.where(user: current_user).size == 0}" do %>
+      class: "activity-card"  do %>
 
     <span class="activity-card__body">
 

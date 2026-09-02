@@ -53,17 +53,10 @@ class PagesController < ApplicationController
       preferred_activity_ids =
         current_user.profile.user_activities.pluck(:activity_id)
 
-      @recommended_events =
-        Event.where(activity_id: preferred_activity_ids)
-             .where.not(id: @nearby_events.pluck(:id))
-             .limit(3)
-
       @different_events =
         Event.where.not(activity_id: preferred_activity_ids)
-             .where.not(id: @nearby_events.pluck(:id))
              .limit(3)
     else
-      @recommended_events = Event.none
 
       @different_events =
         Event.order(created_at: :desc)

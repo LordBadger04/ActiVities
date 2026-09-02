@@ -2,14 +2,37 @@
 // 361x132 with a 12px gutter: 12 + 108 thumbnail + 12 puts the text at x=132,
 // which is exactly the 36.57% offset the maquette uses.
 .activity-card {
-  padding: 8px;
-  background: $surface;
-  border-radius: 12px;
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+  box-sizing: border-box;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
   color: inherit;
   text-decoration: none;
-  transition: transform .15s ease, box-shadow .15s ease;
+
 }
+
+.activity-card-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background: $surface;
+  border-radius: 16px;
+  border: 1px solid $line;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+  transition: border-color .15s ease, box-shadow .15s ease;
+  &:hover,
+  &:focus-visible {
+    border-color: $primary-green;
+    box-shadow: 0 4px 14px rgba(15, 110, 78, .12);
+    color: inherit;
+    outline: none;
+  }
+}
+
 
 // Placeholder surface until Active Storage lands (FRONT_BLOCKERS.md §1.3).
 .activity-card__thumb {
@@ -97,32 +120,7 @@
   color: $ink-muted;
 }
 
-.activity-card-wrapper {
-  width: 100%;
-  overflow: hidden;
-  background: $surface;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
-  &:hover,
-  &:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .1);
-    color: inherit;
-    outline: none;
-  }
-}
 
-.activity-card {
-  display: block;
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  color: inherit;
-  text-decoration: none;
-}
 
 .activity-card__body {
   gap: 16px;
