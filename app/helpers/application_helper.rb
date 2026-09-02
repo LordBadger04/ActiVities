@@ -135,7 +135,9 @@ module ApplicationHelper
   end
 
   def notifications?
-    current_user.notifications.size.positive?
+    return false unless current_user
+
+    current_user.notifications.any?
   end
 
   def chat_notification?(chat)
