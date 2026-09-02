@@ -2,9 +2,10 @@
 <% sent = message.user_id == current_user.id %>
 <% if message.request %>
   <% unless sent %>
-    <%= link_to edit_event_event_membership_path(event, message.user.event_memberships.where(event: event)[0].id), data: { turbo_frame: "modal" } do %>
+    <%= link_to edit_event_event_membership_path(event, message.user.event_memberships.where(event: event)[0].id),
+                        data: { turbo_frame: "modal", scroll_target: "message" } do %>
       <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
-        <p><strong><%= request %></strong>  sent a request to join your activity, tap here to accept their request</p>
+        <p><strong><%= message.content %></strong></p>
       </li>
     <% end %>
   <% else %>
@@ -13,7 +14,7 @@
     </li>
   <% end %>
 <% else %>
-  <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>">
+  <li class="bubble <%= sent ? 'bubble--sent' : 'bubble--received' %>" data-scroll-target="message">
     <% unless sent %>
       <span class="bubble__author"><%= profile_display_name(profile_for(message.user)) %></span>
     <% end %>

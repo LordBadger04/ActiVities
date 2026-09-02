@@ -6,62 +6,63 @@
 <% current_user.notifications.where(chat: @chat).destroy_all %>
 
 <div class="chat">
-  <header class="chat__head">
+  <div class="chat-header">
+
     <%= link_to chats_path, class: "chat-link-back" do %>
       <i class="fa-regular fa-circle-left"></i>
     <% end %>
-    <span class="chat__head-name"><%= chat_title(@chat) %></span>
-  </header>
 
-  <% if event %>
-    <%= link_to event_path(event), class: "event-pin" do %>
-      <span class="event-pin__main">
-        <span class="event-pin__thumb" aria-hidden="true"></span>
+    <div class="event-pin">
+      <%= link_to event_path(event), class: "event-link"  do %>
+        <span class="event-pin__main">
 
-        <span class="event-pin__text">
-          <span class="event-pin__title"><%= event.activity.name %></span>
-          <span class="event-pin__meta">
-            <%= [ event_time_range(event), event.location ].compact_blank.join(" · ") %>
+
+            <% if event.activity&.photo&.attached? %>
+              <%= image_tag event.activity.photo.url,
+                alt: event.activity.name,
+                class: "event-pin__thumb-img" %>
+            <% end %>
+         
+          <span class="event-pin__text">
+            <span class="event-pin__title"><%= chat_title(@chat) %></span>
+            <p class="event-pin__meta">
+                <i class="fa-regular fa-calendar"></i>
+                <%= event.event_date.strftime("%d/%m/%Y") %>
+            </p>
+            <p class="event-pin__meta">
+              <i class="fa-regular fa-clock"></i>
+              <%= event_time_range(event) %>
+            </p>
           </span>
         </span>
-      </span>
-
-
+      <% end %>
       <span class="event-pin__side">
-        <% if status.present? && status != "Accepted" %>
-          <span class="chip chip--lime event-pin__status"><%= status %></span>
-        <% end %>
-        <%# "Add to calendar" has no ICS route yet (FRONT_BLOCKERS.md §4). %>
-        <span class="event-pin__calendar">Add to calendar</span>
-      </span>
-    <% end %>
-  <% end %>
-
-  <% if current_user.google_calendar_connected? %>
+        <% if current_user.google_calendar_connected? %>
           <%= link_to "Add to Calendar",
                 add_to_google_event_path(@event, chat_id: @chat&.id),
-                class: "btn",
+                class: "event-pin__calendar",
                 data: { turbo_method: :post } %>
-          <%= link_to "Déconnecter l'agenda",
+          <%= link_to "Disconnect Calendar",
                 google_disconnect_path(chat_id: @chat&.id),
+                class: "event-pin__calendar",
                 data: { turbo_method: :delete, turbo_confirm: "Sûr ?" } %>
-
         <% else %>
-          <%= button_to "Connecter mon agenda Google",
+          <%= link_to "Connect Calendar",
               "/auth/google_calendar?chat_id=#{@chat&.id}",
-              class: "btn",
+              class: "event-pin__calendar",
               data: { turbo: false } %>
         <% end %>
-
-  <ol class="chat__thread" id='messages'>
-    <% @chat.messages.order(:created_at).each do |message| %>
-      <%= render "chats/message", event: @event, message: message, current_user: current_user%>
-    <% end %>
-  </ol>
-
-  <%# messages#create currently saves the chat instead of the message and never sets %>
-  <%# the author (FRONT_BLOCKERS.md §2.4), so nothing is persisted yet. %>
-  <div id="new-message">
-    <%= render "chats/message_form", chat: @chat, message: @message %>
+      </span>
+    </div>
+  </div>
+  <div class="chat-content-container" data-controller="scroll">
+    <ol class="chat__thread" id='messages' data-scroll-target="messages">
+      <% @chat.messages.order(:created_at).each do |message| %>
+        <%= render "chats/message", event: @event, message: message, current_user: current_user%>
+      <% end %>
+    </ol>
+    <div id="new-message">
+      <%= render "chats/message_form", chat: @chat, message: @message %>
+    </div>
   </div>
 </div>

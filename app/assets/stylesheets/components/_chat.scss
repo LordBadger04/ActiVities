@@ -32,18 +32,32 @@
   font-weight: 600;
   color: $ink;
 }
-
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  gap: 15px;
+  margin: 8px auto 0;
+  border-radius: 12px;
+  text-decoration: none;
+  a {
+    text-decoration: none;
+  }
+}
 // Pinned event card — Figma 1:135 "Eventcard".
 .event-pin {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin: 16px;
+  gap: 32px;
   padding: 20px 10px 10px;
   border-radius: 12px;
   background: $primary-tint;
   text-decoration: none;
+  a {
+    text-decoration: none;
+  }
 }
 
 .event-pin__main {
@@ -53,17 +67,32 @@
   min-width: 0;
 }
 
+.event-pin__thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background: $primary-tint;
+}
+.event-pin__thumb-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background: $primary-tint;
+
+}
 .event-pin__text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   min-width: 0;
+  p{
+    text-decoration: none;
+    margin: 0;
+  }
 }
 
 .event-pin__title {
   font-size: 13px;
   font-weight: 600;
   color: $ink;
+
 }
 
 .event-pin__meta {
@@ -77,6 +106,7 @@
   align-items: flex-end;
   gap: 10px;
   flex: 0 0 auto;
+
 }
 
 .event-pin__status {
@@ -96,6 +126,7 @@
   font-weight: 600;
   color: $primary-green;
   white-space: nowrap;
+
 }
 
 .chat__thread {
@@ -106,6 +137,7 @@
   margin: 0;
   padding: 0 16px 16px;
   overflow-y: auto;
+  scrollbar-width: none;
   list-style: none;
   a {
     text-decoration: none;

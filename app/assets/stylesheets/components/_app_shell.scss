@@ -18,6 +18,7 @@
 // 29px is the gap between the header and the first element on every screen
 // (search bar on Home at y=139, toggle on Activities at y=139, header is 110 tall).
 .app-main {
+  position: relative;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
