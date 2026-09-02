@@ -2,15 +2,42 @@
 <% content_for :title, "ActiVities - Find new buddies in real life" %>
 
 <% if user_signed_in? && current_user.profile.present? %>
-  <div class="home-welcome">
-    <h1 class="home-welcome__title">
-      Hi <%= current_user.profile.first_name %> 👋
-    </h1>
+  <section class="home-hero">
+    <div class="home-hero__content">
+      <span class="home-hero__eyebrow">
+        Ready for something new?
+      </span>
 
-    <p class="home-welcome__subtitle">
-      What do you feel like doing today?
-    </p>
-  </div>
+      <h1 class="home-hero__title">
+        Hi <%= current_user.profile.first_name %> 👋
+      </h1>
+
+      <p class="home-hero__subtitle">
+        Find an activity nearby, join an event and meet people around something you already enjoy.
+      </p>
+
+      <%= link_to events_path, class: "home-hero__cta" do %>
+        See my activities
+        <i class="fa-solid fa-arrow-right"></i>
+      <% end %>
+    </div>
+
+    <div class="home-hero__visual">
+      <div class="home-hero__badge home-hero__badge--top">
+        <i class="fa-solid fa-location-dot"></i>
+        Nearby
+      </div>
+
+      <div class="home-hero__circle">
+        <i class="fa-solid fa-person-running"></i>
+      </div>
+
+      <div class="home-hero__badge home-hero__badge--bottom">
+        <i class="fa-solid fa-user-group"></i>
+        Meet new buddies
+      </div>
+    </div>
+  </section>
 <% end %>
 
 <div data-controller="geolocation">
