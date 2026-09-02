@@ -2,13 +2,19 @@
 <%# The maquette's header also contains an iOS status bar (9:41 AM, wifi, battery). %>
 <%# That is a mockup artifact, not UI, so it is deliberately not reproduced. %>
 <% photo_attached = current_profile&.photo&.attached? %>
+<%# La même URL Cloudinary sert la pastille du header et la miniature du menu. %>
+<% avatar_url = photo_attached ? cl_image_path(current_profile.photo.key, crop: :fill) : nil %>
 
 <header class="app-header">
   <%# La marque n'est pas une action : le retour à l'accueil passe par la barre du %>
   <%# bas, donc le logo reste un simple élément du header, sans lien ni focus. %>
+  <%# Le monogramme et le mot forment un seul lockup : le premier porte le nom %>
+  <%# accessible, le second est décoratif pour ne pas le faire annoncer deux fois. %>
   <div class="app-header__brand">
     <%= image_tag "activities-mark.png", alt: "ActiVities",
                   width: 48, height: 48, class: "app-header__logo" %>
+    <%= image_tag "activities-wordmark.png", alt: "", aria: { hidden: true },
+                  width: 720, height: 155, class: "app-header__wordmark" %>
   </div>
 
   <div class="dropdown">
@@ -21,32 +27,112 @@
             aria-expanded="false"
             aria-label="Account menu"
             <% if photo_attached %>
-              style="background-image: url('<%= cl_image_path current_profile.photo.key, crop: :fill %>')"
+              style="background-image: url('<%= avatar_url %>')"
             <% end %>>
       <% unless photo_attached %>
         <i class="fa-solid fa-user" aria-hidden="true"></i>
       <% end %>
     </button>
 
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
-      <% if user_signed_in? %>
-        <% if current_profile %>
-          <li><%= link_to "My profile", profile_path(current_profile), class: "dropdown-item" %></li>
-          <li><%= link_to "Events history", history_events_path, class: "dropdown-item" %></li>
+    <%# Le menu est un <div> plutôt qu'un <ul> — Bootstrap 5 l'accepte — pour loger %>
+    <%# le conteneur __inner que l'animation d'ouverture fait glisser sans écraser %>
+    <%# le transform que Popper pose sur .dropdown-menu. %>
+    <div class="dropdown-menu dropdown-menu-end account-menu" aria-labelledby="accountMenu">
+      <div class="account-menu__inner">
+        <% if user_signed_in? %>
+          <%# Bandeau d'identité : rappeler sous quel compte on est avant de proposer %>
+          <%# d'en sortir. Simple étiquette, ce n'est pas un lien. %>
+          <div class="account-menu__header">
+            <span class="account-menu__avatar"
+                  <% if photo_attached %>
+                    style="background-image: url('<%= avatar_url %>')"
+                  <% end %>
+                  aria-hidden="true">
+              <% unless photo_attached %>
+                <i class="fa-solid fa-user"></i>
+              <% end %>
+            </span>
+            <span class="account-menu__identity">
+              <% if current_profile %>
+                <span class="account-menu__name">
+                  <%= "#{current_profile.first_name} #{current_profile.last_name}" %>
+                </span>
+                <span class="account-menu__meta">@<%= current_profile.username %></span>
+              <% else %>
+                <span class="account-menu__name">Your account</span>
+                <span class="account-menu__meta"><%= current_user.email %></span>
+              <% end %>
+            </span>
+          </div>
+
+          <hr class="account-menu__divider">
+
+          <% if current_profile %>
+            <%= link_to profile_path(current_profile),
+                        class: "dropdown-item account-menu__item" do %>
+              <span class="account-menu__icon" aria-hidden="true">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              My profile
+            <% end %>
+            <%= link_to history_events_path,
+                        class: "dropdown-item account-menu__item" do %>
+              <span class="account-menu__icon" aria-hidden="true">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </span>
+              Events history
+            <% end %>
+          <% else %>
+            <%= link_to new_profile_path,
+                        class: "dropdown-item account-menu__item account-menu__item--accent" do %>
+              <span class="account-menu__icon" aria-hidden="true">
+                <i class="fa-solid fa-user-plus"></i>
+              </span>
+              Create my profile
+            <% end %>
+          <% end %>
+
+          <hr class="account-menu__divider">
+
+          <%= link_to destroy_user_session_path,
+                      data: { turbo_method: :delete },
+                      class: "dropdown-item account-menu__item account-menu__item--danger" do %>
+            <span class="account-menu__icon" aria-hidden="true">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </span>
+            Log out
+          <% end %>
         <% else %>
-          <li><%= link_to "Create my profile", new_profile_path, class: "dropdown-item" %></li>
+          <%# Pas de session à fermer pour un visiteur anonyme : « Log out » n'aurait %>
+          <%# rien à faire ici, le menu propose les deux entrées de session à la place. %>
+          <div class="account-menu__header">
+            <span class="account-menu__avatar" aria-hidden="true">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            <span class="account-menu__identity">
+              <span class="account-menu__name">Welcome</span>
+              <span class="account-menu__meta">Log in to join activities</span>
+            </span>
+          </div>
+
+          <hr class="account-menu__divider">
+
+          <%= link_to new_user_session_path,
+                      class: "dropdown-item account-menu__item account-menu__item--accent" do %>
+            <span class="account-menu__icon" aria-hidden="true">
+              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </span>
+            Log in
+          <% end %>
+          <%= link_to new_user_registration_path,
+                      class: "dropdown-item account-menu__item" do %>
+            <span class="account-menu__icon" aria-hidden="true">
+              <i class="fa-solid fa-user-plus"></i>
+            </span>
+            Sign up
+          <% end %>
         <% end %>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-          <%= link_to "Log out", destroy_user_session_path,
-                      data: { turbo_method: :delete }, class: "dropdown-item" %>
-        </li>
-      <% else %>
-        <%# Pas de session à fermer pour un visiteur anonyme : « Log out » n'aurait %>
-        <%# rien à faire ici, le menu propose les deux entrées de session à la place. %>
-        <li><%= link_to "Log in", new_user_session_path, class: "dropdown-item" %></li>
-        <li><%= link_to "Sign up", new_user_registration_path, class: "dropdown-item" %></li>
-      <% end %>
-    </ul>
+      </div>
+    </div>
   </div>
 </header>

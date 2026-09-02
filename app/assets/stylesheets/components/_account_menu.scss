@@ -1,0 +1,188 @@
+// Account menu — le dropdown suspendu à la pastille compte du header.
+// Reprend la DA des cartes : surface blanche, coins doux, ombre portée verte.
+// Bootstrap pose son transform Popper sur .account-menu, donc le mouvement
+// d'ouverture est porté par .account-menu__inner pour ne pas écraser le calage.
+
+$account-menu-caret: 12px;
+
+.account-menu.dropdown-menu {
+  min-width: 264px;
+  padding: 0;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 16px;
+  background: $surface;
+  box-shadow: 0 18px 44px rgba(9, 61, 43, .18),
+              0 2px 8px rgba(0, 0, 0, .06);
+  overflow: visible;
+}
+
+// Pointe ancrée sous l'avatar. .dropdown-menu-end aligne le bord droit du menu
+// sur celui du bouton 44px : son centre tombe donc à 22px du bord.
+.account-menu.dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -($account-menu-caret * .5);
+  right: 22px - ($account-menu-caret * .5);
+  width: $account-menu-caret;
+  height: $account-menu-caret;
+  border-radius: 2px;
+  background: $surface;
+  transform: rotate(45deg);
+}
+
+.account-menu.dropdown-menu.show {
+  animation: account-menu-fade .16s ease-out;
+}
+
+.account-menu__inner {
+  position: relative;
+  padding: 8px;
+  border-radius: inherit;
+  background: $surface;
+}
+
+.account-menu.dropdown-menu.show .account-menu__inner {
+  animation: account-menu-rise .18s ease-out;
+}
+
+// Bandeau d'identité : miniature, nom, poignée. Purement informatif.
+.account-menu__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 12px;
+}
+
+.account-menu__avatar {
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $primary-tint;
+  background-position: center;
+  background-size: cover;
+  color: $primary-green;
+  font-size: 15px;
+}
+
+.account-menu__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.account-menu__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $ink;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-menu__meta {
+  font-size: 12px;
+  font-weight: 400;
+  color: $ink-muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-menu__divider {
+  height: 1px;
+  margin: 0 10px 8px;
+  border: 0;
+  background: $line;
+  opacity: 1;
+}
+
+// Entrées : pastille d'icône à gauche, puis le libellé.
+.account-menu__item.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: $ink;
+  white-space: nowrap;
+  transition: background .15s ease, color .15s ease;
+
+  & + .account-menu__item {
+    margin-top: 2px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: $primary-tint;
+    color: $ink;
+    outline: none;
+  }
+
+  &:active {
+    background: darken($primary-tint, 4%);
+    color: $ink;
+  }
+}
+
+.account-menu__icon {
+  display: inline-flex;
+  flex: 0 0 32px;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $primary-tint;
+  color: $primary-green;
+  font-size: 13px;
+  transition: background .15s ease, color .15s ease;
+}
+
+// Le CTA du menu pour un visiteur anonyme : c'est l'action qu'on met en avant,
+// donc elle emprunte le lime des boutons principaux plutôt que le vert tint.
+.account-menu__item--accent .account-menu__icon {
+  background: $lime;
+  color: $ink;
+}
+
+// Fermer sa session est destructif : rouge dès le repos, pas seulement au survol,
+// pour que l'entrée se distingue avant le clic.
+.account-menu__item--danger.dropdown-item {
+  color: $red;
+
+  .account-menu__icon {
+    background: rgba($red, .1);
+    color: $red;
+  }
+
+  &:hover,
+  &:focus-visible,
+  &:active {
+    background: rgba($red, .08);
+    color: $red;
+  }
+}
+
+@keyframes account-menu-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes account-menu-rise {
+  from { transform: translateY(-6px); }
+  to   { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-menu.dropdown-menu.show,
+  .account-menu.dropdown-menu.show .account-menu__inner {
+    animation: none;
+  }
+}
