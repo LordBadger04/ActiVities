@@ -52,7 +52,7 @@
               data: { turbo: false } %>
         <% end %>
 
-  <ol class="chat__thread">
+  <ol class="chat__thread" id='messages'>
     <% @chat.messages.order(:created_at).each do |message| %>
       <%= render "chats/message", event: @event, message: message, current_user: current_user%>
     <% end %>
