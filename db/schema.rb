@@ -91,7 +91,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_01_141417) do
     t.bigint "chat_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
-    t.string "request"
+    t.boolean "request", default: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
