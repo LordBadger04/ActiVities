@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     )
     chat_id = request.env["omniauth.params"]&.dig("chat_id")
     if (chat = Chat.find_by(id: chat_id))
-      return redirect_to chat_path(chat), notice: "Agenda connecté"
+      return redirect_to chat_path(chat), notice: "Agenda connected"
     end
   end
 
@@ -18,10 +18,10 @@ class SessionsController < ApplicationController
     current_user.update!(google_token: nil, google_refresh_token: nil, google_token_expires_at: nil)
 
     if (chat = Chat.find_by(id: params[:chat_id]))
-      return redirect_to chat_path(chat), notice: "Agenda déconnecté"
+      return redirect_to chat_path(chat), notice: "Agenda disconnected"
     end
 
-    redirect_to chats_path, notice: "Agenda déconnecté"
+    redirect_to chats_path, notice: "Agenda disconnected"
   end
 
   def google_failure
