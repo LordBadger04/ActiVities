@@ -89,7 +89,7 @@ class EventsController < ApplicationController
       @chat = Chat.new
       @chat.event = @event
       render :new, status: :unprocessable_entity unless @chat.save!
-      @launch_message = @chat.messages.create(user: current_user, content: "Event created the event", chat: @chat)
+      @launch_message = @chat.messages.create(user: current_user, content: "Event created", chat: @chat)
       redirect_to event_path(@event)
     else
       render :new, status: :unprocessable_entity
