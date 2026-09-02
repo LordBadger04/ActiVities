@@ -41,7 +41,7 @@
 
 <span class="chat-row__thumb">
   <% if activity&.photo&.attached? %>
-    <%= image_tag activity.photo, alt: "", class: "chat-row__thumb-img" %>
+    <%= image_tag activity.photo.url, alt: activity.name, class: "chat-row__thumb-img" %>
   <% elsif asset %>
     <%= image_tag asset, alt: "", class: "chat-row__thumb-img" %>
   <% else %>

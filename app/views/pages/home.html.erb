@@ -17,7 +17,7 @@
       </p>
 
       <%= link_to events_path, class: "home-hero__cta" do %>
-        See my activities
+        See activities
         <i class="fa-solid fa-arrow-right"></i>
       <% end %>
     </div>
@@ -52,7 +52,12 @@
 
 <section class="home-section">
   <div class="home-section__head">
-    <h2 class="section-label">Around you</h2>
+    <div>
+      <h2 class="section-label">Around you</h2>
+      <p class="home-section__subtitle">
+        Discover activities happening near your area.
+      </p>
+    </div>
 
     <% if @user_location.present? %>
       <button
@@ -95,7 +100,12 @@
 
 <section class="home-section">
   <div class="home-section__head">
-    <h2 class="section-label">Something different</h2>
+    <div>
+      <h2 class="section-label">Something different</h2>
+      <p class="home-section__subtitle">
+        Try an activity outside your usual picks.
+      </p>
+    </div>
   </div>
 
   <div class="home__feed">
@@ -106,5 +116,42 @@
     <% else %>
       <p class="empty-state">Nothing new to suggest yet.</p>
     <% end %>
+  </div>
+</section>
+
+<section class="home-section home-how">
+  <div class="home-section__head">
+    <div>
+      <h2 class="section-label">How it works</h2>
+      <p class="home-section__subtitle">
+        Three simple steps to turn an activity into a real-life plan.
+      </p>
+    </div>
+  </div>
+
+  <div class="home-how__grid">
+    <div class="home-how__item">
+      <div class="home-how__icon">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+      <h3>Discover</h3>
+      <p>Find activities and events that match what you feel like doing.</p>
+    </div>
+
+    <div class="home-how__item">
+      <div class="home-how__icon">
+        <i class="fa-solid fa-hand-pointer"></i>
+      </div>
+      <h3>Join</h3>
+      <p>Choose an event and request to take part in it.</p>
+    </div>
+
+    <div class="home-how__item">
+      <div class="home-how__icon">
+        <i class="fa-solid fa-people-group"></i>
+      </div>
+      <h3>Meet</h3>
+      <p>Enjoy the activity and meet new buddies in real life.</p>
+    </div>
   </div>
 </section>
