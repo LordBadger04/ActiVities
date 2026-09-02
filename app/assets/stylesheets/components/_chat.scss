@@ -53,14 +53,6 @@
   min-width: 0;
 }
 
-.event-pin__thumb {
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: $surface;
-}
-
 .event-pin__text {
   display: flex;
   flex-direction: column;
