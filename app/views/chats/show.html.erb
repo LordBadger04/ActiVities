@@ -3,6 +3,7 @@
 <% content_for :title, chat_title(@chat) %>
 <% event = @chat.event %>
 <% status = membership_status_for(current_user, event) %>
+<% current_user.notifications.where(chat: @chat).destroy_all %>
 
 <div class="chat">
   <header class="chat__head">

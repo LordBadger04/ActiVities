@@ -1,9 +1,49 @@
 .notification_stamp {
   position: absolute;
-  top: -5px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
+  top: 0px;
+  right: 0px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background-color: $red;
+}
+
+.stamp-in{
+  animation-name: in-stamp;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+.stamp-out {
+  animation-name: out-stamp;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+@keyframes out-stamp {
+  0%{
+
+  }
+  25%{
+    transform: scale(1.4);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100%{
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes in-stamp {
+  0%{
+
+  }
+  25%{
+    transform: scale(1.4);
+  }
+  100%{
+    transform: scale(1);
+  }
 }

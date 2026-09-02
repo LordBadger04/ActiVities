@@ -4,6 +4,7 @@
 .chat-row {
   position: relative;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
   min-height: 86px;
@@ -29,12 +30,12 @@
 // sur l'initiale de l'event.
 .chat-row__thumb {
   display: flex;
-  flex: 0 0 46px;
+
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  width: 46px;
-  height: 46px;
+  width: 108px;
+  height: 108px;
   border-radius: 8px;
   background: $primary-tint;
 }
@@ -54,7 +55,6 @@
 
 .chat-row__body {
   display: flex;
-  flex: 1 1 auto;
   flex-direction: column;
   gap: 3px;
   min-width: 0;

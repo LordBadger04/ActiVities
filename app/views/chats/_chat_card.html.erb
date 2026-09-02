@@ -52,21 +52,11 @@
 <span class="chat-row__body">
   <span class="chat-row__topline">
     <span class="chat-row__name"><%= chat_title(chat) %></span>
-    <% if stamp %>
-      <span class="chat-row__time"><%= stamp %></span>
-    <% end %>
   </span>
 
   <span class="chat-row__host">
     <% host_profile = profile_for(host) %>
-    <span class="chat-row__face chat-row__face--host">
-      <% if host_profile&.photo&.attached? %>
-        <%= cl_image_tag host_profile.photo.key, crop: :fill, alt: "",
-                         class: "chat-row__face-img" %>
-      <% else %>
-        <%= profile_display_name(host_profile).first.upcase %>
-      <% end %>
-    </span>
+
     <span class="chat-row__host-name">by <%= profile_display_name(host_profile) %></span>
   </span>
 
@@ -75,28 +65,10 @@
   </span>
 </span>
 
-<%# Pile locale plutôt que shared/_avatars_display : ce dernier est partagé avec
-    les cartes d'activité et l'historique, et laisse un trou quand un profil n'a
-    pas de photo — ici il en faut une initiale de repli. %>
-<% if buddies.any? %>
-  <span class="chat-row__buddies">
-    <% buddies.first(3).each do |buddy| %>
-      <% buddy_profile = profile_for(buddy) %>
-      <span class="chat-row__face" title="<%= profile_display_name(buddy_profile) %>">
-        <% if buddy_profile&.photo&.attached? %>
-          <%= cl_image_tag buddy_profile.photo.key, crop: :fill, alt: "",
-                           class: "chat-row__face-img" %>
-        <% else %>
-          <%= profile_display_name(buddy_profile).first.upcase %>
-        <% end %>
-      </span>
-    <% end %>
+<% avatars = event_accepted_users(event).map { |member| member.profile.photo.key } %>
+<%= render "shared/avatars_display", avatars: avatars %>
 
-    <% if buddies.size > 3 %>
-      <span class="chat-row__face chat-row__face--more">+<%= buddies.size - 3 %></span>
-    <% end %>
-    <% if chat_notification?(chat)%>
-      <span class="notification_stamp"></span>
-    <% end %>
-  </span>
+<% if chat_notification?(chat)%>
+  <span class="notification_stamp stamp-in"></span>
+  <span class="notification_stamp stamp-out"></span>
 <% end %>
