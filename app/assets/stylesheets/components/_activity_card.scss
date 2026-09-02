@@ -43,9 +43,11 @@
 
 .activity-card__meta {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 4px 14px;
+
+  min-width: 0;
 
   font-size: 13px;
   color: $ink-muted;
@@ -53,13 +55,27 @@
 
 .activity-card__meta-item {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 5px;
-  white-space: nowrap;
+
+  min-width: 0;
+  white-space: normal;
 }
 
 .activity-card__meta-item i {
+  flex: 0 0 auto;
+  margin-top: 2px;
   font-size: 12px;
+}
+
+.activity-card__meta-item--location {
+  flex-basis: 100%;
+
+  span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 }
 
 .activity-card__meta-item--distance {
