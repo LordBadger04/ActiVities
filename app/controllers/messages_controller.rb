@@ -10,7 +10,9 @@ class MessagesController < ApplicationController
         format.html { redirect_to chat_path(@chat) }
       end
     else
-      render "chat/show", status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render "chats/show", status: :unprocessable_entity }
+      end
     end
   end
 
