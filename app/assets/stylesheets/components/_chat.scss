@@ -120,12 +120,14 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 14px;
+  border: 0;
   border-radius: 999px;
   background: $surface;
   font-size: 13px;
   font-weight: 600;
   color: $primary-green;
   white-space: nowrap;
+  cursor: pointer;
 
 }
 
@@ -236,4 +238,39 @@
 
 .chat-link-back{
   font-size: 2em;
+}
+
+.calendar-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 130px;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 16px;
+
+  background: $primary-green;
+  color: $on-primary;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  opacity: 0;
+  transform: translate(-50%, 15px);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.calendar-toast--show {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
