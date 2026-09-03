@@ -2,12 +2,12 @@
 <% content_for :title, profile_display_name(@profile) %>
 <% by_genre = profile_activities_by_genre(@profile) %>
 <% sports = by_genre["Sport"].to_a %>
-<% hobbies = (by_genre["Culture"].to_a + by_genre["Relaxing"].to_a) %>
+<% culture = by_genre["Culture"].to_a %>
+<% relaxing = by_genre["Relaxing"].to_a %>
 
 <% if current_profile == @profile %>
   <h1 class="profile-title">My profile</h1>
 <% end %>
-
 <article class="detail-sheet detail-sheet--profile">
   <header class="profile-head">
     <div class="profile-head__identity">
@@ -28,7 +28,14 @@
 
   <section class="detail-block">
     <h2 class="section-label">About</h2>
-    <p class="detail-block__body"><%= @profile.description.presence || "This buddy hasn't written anything yet." %></p>
+    <p class="detail-block__body"><strong>Name:</strong><em><%= current_profile.first_name %> <%= current_profile.last_name %></em></p>
+    <p class="detail-block__body"><strong>Age:</strong><em><%= current_profile.age %></em></p>
+    <p class="detail-block__body"><strong>Genre:</strong><em><%= current_profile.gender %></em></p>
+    <p class="detail-block__body"><strong>Languages:</strong><em><%= current_profile.language %></em></p>
+    <div class="detail-block__body">
+      <p class="detail-block__body"><strong>In a few Words:</strong></p>
+      <p><em><%= current_profile.description %></em></p>
+    </div>
   </section>
 
   <hr class="detail-sheet__divider">
@@ -37,16 +44,26 @@
   <%# maquette has two columns, so Culture and Relaxing share the Hobbies side. %>
   <div class="interests">
     <section class="interests__col">
-      <h2 class="chip">Sports</h2>
-      <% if sports.any? %>
-        <ul class="interests__list">
-          <% sports.each do |ua| %>
-            <li><%= ua.activity&.name %></li>
-          <% end %>
-        </ul>
+
+      <% unless by_genre.nil? %>
+        <% by_genre.each  do |key, value| %>
+          <h2 class="chip"><%= key %></h2>
+          <div class="activity_genre">
+            <% if value.any? %>
+                <% value.each do |ua| %>
+
+                  <%= render "activity_small_card", ua: ua %>
+
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
       <% else %>
         <p class="interests__empty">Nothing yet</p>
       <% end %>
+
+
     </section>
 
   </div>
@@ -57,3 +74,13 @@
     <% end %>
   </div>
 </article>
+<%# <Profile id: 2,
+        ag: 38,
+        description: "I like taking long walk through middle earth",
+        first_name: "Aragorn",
+        gender: "male",
+        language: "Elvish, English",
+        last_name: "Aragorn",
+        location: "Minas Tiryth",
+        user_id: 2,
+        username: "Aragorn"> %>

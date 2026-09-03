@@ -8,8 +8,8 @@
   justify-content: space-between;
   gap: 24px;
 
-  margin: 24px 0 32px;
-  padding: 28px;
+  margin: 0 0 12px;
+  padding: 16px;
 
   min-height: 230px;
 
@@ -310,6 +310,7 @@
 }
 
 .home-how__item {
+  text-align: center;
   padding: 20px;
   background: $surface;
   border-radius: 16px;
@@ -334,7 +335,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
+  margin: 0 auto;
   width: 42px;
   height: 42px;
 
