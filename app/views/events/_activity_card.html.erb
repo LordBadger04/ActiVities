@@ -27,6 +27,11 @@
               <i class="fa-solid fa-tag"></i>
               <%= event.activity.name %>
             </span>
+
+            <span class="activity-card__meta-item activity-card__meta-item--capacity">
+              <i class="fa-solid fa-user-group"></i>
+              <%= event.event_memberships.where(status: "Accepted").count %>/<%= event.max_participant %>
+            </span>
           <% end %>
 
           <span class="activity-card__meta-item activity-card__meta-item--location">
