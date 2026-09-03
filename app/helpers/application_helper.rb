@@ -127,6 +127,8 @@ module ApplicationHelper
   end
 
   def accepted?(event)
+    return false if current_user.event_memberships.find_by(event: event).nil?
+
     EventMembership.find_by(user: current_user, event: event).status == "Accepted"
   end
 

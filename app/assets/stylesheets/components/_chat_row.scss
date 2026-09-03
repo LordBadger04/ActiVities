@@ -30,12 +30,10 @@
 // sur l'initiale de l'event.
 .chat-row__thumb {
   display: flex;
-
   align-items: center;
   justify-content: center;
   overflow: hidden;
   width: 108px;
-  height: 108px;
   border-radius: 8px;
   background: $primary-tint;
 }
@@ -58,6 +56,7 @@
   flex-direction: column;
   gap: 3px;
   min-width: 0;
+  flex: 1.7em;
 }
 
 .chat-row__topline {
@@ -90,6 +89,7 @@
   align-items: center;
   gap: 5px;
   min-width: 0;
+  margin-bottom: 1em;
 }
 
 .chat-row__host-name {
@@ -166,48 +166,6 @@
     justify-content: flex-end;
     flex-wrap: wrap;
     width: 160px;
-}
-
-@media (max-width: 700px) {
-  .chat-row {
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .chat-row__thumb {
-    flex: 0 0 72px;
-    width: 72px;
-    height: 72px;
-  }
-
-  .chat-row__body {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .chat-row__name {
-    display: -webkit-box;
-    overflow: hidden;
-
-    white-space: normal;
-    text-overflow: unset;
-
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-
-    line-height: 1.25;
-  }
-
-  .chat-row__topline {
-    align-items: flex-start;
-  }
-
-  .chat-row__host-name {
-    max-width: 130px;
-  }
-
-  .chat-row__preview {
-    max-width: 100%;
-  }
+    flex: 0.8;
+    gap:0.5em
 }
