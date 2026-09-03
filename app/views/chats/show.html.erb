@@ -46,10 +46,13 @@
                 class: "event-pin__calendar",
                 data: { turbo_method: :delete, turbo_confirm: "Sûr ?" } %>
         <% else %>
-          <%= link_to "Connect Calendar",
-              "/auth/google_calendar?chat_id=#{@chat&.id}",
-              class: "event-pin__calendar",
-              data: { turbo: false } %>
+          <button
+            type="button"
+            class="event-pin__calendar"
+            data-controller="calendar-toast"
+            data-action="click->calendar-toast#show">
+            Add to Calendar
+          </button>
         <% end %>
       </span>
     </div>
