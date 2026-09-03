@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><%= content_for(:title) || "ActiVities - Find new buddies in real life" %></title>
+    <title><%= meta_title %></title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="ActiVities">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f6e4e">
     <meta name="turbo-visit-control" content="reload">
-    <title><%= meta_title %></title>
+
     <meta name="description" content="<%= meta_description %>">
-    <meta property="og:image" content="<%= image_url('activities-og.png') %>"/>
-    <%= favicon_link_tag asset_path("favicon.ico") %>
+
     <meta property="og:title" content="<%= meta_title %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= request.original_url %>" />
     <meta property="og:image" content="<%= meta_image %>" />
     <meta property="og:description" content="<%= meta_description %>" />
-    <meta property="og:site_name" content="<%= meta_title %>" />
+    <meta property="og:site_name" content="ActiVities" />
 
 
     <meta name="twitter:card" content="summary_large_image">
@@ -40,7 +40,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+    <%= favicon_link_tag "activities-mark.png" %>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
