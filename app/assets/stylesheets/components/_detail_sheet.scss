@@ -135,17 +135,23 @@
 }
 
 .detail-block {
+
   display: flex;
   flex-direction: column;
   gap: 7px;
-  em {
+  span {
     margin-left: 1em;
+    font-size: 1.2em;
   }
   strong {
+    font-size: 1.2em;
     color: #0f6e4e
   }
+  .detail-block__description {
+  margin-top: 1em;
 }
 
+}
 .detail-block__body {
   margin: 0;
   font-size: 14px;
@@ -197,11 +203,7 @@
 }
 
 // Sports / Hobbies columns — Figma I1:209;36:970 and I1:209;36:975.
-.interests {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
+
 
 .interests__col {
   display: flex;
@@ -210,7 +212,8 @@
   gap: 12px;
 
   .chip {
-    margin: 0;
+    margin: 1em 0 0;
+
   }
 }
 

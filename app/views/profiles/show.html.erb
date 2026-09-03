@@ -19,7 +19,7 @@
       <% end %>
     </div>
     <% if @profile.photo.attached? && current_profile != @profile %>
-      <%= cl_image_tag @profile.photo.key, class: "avatar-bordered avatar-large" %>
+      <%= cl_image_tag @profile.photo.key, class: "avatar-bordered avatar-large avatar-border-accepted" %>
     <% end %>
 
   </header>
@@ -28,13 +28,13 @@
 
   <section class="detail-block">
     <h2 class="section-label">About</h2>
-    <p class="detail-block__body"><strong>Name:</strong><em><%= current_profile.first_name %> <%= current_profile.last_name %></em></p>
-    <p class="detail-block__body"><strong>Age:</strong><em><%= current_profile.age %></em></p>
-    <p class="detail-block__body"><strong>Genre:</strong><em><%= current_profile.gender %></em></p>
-    <p class="detail-block__body"><strong>Languages:</strong><em><%= current_profile.language %></em></p>
-    <div class="detail-block__body">
+    <p class="detail-block__body"><strong>Name:</strong><span><%= @profile.first_name %> <%= @profile.last_name %></span></p>
+    <p class="detail-block__body"><strong>Age:</strong><span><%= @profile.age %></span></p>
+    <p class="detail-block__body"><strong>Genre:</strong><span><%= @profile.gender %></span></p>
+    <p class="detail-block__body"><strong>Languages:</strong><span><%= @profile.language %></span></p>
+    <div class="detail-block__body detail-block__description">
       <p class="detail-block__body"><strong>In a few Words:</strong></p>
-      <p><em><%= current_profile.description %></em></p>
+      <p><span><%= @profile.description %></span></p>
     </div>
   </section>
 
