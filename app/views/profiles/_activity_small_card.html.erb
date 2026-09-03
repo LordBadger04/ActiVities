@@ -1,0 +1,7 @@
+<% if ua.activity&.photo&.attached? %>
+  <div class="activity_stamp"
+        style='background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+                                  url("<%= ua.activity.photo.url %>")'>
+    <%= ua.activity&.name %>
+  </div>
+<% end %>

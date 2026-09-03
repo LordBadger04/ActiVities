@@ -4,7 +4,7 @@
 .activity-card {
   display: block;
   width: 100%;
-  padding: 16px;
+  padding: 16px 12px;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
   box-sizing: border-box;
@@ -123,11 +123,10 @@
 
 
 .activity-card__body {
-  gap: 16px;
+  gap: 8px;
 }
 
 .activity-card-infos {
-  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -160,4 +159,23 @@
   &:hover {
     background: darken($primary-tint, 3%);
   }
+}
+.activity_stamp {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 140px;
+    height: 140px;
+    border-radius: 20px;
+    color: white;
+    font-size: 1.4em;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+.activity_genre {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 2em;
 }

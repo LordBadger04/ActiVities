@@ -1,5 +1,4 @@
 class EventsController < ApplicationController
-  skip_before_action :authenticate_user!, only: %i[index show]
   def index
     filtered_activities = current_user.profile.user_activities.map(&:activity)
     @events = Event.where(activity: filtered_activities).where(status: "Coming")
