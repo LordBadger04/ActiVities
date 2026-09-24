@@ -1,68 +1,39 @@
-Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
+# ActiVities
 
+> Discover activities near you, connect with people and make the most of your free time.
 
-    <section class="interests__col">
-      <h2 class="chip">Hobbies</h2>
-      <% if hobbies.any? %>
-        <ul class="interests__list">
-          <% hobbies.each do |ua| %>
-            <li><%= ua.activity&.name %></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="interests__empty">Nothing yet</p>
-      <% end %>
-    </section>
+[Live demo](https://activities2328.me)
 
+ActiVities is a collaborative web application built during the Le Wagon Web Development bootcamp. It helps users discover, create and join activities around them through a social and location-based experience.
 
+## Features
 
-<%= form_with url: root_path,
-              method: :get,
-              class: "search-bar" do %>
+* Browse and search activities
+* Discover activities nearby with Mapbox geolocation
+* Filter results by distance
+* Create and manage activities
+* Join activities and manage memberships
+* Secure authentication and user profiles
+* Responsive interface for desktop and mobile
 
-  <i class="fa-solid fa-magnifying-glass search-bar__icon" aria-hidden="true"></i>
+## Tech stack
 
-  <label class="visually-hidden" for="activity-search">
-    Search an activity
-  </label>
+* Ruby on Rails
+* PostgreSQL
+* JavaScript
+* Bootstrap
+* Mapbox
+* Devise
+* Cloudinary
 
-  <%= search_field_tag :query,
-      params[:query],
-      id: "activity-search",
-      placeholder: "Search an activity",
-      class: "search-bar__input" %>
+## Team workflow
 
-  <% if params[:latitude].present? %>
-    <%= hidden_field_tag :latitude, params[:latitude] %>
-  <% end %>
+This project was delivered collaboratively using feature branches, GitHub Issues, pull requests and code reviews. The repository reflects the full development lifecycle of the application, from product features to deployment.
 
-  <% if params[:longitude].present? %>
-    <%= hidden_field_tag :longitude, params[:longitude] %>
-  <% end %>
-<% end %>
+## What I learned
 
-<% if params[:query].present? %>
-  <section class="home-section home-section--search">
-    <div class="home-section__head">
-      <h2 class="section-label">Search results</h2>
-
-      <%= link_to "Clear", root_path(
-            latitude: params[:latitude],
-            longitude: params[:longitude]
-          ),
-          class: "home-section__link" %>
-    </div>
-
-    <div class="home__feed">
-      <% if @search_results.any? %>
-        <% @search_results.each do |event| %>
-          <%= render "events/activity_card", event: event %>
-        <% end %>
-      <% else %>
-        <p class="empty-state">
-          No activity found for "<%= params[:query] %>".
-        </p>
-      <% end %>
-    </div>
-  </section>
-<% end %>
+* Building a relational data model around users, activities and memberships
+* Implementing geolocation and distance-based filtering
+* Working in a team Git workflow
+* Delivering features through iterative development and reviews
+* Deploying a Rails application for real users
