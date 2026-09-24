@@ -2,7 +2,7 @@
 
 > Discover activities near you, connect with people and make the most of your free time.
 
-[Live demo](https://activities2328.me)
+[Live demo](https://www.activities2328.me/)
 
 ActiVities is a collaborative web application built during the Le Wagon Web Development bootcamp. It helps users discover, create and join activities around them through a social and location-based experience.
 
